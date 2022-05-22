@@ -491,7 +491,7 @@ public function ver_fotos()
         $usuario = Sessoes::obter("usuario");
         $vrfca=Usuarios::where("id","=",$usuario)->get()->first();
         $estudante= Estudantes::where("pessoas_id","=",$vrfca['pessoas_id'])->get()->first();
-        $certificado= Emissao_certificados::where("id_estudante","=",$estudante['id'])->get()->first();
+        $certificado= Emissao_Certificados::where("id_estudante","=",$estudante['id'])->get()->first();
         $declaracao= Emissao_declaracoes::where("id_estudante","=",$estudante['id'])->get()->first();
         $escolacert=Instituicoes::where("id","=",(is_null($certificado)) ? null : $certificado['id_instituicao'])->get()->first();
         $escoladecl=Instituicoes::where("id","=", ( is_null($declaracao)) ? null : $declaracao['id_instituicao'] )->get()->first();
