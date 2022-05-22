@@ -1,0 +1,249 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+
+    <!-- Carrega paper.css para uma boa impressão -->
+    <link rel="stylesheet" href="/public/css/normalize.min.css">
+    <link rel="stylesheet" href="/public/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/paper.min.css">
+    <style>
+        @page { size: A4 }
+        .A4{
+            background: #343a40;
+        }
+        .bg-psd{
+            background: #0b4e86;
+            color: #fff;
+        }
+        .mt-0{
+            margin-top:3px;
+        }
+        .mb-0{
+            margin-bottom:0;
+        }
+        .pt-5{
+            padding-top: 15px;
+        }
+        .d-flex{
+            display: flex;
+        }
+        .justify-content-end{
+            justify-content: flex-end;
+        }
+        .justify-content-center{
+            justify-content: center;
+        }
+        .justify-content-end{
+            justify-content: flex-end;
+        }
+        .justify-content-between{
+            justify-content: space-between;
+        }
+        .justify-content-around{
+            justify-content: space-around;
+        }
+        .align-items-center{
+            align-items: center;
+        }
+        .flex-column{
+            flex-direction: column;
+        }
+        /*Flex box*/
+        @media print{
+            .print-menu{
+                display: none !important;
+            }
+            body{
+                background: #ffffff!important;
+            }
+            .bg-print
+            {
+                background-color: rgb(210 209 209)!important;
+                color: #0e0e0e !important;
+
+            }
+            tr.bg-print{
+                background-color: rgb(210 209 209)!important;
+                color: #0e0e0e !important;
+                font-weight: bold !important;
+            }
+            tr th{
+                background-color: rgb(210 209 209)!important;
+                color: #0e0e0e !important;
+                font-weight: bold !important;
+            }
+            tr th.bg-psd{
+                background-color: rgb(210 209 209)!important;
+                color: #0e0e0e !important;
+                font-weight: bold !important;
+            }
+        }
+        .fixed-top {
+            left: 82%!important;
+        }
+    </style>
+</head>
+{% set respondeu=0 %}
+{% set nao_respondeu=0 %}
+{% set m_respondeu=0 %}
+{% set m_nao_respondeu=0 %}
+{% set f_respondeu=0 %}
+{% set f_nao_respondeu=0 %}
+{% set masculinos=0 %}
+{% set femininos=0 %}
+<body class="A4">
+<div style="padding-left: 30px; position: absolute" class="print-menu">
+    <a href="/inquerito/ver_inquerito/{{ inscricao.inquerito.id }}" class="btn w-100 btn-primary "><i class="fa fa-print "></i> Voltar</a>
+</div>
+<div class="print-menu d-flex justify-content-end fixed-top pt-5 col-md-2" style="position: fixed">
+    <a href="" onclick="window.print();" class="btn w-100 btn-primary "><i class="fa fa-print "></i> Imprimir</a>
+</div>
+<section class="sheet padding-10mm" style="height: auto;">
+    <div class="d-flex justify-content-center align-items-center ">
+        <img src="/public/ficheiros/inqueritos/logotipos/{{ inscricao.inquerito.logotipo }}" alt="" width="100px;">
+    </div>
+    <h3 class="text-uppercase text-center mt-0 mb-0">{{ inscricao.inquerito.pesquisador.pessoa.nome_completo() }}</h3>
+    <h3 class=" text-center mt-0 mb-0">{{ inscricao.inquerito.titulo }}</h3>
+    <h4 class="">Relatório da pesquisa</h4>
+    <hr class="mb-0 mt-0">
+    <h4>Perguntas</h4>
+    <table class="table table-sm tabela m-0 table-bordered">
+        <thead>
+        <tr class="b text-white">
+            <th class="bg-psd bg-print">#</th>
+            <th class="bg-psd bg-print">Pergunta</th>
+            <th class="bg-psd bg-print" >Tipo</th>
+            <th class="bg-psd bg-print">Opções</th>
+        </tr>
+        </thead>
+        <tbody class="table-bordered">
+        {% for pergunta in inscricao.inquerito.perguntas %}
+            <tr>
+                <td class="align-middle">{{ loop.index }}</td>
+                <td class="align-middle">{{ pergunta.titulo }}</td>
+                <td class="align-middle">
+                    {{ pergunta.tipo() }}
+                </td>
+                <td class="align-middle">
+                    {% for opcao in pergunta.opcoes %}
+                        <div class="badge bg-print badge-primary-dark">{{ opcao.opcao }}</div>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h4>Estatística</h4>
+    <table class="table m-0 table-bordered ">
+        <thead class="bg-psd">
+        <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+            <td class="align-middle">
+                <span class="align-middle">Perguntas</span>
+            </td>
+            <td class="align-middle">{{ inscricao.inquerito.perguntas|length }}</td>
+        </tr>
+
+        <tr>
+            <td class="align-middle">
+                <span class="align-middle">Inqueridos</span>
+            </td>
+            <td class="align-middle">{{ inscricao.inquerito.inscricoes|length }}</td>
+        </tr>
+
+        <tr>
+            <td class="align-middle">
+                <span class="align-middle">Inqueridos que responderam</span>
+            </td>
+            <td class="align-middle respondeu">
+                {% for ins in inscricao.inquerito.inscricoes %}
+                    {% if ins.respondido == 1 %}
+                        {% set respondeu = respondeu + 1 %}
+                        {% if ins.inquerido.pessoa.genero == "M" %}
+                            {% set m_respondeu = m_respondeu + 1 %}
+                            {% set masculinos = masculinos + 1 %}
+                        {% else %}
+                            {% set f_respondeu = f_respondeu + 1 %}
+                            {% set femininos = femininos + 1 %}
+                        {% endif %}
+                    {% else %}
+                        {% set nao_respondeu = nao_respondeu + 1  %}
+                        {% if ins.inquerido.pessoa.genero == "M" %}
+                            {% set m_nao_respondeu = m_nao_respondeu + 1 %}
+                            {% set masculinos = masculinos + 1 %}
+                        {% else %}
+                            {% set f_nao_respondeu = f_nao_respondeu + 1 %}
+                            {% set femininos = femininos + 1 %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {{ respondeu }}
+            </td>
+        </tr>
+        <tr>
+            <td class="align-middle">
+                <span class="align-middle">Inqueridos que não responderam</span>
+            </td>
+            <td class="align-middle nao_respondeu">{{ nao_respondeu }}</td>
+        </tr>
+
+        </tbody>
+
+
+
+
+    </table>
+    <hr>
+
+
+</section>
+
+
+
+
+
+
+
+<section class="sheet padding-10mm" style="height: auto!important;">
+    <div class="d-flex justify-content-center align-items-center ">
+        <img src="/public/ficheiros/inqueritos/logotipos/{{ inscricao.inquerito.logotipo }}" alt="" width="100px;">
+    </div>
+    <h3 class="text-uppercase text-center mt-0 mb-0">{{ inscricao.inquerito.pesquisador.pessoa.nome_completo() }}</h3>
+    <h3 class=" text-center mt-0 mb-0">{{ inscricao.inquerito.titulo }}</h3>
+    <div class=" flex-column pt-5">
+        <p class="">Inquerido: <b>{{ inscricao.inquerido.pessoa.nome_completo() }}</b></p>
+        <p class="">Data da resposta: {{ inscricao.updated_at|date("d/m/Y") }}</p>
+        <p class="">Impresso em : {{ "now"|date("d/m/Y") }}</p>
+    </div>
+
+    <hr>
+    {% for resposta in inscricao.respostas %}
+        <div class="d-flex flex-column">
+            <h4>{{ resposta.pergunta.titulo }}</h4>
+            {% if resposta.pergunta.tipo == "ro" %}
+                {% for opcao in resposta.pergunta.opcoes|filter(opcao => opcao.id == resposta.resposta ) -%}
+                    <p>R: {{ opcao.opcao }} </p>
+                {% endfor %}
+            {% else %}
+                <p>R: {{ resposta.resposta }} </p>
+            {% endif %}
+        </div>
+        <hr>
+    {% endfor %}
+</section>
+
+
+<script src="/public/vendor/jquery.min.js"></script>
+<script src="/public/js/chart/chart.js" type="text/javascript"></script>
+<script src="/public/js/chart/utils.js" type="text/javascript"></script>
+<script src="/public/js/chart/chartjs-plugin-labels.js" type="text/javascript"></script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "@include/main_painel.twig" %}
+
+{% block conteudo %}
+    <style>
+        .table td{
+            border-left: 0px !important;
+            border-right: 1px solid #e2e8ee !important;
+        }
+    </style>
+    <div class="w-100">
+        <div class="">
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <h3 class="col-md-6">
+                    Lista de inqueridos
+                </h3>
+                <hr class="col-md-12">
+            </div>
+
+            <div class="row align-items-center mb-2">
+                <div class="col-md-12">
+                    <div class="input-group input-group--inline ">
+                        <div class="input-group-addon">
+                            <i class="material-icons align-items-center  ">search</i>
+                        </div>
+                        <input type="text" class="form-control form-control-md input_procurar" name="search" placeholder="Pesquisar por nome">
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="">
+                    <table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+                        <thead class="bg-primary text-white">
+                        <tr>
+                            <th class="text-white">#</th>
+                            <th class="text-white">Nome</th>
+                            <th class="text-white">Inqueritos inscrito</th>
+                            <th class="text-white">Inqueritos respondidos</th>
+                        </tr>
+                        </thead>
+                        <tbody class="  border-left-0">
+                        {% set total=0 %}
+                        {% for inquerido in inqueridos  %}
+
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td><a href="/inquerido/ficha_do_inquerido?id={{inquerido.id}}">{{ inquerido.pessoa.nomeComSobrenome() }}</a></td>
+                                <td>{{ inquerido.inscricoes|length }}</td>
+                                <td>
+                                    {% for iq in inquerido.inscricoes|filter(iq => (iq.respondido == 1)) -%}
+                                        {% set total = loop.index %}
+                                    {% endfor %}
+                                    {{ total }}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-muted">Não tem inqueridos cadastrados.</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

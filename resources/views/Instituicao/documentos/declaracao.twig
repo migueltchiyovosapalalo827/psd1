@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Solicitação de certificado ou Declaração</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   <!---<link  type="text/css" href="{{asset('css/bootstrap.min.css')}}" rel="stylesheet">-->
+  <style>
+  .cabecalho{
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+  }
+    .cabecalho2principal{
+        width: 100%;
+    }
+ .cabecalho2{
+        font-size: 14px;
+        font-weight: bold;
+        margin-left: 50%;
+        /*text-align: right;*/
+
+           }
+
+  .corpo{
+    font-size: 15px;
+    padding: 10px;
+    text-align: justify;
+    line-height:normal;
+  }
+    .rodape{
+        font-size: 15px;
+        padding: 10px;
+        text-align: center;
+
+    }
+  </style>
+</head>
+<body >
+<div class="container">
+<div class="cabecalho">
+<h4>Solicitação de {{tipo_documento}} </h4>
+</div>
+<div class="cabecalho2">
+ <p>A <br> Sua Excelência, Senhor(a) Director (a) <br>do (a) {{emitir_certificado.instituicao.nome}}</p>
+</div>
+
+<div class="corpo">
+<p>
+{% if emitir_certificado.instituicao.nivel == "basico" %}
+Eu <strong> {{emitir_certificado.estudante.pessoa.pai}}</strong>, Encarregado (a)
+do (a) aluno (a) <strong> {{emitir_certificado.estudante.pessoa.nome_proprio}} {{emitir_certificado.estudante.pessoa.sobrenome}}  </strong>,
+{% endif %} {% if emitir_certificado.instituicao.nivel == "medio"  %}
+Eu  <strong> {{emitir_certificado.estudante.pessoa.nome_proprio}} {{emitir_certificado.estudante.pessoa.sobrenome}}  </strong>,
+{% endif %} Filho (a) de <strong>{{emitir_certificado.estudante.pessoa.pai}}</strong>,
+e de <strong>{{emitir_certificado.estudante.pessoa.mae}}</strong>, Nascido (a) aos <strong>{{emitir_certificado.estudante.pessoa.data_nascimento}}</strong>,
+natural de <strong>{{emitir_certificado.estudante.pessoa.local_de_nascimento}}</strong>, Municipio de <strong>{{emitir_certificado.estudante.pessoa.municipio}}</strong>,
+Provincia de <strong>{{emitir_certificado.estudante.pessoa.provincia}}</strong>, Portador do {{emitir_certificado.estudante.pessoa.tipo_documento}} nº <strong>{{emitir_certificado.estudante.pessoa.n_do_documento}}</strong>,
+Passado  pelo Arquivo de Identificação de {{emitir_certificado.estudante.pessoa.provincia}}, aos {{ emitir_certificado.estudante.pessoa.data_de_emissao}}, que Frequentou e  concluiu  a {{emitir_certificado.classe}} Classe, Turma {{emitir_certificado.turma}}, curso
+{{emitir_certificado.curso}}, no ano lectivo de {{emitir_certificado.ano_termino}} sob o processo nº ___, no (a) {{emitir_certificado.instituicao.nome}}.
+
+</p>
+
+<p>
+ Necessitando de um  {{tipo_documento}}, de Habilitações literárias para efeitos, {{emitir_certificado.efeito}}. <br>
+Vem mui respeitosamente, solicitar a sua Excelência Senhor (a) Director (a) do (a) {{emitir_certificado.instituicao.nome}}
+se digne autorizar a emissão do documento.
+</p
+</div>
+<div class="rodape">
+<p>
+Pelo que
+</p>
+<p>
+Espera deferimento
+</p>
+
+</div>
+</div>
+</body>
+
+</html>
+
+

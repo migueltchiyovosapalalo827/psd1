@@ -1,0 +1,91 @@
+{% extends "@include/main_painel.twig" %}
+
+{% block conteudo %}
+    <div class="w-100">
+        <div class="row">
+            <div class="col-md-12">
+                {% if pesquisador %}
+                    <h4>
+                        {{ pesquisador.pessoa.nomeComSobrenome() }}
+                    </h4>
+                {% endif %}
+                <hr>
+            </div>
+            <div class="col-md-9">
+                {% if pesquisador  %}
+                    <div class="row align-items-center mb-2">
+                        <div class="col-md-12">
+                            <div class="input-group input-group--inline ">
+                                <div class="input-group-addon">
+                                    <i class="material-icons align-items-center  ">search</i>
+                                </div>
+                                <input type="text" class="form-control form-control-md input_procurar" name="search" placeholder="Pesquisar por  tema">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="">
+                        <div class="car">
+                            <table class="table tabela table-bordered table-responsive-xl bg-white">
+                                <thead>
+                                <tr class="text-white bg-primary">
+                                    <th  class="text-center">#</th>
+                                    <th  class="text-center">TEMA</th>
+                                    <th  class="text-center">Inqueridos</th>
+                                    <th  class="text-center">Opções</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for inquerito in inqueritos %}
+                                    <tr>
+                                        <td> {{ loop.index }}</td>
+                                        <td> {{ inquerito.titulo }}</td>
+                                        <td> {{ inquerito.inscricoes|length }}</td>
+                                        <td>
+                                            <div class="dropdown show ">
+                                                <a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="material-icons md-18 align-middle">more_horiz</i>
+                                                </a>
+
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="/inquerito/ver_inquerito/{{ inquerito.id }}">
+                                                        <i class="material-icons md-14 align-middle">edit</i>
+                                                        <span class="align-middle">Ver</span>
+                                                    </a>
+                                                    <a class="dropdown-item" href="/inquerito/eliminar_inquerito/{{ livro.id }}">
+                                                        <i class="material-icons md-14 align-middle">remove_circle</i>
+                                                        <span class="align-middle">Eliminar</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="10" class="text-center"> Este pesquisador não tem nenhum inquérito associado.</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                {% else %}
+                    <p class="h2 text-muted">Selecione um pesquisador</p>
+                {% endif %}
+
+            </div>
+            <div class="col-md-3">
+                <ul class="list-group ">
+                    {% for pesquisador in pesquisadores %}
+                        <a href="/inquerito/inquerito_por_pesquisador/{{ pesquisador.id }}" class="btn btn-primary mt-1">{{ pesquisador.pessoa.nomeComSobrenome() }}</a>
+                    {% else %}
+                        <p class="text-muted">Não tem pesquisadores cadastrados.</p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

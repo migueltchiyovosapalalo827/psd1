@@ -1,0 +1,35 @@
+{% include './Site/includes/menu.twig' %}
+<section id="home" class="hero-section dtr-py-8 ">
+				<div class="container">
+                	<h3 class="dtr-mb-4 wow fadeInUp text-center" data-wow-delay="0.4s">Escolas Privadas </h3>
+               <div class="row el-element-overlay">
+                    {% for escolapr in escolaspr%}
+                    <div class="col-lg-3 col-md-6 mt-3" >
+                        <div class="card">
+                            <div class="el-card-item ">
+                                <div class="el-card-avatar mt-3" >
+                                <center><img src="{{asset('ficheiros/escolas/logotipo/')}}{{escolapr.logotipo}}" style="width:100px;"/></center>
+
+                                </div>
+                                <div class="el-card-content">
+                                    <h6 class="mt-2 text-center"><a class="nav-link" href="/escola/{{ escolapr.id }}">{{ escolapr.nome }}</a></h6>
+
+                            <center><a href="/escola/{{ escolapr.id }}" class="mb-3 btn btn-primary btn-rounded waves-effect waves-light m-b-40">Saber mais <i class=" icon-arrow-right" aria-hidden="true"></i></a></center>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    {% endfor %}
+
+
+                    </div>
+
+                </div>
+</section>
+
+
+{% include './Site/includes/rodape.twig' %}

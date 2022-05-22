@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Recuperar senha</title>
+    <!-- Prevent the demo from appearing in search engines -->
+    <meta name="robots" content="noindex">
+    <!-- App CSS -->
+    <link type="text/css" href="{{asset('css/app2.css')}}" rel="stylesheet">
+    <!-- Font Awesome FREE Icons -->
+    <link type="text/css" href="{{asset('css/fontawesome-free.css')}}" rel="stylesheet">
+    <link type="text/css" href="public/vendor/simplebar.css')}}" rel="stylesheet">
+    <!-- For old IEs -->
+    <link rel="shortcut icon" href="{{asset('images/favicon/favicon.ico')}}" />
+    <!-- For new browsers multisize ico  -->
+    <link rel="icon" type="image/x-icon" sizes="16x16 32x32" href="{{asset('images/favicon/favicon.ico')}}">
+    <!-- Chrome for Android -->
+    <link rel="icon" sizes="192x192" href="{{asset('images/favicon/favicon-192.png')}}">
+    <!-- For iPhone 6+ downscaled for other devices -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('images/favicon/favicon-180-precomposed.png')}}">
+    <!-- For IE10 Metro -->
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="favicon-114-precomposed.png">
+</head>
+<body class="layout-login-centered-boxed" background="{{asset('images/fundo.png')}}">
+<div class=" d-flex flex-column col-lg-4 col-md-5 mt-5 pt-5">
+    <div class="d-flex flex-column justify-content-center align-items-center mt-2 mb-2 navbar-light">
+        <a href="index.html" class="navbar-brand text-center mb-2 mr-0" style="min-width: 0">
+            <!-- LOGO -->
+            <img width="100px;" src="{{asset('images/logo_psd_azul.png')}}" alt="" class="">
+        </a>
+    </div>
+
+    <div class="card card-body">
+
+        <form action="/enviar_nova_senha"  method="get">
+        {{ csrf_field() }}
+            {% if alert  %}
+                <div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert">
+                    {{ alert.getMensagem() }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{  alert.destruir() }}
+            {% endif %}
+            <div class="form-group mb-2">
+                <label class="text-label" for="email_2">Email ou Usuário:</label>
+                <div class="input-group input-group-merge">
+                    <input id="email_2" type="text" required="" name="usuario" class="form-control form-control-prepended" value="{{ usuario }}" placeholder="usuario@gmail.com ou usuario">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <span class="fa fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-2">
+                <button href="" class="btn btn-block btn-primary" type="submit">Enviar nova senha</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+
+</html>

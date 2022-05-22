@@ -1,0 +1,96 @@
+{% extends "@include/main_painel.twig" %}
+
+{% block conteudo %}
+    <div class="w-100">
+        <div class="row">
+            <div class="col-md-12">
+                {% if curso %}
+                    <h4>
+                        Livros da área: {{ curso.nome }}
+                    </h4>
+                {% endif %}
+                <hr>
+            </div>
+
+            <div class="col-md-9">
+                {% if curso  %}
+                    <div class="row align-items-center mb-2">
+                        <div class="col-md-12">
+                            <div class="input-group input-group--inline ">
+                                <div class="input-group-addon">
+                                    <i class="material-icons align-items-center  ">search</i>
+                                </div>
+                                <input type="text" class="form-control form-control-md input_procurar" name="search" placeholder="Pesquisar por Sigla, título, área, autor">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="">
+                        <div class="car">
+                            <table class="table tabela table-bordered table-responsive-xl bg-white">
+                                <thead>
+                                <tr class="text-white bg-primary">
+                                    <th  class="text-center">#</th>
+                                    <th  class="text-center">Sigla</th>
+                                    <th  class="text-center">Título</th>
+                                    <th  class="text-center">Autor</th>
+                                    <th  class="text-center">Ver / Baixar</th>
+                                    <th  class="text-center">Opções</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for livro in livros %}
+                                    <tr>
+                                        <td> {{ loop.index }}</td>
+                                        <td> {{ livro.sigla }}</td>
+                                        <td> {{ livro.titulo }}</td>
+                                        <td><a href="/biblioteca/ver_autor/{{ livro.autor.id }}" class="text-primary-dark">{{ livro.autor.nome }}</a></td>
+                                        <td><a href="{{asset('ficheiros/livros/ficheiros/')}}{{ livro.ficheiro }}">{{ livro.ficheiro }}</a></td>
+                                        <td>
+                                            <div class="dropdown show ">
+                                                <a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="material-icons md-18 align-middle">more_horiz</i>
+                                                </a>
+
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="/biblioteca/adicionar_livro/{{ livro.id }}">
+                                                        <i class="material-icons md-14 align-middle">edit</i>
+                                                        <span class="align-middle">Editar</span>
+                                                    </a>
+                                                    <a class="dropdown-item" href="/biblioteca/eliminar_livro/{{ livro.id }}">
+                                                        <i class="material-icons md-14 align-middle">remove_circle</i>
+                                                        <span class="align-middle">Eliminar</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="10" class="text-center"> Esta área não tem nenhum livro associado.</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                {% else %}
+                    <p class="h2 text-muted">Selecione uma área</p>
+                {% endif %}
+
+            </div>
+            <div class="col-md-3">
+                <ul class="list-group ">
+                    {% for curso in cursos %}
+                        <a href="/biblioteca/livros_por_areas/{{ curso.id }}" class="btn btn-primary mt-1">{{ curso.nome }}</a>
+                    {% else %}
+                        <p class="text-muted">Não tem áreas cadrastradas.</p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

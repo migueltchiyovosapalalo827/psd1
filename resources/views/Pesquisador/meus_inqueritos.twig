@@ -1,0 +1,83 @@
+{% extends "@include/main_painel.twig" %}
+
+{% block conteudo %}
+    {% if erro %}
+        {{ erro }}
+    {% else %}
+        <style>
+            .table td{
+                border-left: 0px !important;
+                border-right: 1px solid #e2e8ee !important;
+            }
+        </style>
+        <div class="w-100">
+            <div class="">
+                <h3>Meus inquéritos</h3>
+                <hr>
+                <div class="row align-items-center mb-2">
+                    <div class="col-md-12">
+                        <div class="input-group input-group--inline ">
+                            <div class="input-group-addon">
+                                <i class="material-icons align-items-center  ">search</i>
+                            </div>
+                            <input type="text" class="form-control form-control-md input_procurar" name="search" placeholder="Pesquisar por Titulo">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="card">
+                    <div class="">
+                        <table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+                            <thead class="bg-primary text-white">
+                            <tr>
+                                <th class="text-white">#</th>
+                                <th class="text-white">Titulo</th>
+                                <th class="text-white">Inqueridos</th>
+                                <th class="text-white">Perguntas</th>
+                                <th class="text-white">Respostas</th>
+                                <th class="text-white">Opções</th>
+                            </tr>
+                            </thead>
+                            <tbody class="  border-left-0">
+                            {% for inquerito in inqueritos  %}
+                                <tr>
+                                    <td >
+                                        {{ loop.index }}
+                                    </td>
+                                    <td >
+                                        {{ inquerito.titulo }}
+                                    </td>
+                                    <td>
+                                        {{ inquerito.inscricoes|length }}
+                                    </td>
+                                    <td>
+                                        {{ inquerito.perguntas|length }}
+                                    </td>
+                                    <td>
+                                        {{ inquerito.perguntas.respostas|length }}
+                                    </td>
+                                    <td class="p-2">
+                                        <div class="dropdown show ">
+                                            <a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons md-18 align-middle">more_horiz</i>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="/inquerito/ver_inquerito/{{ inquerito.id }}">
+                                                    <i class="material-icons md-14 align-middle">edit</i>
+                                                    <span class="align-middle">Ver</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}

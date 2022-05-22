@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ titulo }}</title>
+
+
+    <!-- Prevent the demo from appearing in search engines -->
+    <meta name="robots" content="noindex">
+
+    <!-- App CSS -->
+    <link type="text/css" href="{{asset('css/app.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{asset('css/app.rtl.css')}}" rel="stylesheet">
+
+    <!-- Simplebar -->
+    <link type="text/css" href="{{asset('vendor/simplebar.css')}}" rel="stylesheet">
+
+        {% block css %}
+
+        {% endblock %}
+</head>
+
+<body>
+<div class="fixed-top">
+    <nav class="navbar navbar-dark bg-primary d-flex align-items-center  flex-nowrap justify-content-between">
+        <div class="d-flex align-items-center">
+            <button class="btn btn-link text-white pl-0" type="button" data-toggle="sidebar">
+                <i class="material-icons align-middle md-36">short_text</i>
+            </button>
+            <div class="page-title m-0">{{ sistema.nome }}</div>
+        </div>
+        <div class="" id="mainNavbar">
+            <ul class="navbar-nav ml-auto align-items-center">
+                <li class="nav-item btn d-flex align-items-center  dropdown-toggle dropdown-clear-caret"  data-toggle="sidebar" data-target="#user-drawer" >
+                    <i class="material-icons text-white">person</i>
+                    <a href="#" class="nav-link" >
+                        {{ SESSION.usuario.pessoa.nomeComSobrenome()}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+</div>
+<!-- main content -->
+<div class="top-navbar mt-2">
+    <div class="container container--wide mt-3 ">
+
+        {% block conteudo %}
+
+        {% endblock %}
+
+    </div>
+</div>
+{% include "@include/menu_lateral.twig" %}
+{% include "@include/menu_superior_lateral_direito.twig" %}
+<!-- jQuery -->
+<script src="{{asset('vendor/jquery.min.js')}}"></script>
+
+<!-- Bootstrap -->
+<script src="{{asset('vendor/popper.js')}}"></script>
+<script src="{{asset('vendor/bootstrap.min.js')}}"></script>
+
+<!-- APP -->
+<script src="{{asset('js/color_variables.js')}}"></script>
+<script src="{{asset('js/app.js')}}"></script>
+
+
+<script src="{{asset('vendor/dom-factory.js')}}"></script>
+<!-- DOM Factory -->
+<script src="{{asset('vendor/material-design-kit.js')}}"></script>
+<!-- MDK -->
+
+<script>
+    (function() {
+        'use strict';
+        // Self Initialize DOM Factory Components
+        domFactory.handler.autoInit();
+        // Connect button(s) to drawer(s)
+        var sidebarToggle = document.querySelectorAll('[data-toggle="sidebar"]');
+        sidebarToggle.forEach(function(toggle) {
+            toggle.addEventListener('click', function(e) {
+                var selector = e.currentTarget.getAttribute('data-target') || '#default-drawer';
+                var drawer = document.querySelector(selector);
+                if (drawer) {
+                    if (selector == '#default-drawer') {
+                        $('.container-fluid').toggleClass('container--max');
+                    }
+                    drawer.mdkDrawer.toggle();
+                }
+            })
+        })
+    })();
+</script>
+
+    {% block js %}
+
+        {% endblock %}
+</body>
+
+</html>

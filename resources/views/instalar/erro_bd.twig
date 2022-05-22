@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Inquerito > instalar </title>
+
+    <!-- Prevent the demo from appearing in search engines -->
+    <meta name="robots" content="noindex">
+
+    <!-- App CSS -->
+    <link type="text/css" href="..public/css/app.css" rel="stylesheet">
+    <link type="text/css" href="..public/css/app.rtl.css" rel="stylesheet">
+
+    <!-- Simplebar -->
+    <link type="text/css" href="..public/vendor/simplebar.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="mdk-drawer-layout js-mdk-drawer-layout" data-fullbleed data-push data-has-scrolling-region>
+    <div class="mdk-drawer-layout__content mdk-header-layout__content--scrollable" style="overflow-y: auto;"
+         data-simplebar data-simplebar-force-enabled="true">
+
+
+        <div class="container h-vh d-flex justify-content-center align-items-center flex-column">
+            <div class="d-flex justify-content-center align-items-center pt-5">
+
+                    <img width="100px;" src="..public/images/logo_psd_azul.png" alt="" class="pt-5">
+
+            </div>
+            <div class="row w-100 justify-content-center">
+                <div class="col-md-7">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Erro ao estabelecer uma conexão com o banco de dados</h4>
+
+                        </div>
+                        <div class="card-body">
+                                <p class="mb-2 font-weight-bold">Erro: {{erro}}</p>
+                            <p class="card-text">
+                                Isso significa que as configurações da <b>base de dados</b> estão
+                                incorretas ou não podemos entrar em contato com o
+                                servidor de banco de dados em {{db_config.host}}
+                                <br>
+                                Isso pode significar que o servidor de banco de dados do seu host está inativo.
+                            </p>
+
+                            <div class="card-header pt-0 pl-0">
+                                <h4 class="card-title">Antes de tentar instalar tente</h4>
+                            </div>
+                            <ol >
+                                <li class="p-1">Verificar que possui o nome de usuário e a senha corretos.</li>
+                                <li class="p-1">Verificar se digitou o nome de host correto.</li>
+                                <li class="p-1">Verificar se o servidor de banco de dados está funcionando.</li>
+                            </ol>
+                            <hr class="m-0">
+                            <div class="card-header pt-2 pl-0">
+                                <h4 class="card-title pt-0">Configuração atual</h4>
+                            </div>
+                            <ol>
+                                <li class="p-1"><b>Base de dados:</b> {{db_config.driver}}</li>
+                                <li class="p-1"><b>Nome da base de dados:</b> {{db_config.database}}</li>
+                                <li class="p-1"><b>Servidor:</b> {{db_config.host}}</li>
+                                <li class="p-1"><b>Usuário:</b> {{db_config.username}}</li>
+                                <li class="p-1"><b>Senha:</b> {{db_config.password}}</li>
+
+                            </ol>
+                            <hr class="m-0">
+                            <p class="text-justify pt-2">
+                                Você pode configurar os dados de acesso da base de dados em <b>config/config.php</b>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    (function () {
+        'use strict';
+        // Self Initialize DOM Factory Components
+        domFactory.handler.autoInit();
+    });
+</script>
+</body>
+
+</html>

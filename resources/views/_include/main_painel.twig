@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{titulo}}</title>
+
+    <!-- Prevent the demo from appearing in search engines -->
+    <meta name="robots" content="noindex">
+
+    <!-- App CSS -->
+    <link type="text/css" href="{{asset('css/app.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{asset('css/app.rtl.css')}}" rel="stylesheet">
+
+
+    <!-- Simplebar -->
+    <link type="text/css" href="{{asset('vendor/simplebar.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{asset('css/PNotifyBrightTheme.css')}}" rel="stylesheet">
+    <!-- For old IEs -->
+    <link rel="shortcut icon" href="{{asset('images/favicon/favicon.ico')}}" />
+
+    <!-- For new browsers multisize ico  -->
+    <link rel="icon" type="image/x-icon" sizes="16x16 32x32" href="{{asset('images/favicon/favicon.ico')}}">
+
+    <!-- Chrome for Android -->
+    <link rel="icon" sizes="192x192" href="{{asset('images/favicon/favicon-192.png')}}">
+
+    <!-- For iPhone 6+ downscaled for other devices -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('images/favicon/favicon-180-precomposed.png')}}">
+
+    <!-- For IE10 Metro -->
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="favicon-114-precomposed.png">
+    {% block css %}
+    {% endblock %}
+</head>
+
+<body>
+
+<div class="mdk-drawer-layout js-mdk-drawer-layout" data-fullbleed data-push data-responsive-width="992px" data-has-scrolling-region>
+
+    <div class="mdk-drawer-layout__content">
+        <!-- header-layout -->
+        <div class="mdk-header-layout js-mdk-header-layout  mdk-header--fixed  mdk-header-layout__content--scrollable">
+            <!-- header -->
+            <div class="mdk-header js-mdk-header bg-primary" data-fixed>
+                <div class="mdk-header__content">
+                    {% include "_include/menu_superitor.twig" %}
+                </div>
+            </div>
+
+            <!-- content -->
+            <div class="mdk-header-layout__content top-navbar mdk-header-layout__content--scrollable " style="min-height: 100vh;">
+                <!-- main content -->
+                <div class="container-fluid">
+                    {% block conteudo %}
+
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% include "_include/menu_lateral.twig" %}
+    {% include "_include/menu_superior_lateral_direito.twig" %}
+    {% block modal %}
+
+    {% endblock %}
+
+</div>
+
+
+<!-- jQuery -->
+<script src="{{asset('vendor/jquery.min.js')}}"></script>
+<script src="{{asset('vendor/popper.js')}}"></script>
+<script src="{{asset('vendor/bootstrap.min.js')}}"></script>
+<!-- Bootstrap -->
+
+
+
+<!-- Simplebar -->
+<!-- Used for adding a custom scrollbar to the drawer -->
+<script src="{{asset('vendor/simplebar.js')}}"></script>
+
+
+<!-- Vendor -->
+<!-- <script src="{{asset('vendor/Chart.min.js')}}"></script>-->
+<!-- <script src="{{asset('vendor/moment.min.js')}}"></script>-->
+
+
+<!-- APP -->
+<script src="{{asset('js/color_variables.js')}}"></script>
+<script src="{{asset('js/app.js')}}"></script>
+
+<script src="{{asset('vendor/dom-factory.js')}}"></script>
+<!-- DOM Factory -->
+<script src="{{asset('vendor/material-design-kit.js')}}"></script>
+<!-- MDK -->
+{% include "_include/alert.twig" %}
+<script type="text/javascript" src="{{asset('js/devgonga.js')}}"></script>
+
+<script>
+    (function() {
+        'use strict';
+        // Self Initialize DOM Factory Components
+        domFactory.handler.autoInit();
+
+        // Connect button(s) to drawer(s)
+        var sidebarToggle = document.querySelectorAll('[data-toggle="sidebar"]');
+
+        sidebarToggle.forEach(function(toggle) {
+            toggle.addEventListener('click', function(e) {
+                var selector = e.currentTarget.getAttribute('data-target') || '#default-drawer'
+                var drawer = document.querySelector(selector);
+                if (drawer) {
+                    if (selector == '#default-drawer') {
+                        $('.container-fluid').toggleClass('container--max');
+                    }
+                    drawer.mdkDrawer.toggle();
+                }
+            })
+        })
+    })()
+</script>
+{% block js %}
+{% endblock %}
+
+
+</body>
+
+</html>

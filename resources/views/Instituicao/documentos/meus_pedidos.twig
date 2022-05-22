@@ -1,0 +1,55 @@
+{% extends "@include/main_painel.twig" %}
+
+    {% block conteudo %}
+        
+        <div class="card">
+            <div class="card-body">
+                <h2 class="mt-2">
+                   Meus Pedidos
+                </h2> 
+                <hr>
+ <nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Certificado emitido</a>
+    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Declaração emitida</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div class="col-md-9 mt-4 mb-4">
+        
+       
+        {% if certificado  %}
+        <ul class="list-group list-group-flush">
+        <li class="list-group-item"><h5><span style="color:#3783b5;">Destinatário:</span> {{ escolacert.nome}}</h5></li>
+        <li class="list-group-item"><h5><span  style="color:#3783b5;">Data de emissão:</span> {{ date(certificado.created_at) }}</h5></li>
+        <li class="list-group-item"><h5><span  style="color:#3783b5;">Estado:</span>
+          {% if certificado.estado == 2 %}documento entregue{% elseif certificado.estado == 1 %}documento pronto {% else %}documento em espera</h5>{% endif %}</li>
+        
+        </ul>
+        {% else %}
+        <p class="ml-2">Ainda não fez solicitação de Certificado à nenhuma instituição.</p>
+        {% endif %}
+    </div>
+  </div>
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+  <div class="col-md-9 mt-4 mb-4">
+        {% if declaracao  %}
+        <ul class="list-group list-group-flush">
+        <li class="list-group-item"><h5><span style="color:#3783b5;">Destinatário:</span> {{ escoladecl.nome}}</h5></li>
+        <li class="list-group-item"><h5><span  style="color:#3783b5;">Data de emissão:</span> {{ date(declaracao.created_at) }}</h5></li>
+        <li class="list-group-item"><h5><span  style="color:#3783b5;">Estado:</span>
+          {% if declaracao.estado == 2 %}documento entregue{% elseif declaracao.estado == 1 %}documento pronto {% else %}documento em espera</h5>{% endif %}</li>
+        
+        </ul>
+        {% else %}
+        <p class="ml-2">Ainda não fez solicitação de Declaração à nenhuma instituição.</p>
+        {% endif %}
+    </div>
+  </div>
+</div>
+            </div>
+        </div>
+   
+
+    {% endblock %}

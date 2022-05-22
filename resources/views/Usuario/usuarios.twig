@@ -1,0 +1,77 @@
+{% extends "@include/main_painel.twig" %}
+
+{% block conteudo %}
+    <div class="x_content">
+
+
+        <div class="d-flex" role="tabpanel" data-example-id="togglable-tabs">
+            <div class="col-md-2">
+                <ul class="nav nav-pills mb-2" id="accountTabs" role="tablist">
+                    {% for grupo in grupos %}
+                        <li class="nav-item w-100">
+                            <a class="nav-link {% if loop.first %}nav-link active show " aria-selected="true" aria-expanded="true"  {% endif %} id="billing-tab{{ loop.index }}" data-toggle="tab" href="#grupo_{{ loop.index }}" role="tab" aria-controls="billing">{{ grupo.nome }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="myTabContent" class="tab-content card col-md-10">
+                {% for grupo in grupos %}
+                <div role="tabpanel" class="tab-pane fade {% if loop.first %}active show "{% else %}" {% endif %}" id="grupo_{{ loop.index }}" aria-labelledby="home-tab">
+                <div class="card-header  pl-0">
+                    <h3 class="card-title">Grupo {{ grupo.nome }}</h3>
+                </div>
+                <div class="card-body pr-0 pl-0">
+                    <input type="text" class="input_procurar form-control" placeholder="Procurar por usuário, email, contacto" list=""><br>
+                    <div class="table-responsive w-100" style="height: 400px">
+
+                        <table class="table tabela table-bordered ">
+                            <thead class="text-white bg-primary">
+                            <tr>
+                                <th>#</th>
+                                <th>Usuário</th>
+                                <th>Email</th>
+                                <th>Contacto</th>
+                                <th>Opções</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for usuario in grupo.usuarios  %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ usuario.usuario }}</td>
+                                    <td>{{ usuario.email }}</td>
+                                    <td>{{ usuario.contacto }}</td>
+                                    <td>
+                                        <div class="dropdown show ">
+                                            <a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons md-18 align-middle">more_horiz</i>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="/usuario/redefinir_senha/{{ usuario.id }}">
+                                                    <i class="material-icons md-14 align-middle">vpn_key</i>
+                                                    <span class="align-middle">Resetar senha</span>
+                                                </a>
+                                                <a class="dropdown-item" href="/usuario/eliminar_usuario/{{ usuario.id }}">
+                                                    <i class="material-icons md-14 align-middle">remove_circle</i>
+                                                    <span class="align-middle">Eliminar</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr >
+                                    <td colspan="6" class="text-center text-muted">Este grupo não tem usuários</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    </div>
+{% endblock %}

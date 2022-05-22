@@ -1,0 +1,30 @@
+{% extends "@include/main_painel.twig" %}
+
+    {% block conteudo %}
+        <div class="card card-body p-2">
+            <div class="row row-projects">
+                <div class="col-lg-3 col-md-4 col-6">
+                    <i class="material-icons text-link-color md-36">bookmark_border</i>
+                    <div class="mb-1">Total de áreas</div>
+                    <h4 class="mb-0 ">{{ total.cursos }}</h4>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <i class="material-icons text-success md-36">book</i>
+                    <div class="mb-1">Total de livros</div>
+                    <h4 class="mb-0">{{ total.livros }}</h4>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <i class="material-icons text-warning md-36">content_paste</i>
+                    <div class="mb-1">Total de inquéritos</div>
+                    <h4 class="mb-0">{{ total.inqueritos }}</h4>
+                </div>
+                <div class="col-lg-3 col-md-4 col-6">
+                    <i class="material-icons text-primary md-36">person</i>
+                    <div class="mb-1">Total de inqueridos</div>
+                    <h4 class="mb-0">{{ total.inqueridos }}</h4>
+                </div>
+            </div>
+        </div>
+
+
+    {% endblock %}

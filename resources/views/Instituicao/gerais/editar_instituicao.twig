@@ -1,0 +1,51 @@
+{% extends "@include/main_painel.twig" %}
+
+    {% block conteudo %}
+        {% for instituto in instituicao %}
+        <div class="card">
+            <div class="card-body">
+                <h2 class="mt-2">
+                    Editar  {{ instituto.nome }}
+                </h2>
+                <hr>
+                 <form class="w-100" id="needs-validation" novalidate=""  action="/instituicao/update_instituicao"  method="POST" enctype="multipart/form-data">
+                     {{ csrf_field() }}
+                 	<div class="row">
+                 		<div class="form-group col-md-4 ">
+                            <label for="rsNome">Nome  </label>
+                            <input type="text" class="form-control" placeholder="Nome Instituição"   value="{{ instituto.nome }}" name="nome" id="rsNome">
+                            <input type="hidden" class="form-control"   value="{{ instituto.id }}" name="id" id="rsNome">
+                        </div>
+                        <div class="form-group col-md-4 ">
+                            <label for="rsEmail">Email  </label>
+                            <input type="email" class="form-control" placeholder="Email"   value="{{ instituto.email }}" name="email" id="rsEmail">
+                        </div>
+                        <div class="form-group col-md-4 ">
+                            <label for="rsTelefone">Telefone  </label>
+                            <input type="tel" class="form-control" placeholder="Telefone"   value="{{ instituto.telefone }}" name="telefone" id="rsTelefone">
+                        </div>
+                        <div class="form-group col-md-4 ">
+                            <label for="rsEndereco">Localização  </label>
+                            <input type="text" class="form-control" placeholder="Localização"   value="{{ instituto.localizacao }}" name="localizacao" id="rsEndereco">
+                        </div>
+
+                        <div class="form-group col-md-8">
+                            <label for="idescricao">Sobre a Escola</label>
+                               <input type="text" class="form-control" placeholder="Localização"   value="{{ instituto.sobre }}" name="sobre_escola" id="rsEndereco">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="icapa">Logotipo</label>
+                            <input type="file"  name="logotipo" class="form-control form-control-file p-1">
+                        </div>
+
+                 	</div>
+                 	 <div class="d-flex align-items-end justify-content-end">
+                        <button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
+                    </div>
+            </form>
+         </div>
+        </div>
+        {% endfor %}
+
+
+    {% endblock %}

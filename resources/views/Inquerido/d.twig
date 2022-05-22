@@ -1,0 +1,161 @@
+
+{% extends "@include/menu_simples.twig" %}
+
+{% block css %}
+    <!-- Include SmartWizard CSS -->
+    <link href="{{asset('css/smartWizard/smart_wizard_all.css')}}" rel="stylesheet" type="text/css" />
+    <style>
+        .passar:hover{
+            color: #000;
+            background: #bcc2c7;
+            cursor: pointer;
+        }
+        .passar{
+            padding: 0 0 0 0;
+            padding-left: 10px;
+        }
+        .custom-radio .custom-control-label:before{
+            margin-top: 4px!important;
+            margin-left: 5px;
+        }
+        .custom-radio .custom-control-label:after{
+            margin-top: 4px!important;
+            margin-left: 5px;
+        }
+        .custom-radio .custom-control-label{
+            margin-top: 6px!important;
+            margin-left: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block conteudo %}
+    {% if inscricao %}
+        <form action="/inquerido/responder" method="get" class="pb-5">
+        {{ csrf_field() }}
+            <!-- SmartWizard html -->
+            <div id="smartwizard" >
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#step-1">
+                            <strong>Inicio</strong> <br>Bem vindo
+                        </a>
+                    </li>
+                    {% for pergunta  in inscricao.inquerito.perguntas %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#step-{{ pergunta.id }}">
+                                <strong>{{ loop.index }}</strong> <br>{{ pergunta.titulo }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="tab-content d-flex">
+                    <div id="step-1" class="tab-pane" role="tabpanel" aria-labelledby="step-1">
+                        <div class="d-flex justify-content-center flex-column">
+                            <div class="d-flex justify-content-center">
+                                <img src="{{asset('ficheiros/inqueritos/logotipos/')}}{{ inscricao.inquerito.logotipo }}" alt="" width="100">
+                            </div>
+                            <h2 class=" mt-1 mb-0 text-uppercase text-center">{{ inscricao.inquerito.pesquisador.pessoa.nome_completo() }}</h2>
+                            <h2 class="mt-3 text-center">{{ inscricao.inquerito.titulo }}</h2>
+                        </div>
+                        <p class="text-justify px-4">{{ inscricao.inquerito.descricao }}</p>
+                    </div>
+                    {% for pergunta  in inscricao.inquerito.perguntas %}
+                        <div id="step-{{ pergunta.id }}" class="tab-pane" role="tabpanel" aria-labelledby="step-{{ pergunta.id }}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">{{ pergunta.titulo }}</h4>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        <input type="hidden" name="tipos[{{ pergunta.id }}]" value="{{ pergunta.tipo }}">
+                                        {% if pergunta.tipo == "rl" %}
+                                        <textarea id="" cols="30" rows="10" class="form-control" name="respostas[{{ pergunta.id }}]" required></textarea>
+                                        {% elseif pergunta.tipo == "rc" %}
+                                        <input type="text" class="form-control" name="respostas[{{ pergunta.id }}]" placeholder="Resposta" required>
+                                        {% elseif pergunta.tipo == "ro" %}
+                                        {% for  opcao in pergunta.opcoes %}
+                                    <div class="custom-control custom-radio pb-2 passar" onclick="console.log(this.children[0].checked=true)" >
+                                        <input type="radio" required id="opcao{{ opcao.id }}" name="respostas[{{ pergunta.id }}]" value="{{ opcao.id }}" class="custom-control-input">
+                                        <label class="custom-control-label align-middle ml-1" rel="buttom" for="opcao{{ opcao.id }}">{{ opcao.opcao }}</label>
+                                    </div>
+                                    {% endfor %}
+                                    {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <input type="hidden" name="inquerido" value="{{ inscricao.inqueridos_id }}">
+            <input type="hidden" name="inquerito" value="{{ inscricao.inqueritos_id }}">
+            <input type="hidden" name="inscricao" value="{{ inscricao.id }}">
+        </form>
+    {% else %}
+        <div class="d-flex justify-content-center align-items-center flex-column">
+            <h2 class="text-center">Obrigado por responder ao inquerito.</h2>
+            <a href="/inquerido/inqueritos" class="h5 btn btn-success">Responder a outros inqueritos</a>
+        </div>
+    {% endif %}
+{% endblock %}
+    {% block js %}
+
+
+        <!-- Include SmartWizard JavaScript source -->
+        <script type="text/javascript" src="{{asset('vendor/jquery.smartWizard.min.js')}}"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+
+                // Toolbar extra buttons
+                var btnFinish = $('<button></button>').text('Enviar resposta')
+                    .addClass('btn btn-success')
+                    .on('click', function(){ alert('Finish Clicked'); });
+
+
+                /*     // Step show event
+                     $("#smartwizard").on("showStep", function(e, anchorObject, stepNumber, stepDirection, stepPosition) {
+                         $("#prev-btn").removeClass('disabled');
+                         $("#next-btn").removeClass('disabled');
+                         if(stepPosition === 'first') {
+                             $("#prev-btn").addClass('disabled');
+                         } else if(stepPosition === 'last') {
+                             $("#next-btn").addClass('disabled');
+                         } else {
+                             $("#prev-btn").removeClass('disabled');
+                             $("#next-btn").removeClass('disabled');
+                         }
+                     });*/
+
+                // Smart Wizard
+                $('#smartwizard').smartWizard({
+                    selected: 0,
+                    theme: 'progress', // default, arrows, dots, progress
+                    // darkMode: true,
+                    transition: {
+                        animation: 'slide-horizontal', // Effect on navigation, none/fade/slide-horizontal/slide-vertical/slide-swing
+                    },
+                    toolbarSettings: {
+                        //toolbarPosition: 'both', // both bottom
+                        toolbarExtraButtons: [btnFinish]
+                    },
+                    keyboardSettings: {
+                        keyNavigation: true,
+                        // Enable/Disable keyboard navigation(left and right keys are used if enabled)
+                        keyLeft: [37],
+                        // Left key code
+                        keyRight: [39] // Right key code
+
+                    },
+                    lang: {
+                        // Language variables for button
+                        next: 'Avançar',
+                        previous: 'Recuar'
+                    },
+                });
+
+
+            });
+        </script>
+    {% endblock %}

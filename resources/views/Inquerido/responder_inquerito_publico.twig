@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{{ inquerito.titulo }} | PSD</title>
+    <meta charset="utf-8">
+    <meta name="author" content="devgonga"/>
+    <meta name="description" content="{{ inquerito.descricao}}"/>
+    <!-- Facebook Metatag -->
+    <meta property="og:title" content="{{ inquerito.titulo }} | PSD">
+    <meta property="og:description" content="{{ inquerito.descricao}}" id="descricao" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}" />
+    <meta property="og:image" content="{{asset('ficheiros/inqueritos/logotipos/')}}{{ inquerito.logotipo }}" />
+    <!-- App CSS -->
+    <link type="text/css" href="{{asset('css/app.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{asset('css/app.rtl.css')}}" rel="stylesheet">
+    <!-- Simplebar -->
+    <link type="text/css" href="{{asset('vendor/simplebar.css')}}" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{{asset('css/vendor-bootstrap-switch.css')}}">
+    <style>
+        .bg-titulo{
+            padding-top: 20px;
+            padding-bottom: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-bottom: 1px solid #efefef !important;
+        }
+    </style>
+</head>
+<body>
+<!-- main content -->
+<div class=" pt-3">
+    <div class="container container--wide ">
+        {% if inquerito %}
+            <div class="d-flex justify-content-center flex-wrap">
+                <div class="bg-white col-md-10 col-lg-8 justify-content-center p-30 bg-titulo">
+                    <div class="d-flex justify-content-start flex-nowrap flex-row align-items-center">
+                        <img src="{{asset('ficheiros/inqueritos/logotipos/')}}{{ inquerito.logotipo }}" alt="" width="60">
+                        <div class="ml-2">
+                            <h4 class="mt-0 mb-0 text-uppercase ">{{ inquerito.pesquisador.pessoa.nome_completo() }}</h4>
+                            <h4 class="mt-0 mb-0 ">{{ inquerito.titulo }}</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-10 col-lg-8 pt-2">
+                    <form  action="/inquerido/responderPublico" method="POST" >
+                    {{ csrf_field() }}
+
+                        <input type="hidden" name="inquerito" value="{{ inquerito.id }}">
+
+                        {% if inquerito.modo_de_exibicao == 1 %}
+                            <div id="smartwizard">
+                                <div class="row">
+                                    <div class="w-100 tab-content steps">
+
+                                        <div id="step-1" class="card tab-pane active" role="tabpanel" aria-labelledby="step-1">
+                                            <div class="card-header">
+                                                <div class="media align-items-center">
+                                                    <div class="media-left">
+                                                        <h4 class="m-0 text-primary mr-2"><strong>#Descrição </strong></h4>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h4 class="card-title m-0">
+
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="text-justify" style="line-height:20px ;">{{ inquerito.descricao }}</p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button"   class="btn btn-light invisible">Voltar</button>
+                                                <button type="button"    btnNext  class="btn btn-success float-right">Avançar</button>
+                                            </div>
+                                        </div>
+
+                                        {% for pergunta  in inquerito.perguntas %}
+                                            <div id="step-{{ pergunta.id }}" class="card tab-pane " role="tabpanel" aria-labelledby="step-{{ pergunta.id }}">
+                                                <div class="card-header">
+                                                    <div class="media align-items-center">
+                                                        <div class="media-left">
+                                                            <h4 class="m-0 text-primary mr-2"><strong>#{{ loop.index }} </strong></h4>
+                                                        </div>
+                                                        <div class="media-body">
+                                                            <h4 class="card-title m-0 ">
+                                                                {{ pergunta.titulo }}
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <input type="hidden" name="tipos[{{ pergunta.id }}]" value="{{ pergunta.tipo }}">
+                                                    {% if pergunta.tipo == "rl" %}
+                                                        <textarea id="" cols="30" rows="10" class="form-control" name="respostas[{{ pergunta.id }}]"  placeholder="Responder aqui."></textarea>
+                                                    {% elseif pergunta.tipo == "rc" %}
+                                                        <input type="text" class="form-control" name="respostas[{{ pergunta.id }}]" placeholder="Responder aqui." >
+                                                    {% elseif pergunta.tipo == "ro" %}
+                                                        {% for  opcao in pergunta.opcoes %}
+                                                            {% if loop.last %}
+                                                                <div class="form-group">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="opcao{{ opcao.id }}" type="radio"  checked class="custom-control-input"  name="respostas[{{ pergunta.id }}]" value="{{ opcao.id }}">
+                                                                        <label for="opcao{{ opcao.id }}" class="custom-control-label  align-middle">{{ opcao.opcao }}</label>
+                                                                    </div>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="form-group">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="opcao{{ opcao.id }}" type="radio"  class="custom-control-input"  name="respostas[{{ pergunta.id }}]" value="{{ opcao.id }}">
+                                                                        <label for="opcao{{ opcao.id }}" class="custom-control-label  align-middle">{{ opcao.opcao }}</label>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+
+
+                                                        {% endfor %}
+
+                                                    {% endif %}
+
+                                                </div>
+                                                <div class="card-footer">
+                                                    <button type="button" btnBack class="btn btn-light">Voltar</button>
+                                                    <button type="button" btnNext  class="btn btn-success float-right">Avançar</button>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        <div id="step-00" class="card tab-pane " role="tabpanel" aria-labelledby="step-1">
+                                            <div class="card-header">
+                                                <div class="media align-items-center">
+                                                    <div class="media-left">
+                                                        <h4 class="m-0 text-primary mr-2"><strong>#Informações pessoais</strong></h4>
+                                                        <p class="text-justify mb-0 pb-0">Estas informações não são obrigatórias.</p>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h4 class="card-title m-0">
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="nome">Nome próprio</label>
+                                                        <input type="text" name="nome"id="nome" autocomplete="off"  maxlength="255"  class="form-control"  placeholder="Nome proprio">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="sobrenome">Sobrenome</label>
+                                                        <input type="text" name="sobrenome" id="sobrenome" autocomplete="off"  maxlength="255"  class="form-control"  placeholder="Sobrenome">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="dataNascimento">Data de nascimento</label>
+                                                        <input type="date" name="dataNascimento" id="dataNascimento" autocomplete="off"  maxlength="255"  class="form-control"  placeholder="dd/MM/AAAA">
+
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="genero">Género</label>
+                                                        <br>
+                                                        <input id="genero" type="checkbox" bootstrap-switch1 name="genero" checked data-on-text="Masculino" data-off-text="Feminino">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" btnBack class="btn btn-light">Voltar</button>
+                                                <button type="button"    btnNext  class="btn btn-success float-right">Avançar</button>
+                                            </div>
+                                        </div>
+                                        <div id="step-000" class="card tab-pane " role="tabpanel" aria-labelledby="step-{{ pergunta.id }}">
+                                            <div class="card-header">
+                                                <div class="media align-items-center">
+                                                    <div class="media-left">
+                                                        <h4 class="m-0 text-primary mr-2"><strong>#Obrigado</strong></h4>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h4 class="card-title m-0 ">
+                                                            {{ pergunta.titulo }}
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <h3>Obrigado por responder a todas perguntas.</h3>
+                                                <button type="submit" class="btn btn-success" value="Enviar respostas">Enviar respostas</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div id="smartwizard mb-5">
+                                <div class="row mb-5">
+                                    <div class="w-100 ">
+                                        <div id="step-1" class="card tab-pane active" role="tabpanel" aria-labelledby="step-1">
+                                            <div class="card-header">
+                                                <div class="media align-items-center">
+                                                    <div class="media-left">
+                                                        <h4 class="m-0 text-primary mr-2"><strong>#Descrição </strong></h4>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h4 class="card-title m-0">
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="text-justify" style="line-height:20px ;">{{ inquerito.descricao }}</p>
+                                            </div>
+                                        </div>
+
+                                        {% for pergunta  in inquerito.perguntas %}
+                                            <div id="step-{{ pergunta.id }}" class="card tab-pane " role="tabpanel" aria-labelledby="step-{{ pergunta.id }}">
+                                                <div class="card-header">
+                                                    <div class="media align-items-center">
+                                                        <div class="media-left">
+                                                            <h4 class="m-0 text-primary mr-2"><strong>#{{ loop.index }} </strong></h4>
+                                                        </div>
+                                                        <div class="media-body">
+                                                            <h4 class="card-title m-0 ">
+                                                                {{ pergunta.titulo }}
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <input type="hidden" name="tipos[{{ pergunta.id }}]" value="{{ pergunta.tipo }}">
+                                                    {% if pergunta.tipo == "rl" %}
+                                                        <textarea id="" cols="30" rows="10" class="form-control" name="respostas[{{ pergunta.id }}]"  placeholder="Responder aqui."></textarea>
+                                                    {% elseif pergunta.tipo == "rc" %}
+                                                        <input type="text" class="form-control" name="respostas[{{ pergunta.id }}]" placeholder="Responder aqui." >
+                                                    {% elseif pergunta.tipo == "ro" %}
+                                                        {% for  opcao in pergunta.opcoes %}
+                                                            {% if loop.last %}
+                                                                <div class="form-group">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="opcao{{ opcao.id }}" type="radio"  checked class="custom-control-input"  name="respostas[{{ pergunta.id }}]" value="{{ opcao.id }}">
+                                                                        <label for="opcao{{ opcao.id }}" class="custom-control-label  align-middle">{{ opcao.opcao }}</label>
+                                                                    </div>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="form-group">
+                                                                    <div class="custom-control custom-checkbox">
+                                                                        <input id="opcao{{ opcao.id }}" type="radio"  class="custom-control-input"  name="respostas[{{ pergunta.id }}]" value="{{ opcao.id }}">
+                                                                        <label for="opcao{{ opcao.id }}" class="custom-control-label  align-middle">{{ opcao.opcao }}</label>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+
+
+                                                        {% endfor %}
+
+                                                    {% endif %}
+
+                                                </div>
+
+                                            </div>
+                                        {% endfor %}
+                                        <div id="step-00" class="card tab-pane " role="tabpanel" aria-labelledby="step-1">
+                                            <div class="card-header">
+                                                <div class="media align-items-center">
+                                                    <div class="media-left">
+                                                        <h4 class="m-0 text-primary mr-2"><strong>#Informações pessoais</strong></h4>
+                                                        <p class="text-justify mb-0 pb-0">Estas informações não são obrigatorias.</p>
+                                                    </div>
+                                                    <div class="media-body">
+                                                        <h4 class="card-title m-0">
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="nome">Nome proprio</label>
+                                                        <input type="text" name="nome"id="nome" autocomplete="off"  maxlength="255"  class="form-control"  placeholder="Nome proprio">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="sobrenome">Sobrenome</label>
+                                                        <input type="text" name="sobrenome" id="sobrenome" autocomplete="off"  maxlength="255"  class="form-control"  placeholder="Sobrenome">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="dataNascimento">Data de nascimento</label>
+                                                        <input type="date" name="dataNascimento" id="dataNascimento" autocomplete="off"  maxlength="255"  class="form-control"  placeholder="dd/MM/AAAA">
+
+                                                    </div>
+                                                    <div class="form-group col-md-3">
+                                                        <label for="genero">Género</label>
+                                                        <br>
+                                                        <input id="genero" type="checkbox" bootstrap-switch1 name="genero" checked data-on-text="Masculino" data-off-text="Feminino">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="btn w-100  btn-success" value="Enviar respostas">Enviar respostas</button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    </form>
+                </div>
+            </div>
+        {% else  %}
+            <div class="d-flex justify-content-center align-items-center flex-column">
+                <h2 class="text-center">Obrigado por responder ao inquérito.</h2>
+                <a href="/inquerido/inqueritos" class="h5 btn btn-success">Responder a outros inquéritos</a>
+            </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="{{asset('vendor/jquery.min.js')}}"></script>
+
+<!-- Bootstrap -->
+<script src="{{asset('vendor/popper.js')}}"></script>
+<script src="{{asset('vendor/bootstrap.min.js')}}"></script>
+
+<!-- APP -->
+<script src="{{asset('js/color_variables.js')}}"></script>
+<script src="{{asset('js/app.js')}}"></script>
+
+
+<script src="{{asset('vendor/dom-factory.js')}}"></script>
+<!-- DOM Factory -->
+<script src="{{asset('vendor/material-design-kit.js')}}"></script>
+<!-- MDK -->
+
+<script>
+    (function() {
+        'use strict';
+        // Self Initialize DOM Factory Components
+        domFactory.handler.autoInit();
+        // Connect button(s) to drawer(s)
+        var sidebarToggle = document.querySelectorAll('[data-toggle="sidebar"]');
+        sidebarToggle.forEach(function(toggle) {
+            toggle.addEventListener('click', function(e) {
+                var selector = e.currentTarget.getAttribute('data-target') || '#default-drawer';
+                var drawer = document.querySelector(selector);
+                if (drawer) {
+                    if (selector == '#default-drawer') {
+                        $('.container-fluid').toggleClass('container--max');
+                    }
+                    drawer.mdkDrawer.toggle();
+                }
+            })
+        })
+    })();
+</script>
+<script src="{{asset('js/bootstrap-switch.min.js')}}"></script>
+
+<script type="text/javascript">
+    $("[bootstrap-switch1]").bootstrapSwitch();
+    /**
+     * @description Class WizardModulo
+     */
+    var WizardModulo = (function ($) {
+        "use strict";
+        let _steps;
+        /**/
+        let definicoes = {
+            btnNext: "[btnNext]",
+            btnBack: "[btnBack]",
+            nav:".nav",
+            navItem:".nav-item"
+
+        };
+        let _navControl= {
+            nav:"",
+            navItems:[],
+            navItemActive:""
+
+        };
+        var _perguntaC = 0;
+        // Metodos privados
+        var _wizardModulo = {
+            // CONFIGURAÇÕES
+            definicoes: function () {
+                return definicoes;
+            },
+            navControl: function () {
+                return navControl;
+            },
+            configurarDefinicoes: function (opcoes) {
+                let chave, valor;
+                for (chave in opcoes) {
+                    valor = opcoes[chave];
+                    if (valor !== undefined && definicoes.hasOwnProperty(chave)) {
+                        definicoes[chave] = $(valor);
+                    }
+                }
+                return this;
+            },
+            observadorInit: function () {
+                $(this.definicoes().btnNext).click(function () {
+                    _steps.next(this);
+                });
+                $(this.definicoes().btnBack).click(function () {
+                    _steps.back(this);
+                });
+            },
+            iniNav: function () {
+                console.log("iniNav open");
+                _navControl.nav = $(this.definicoes().nav);
+                _navControl.navItem =  _navControl.nav.find(this.definicoes().navItem);
+                console.log("iniNav close");
+            }
+        };
+        _steps = {
+            next:function(c){
+                _steps.goNext($(c)[0].parentElement.parentElement);
+            },
+            back:function(c){
+                _steps.goBack($(c)[0].parentElement.parentElement);
+            },
+            goNext:function(c){
+                $(c).slideToggle();
+                $(c).next().slideToggle();
+            },
+            goBack:function(c){
+                $(c).slideToggle();
+
+                $($(c)[0].previousElementSibling).slideToggle();
+                //
+            },
+        };
+
+        /**
+         *
+         * @param df
+         * @returns {InqueritoModulo}
+         * @constructor
+         */
+        function WizardModulo(df) {
+            this.init = function init() {
+                _wizardModulo.iniNav();
+                _wizardModulo.observadorInit();
+            }
+        }
+        return WizardModulo;
+    })(jQuery);
+    let WizardInstancia = new WizardModulo();
+    WizardInstancia.init();
+</script>
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+

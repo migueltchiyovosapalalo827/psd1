@@ -1,0 +1,912 @@
+
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <!-- Carrega paper.css para uma boa impressão -->
+    <link rel="stylesheet" href="/public/css/normalize.min.css">
+    <link rel="stylesheet" href="/public/css/bootstrap.css">
+    <link rel="stylesheet" href="/public/css/paper.min.css">
+    <style>
+        @page { size: A4 }
+        .A4{
+            background: #343a40;
+        }
+        .bg-psd{
+            background: #0b4e86;
+            color: #fff;
+        }
+        .mt-0{
+            margin-top:3px;
+        }
+        .mb-0{
+            margin-bottom:0;
+        }
+        .pt-5{
+            padding-top: 15px;
+        }
+        .d-flex{
+            display: flex;
+        }
+        .justify-content-end{
+            justify-content: flex-end;
+        }
+        .justify-content-center{
+            justify-content: center;
+        }
+        .justify-content-end{
+            justify-content: flex-end;
+        }
+        .justify-content-between{
+            justify-content: space-between;
+        }
+        .justify-content-around{
+            justify-content: space-around;
+        }
+        .align-items-center{
+            align-items: center;
+        }
+        .flex-column{
+            flex-direction: column;
+        }
+        .bg-print1
+        {
+            background-color: rgb(210 209 209)!important;
+            color: #0e0e0e !important;
+
+        }
+        /*Flex box*/
+        @media print{
+            .print-menu{
+                display: none !important;
+            }
+            body{
+                background: #ffffff!important;
+            }
+            .bg-print
+            {
+                background-color: rgb(210 209 209)!important;
+                color: #0e0e0e !important;
+
+            }
+            tr.bg-print{
+                background-color: rgb(210 209 209)!important;
+                color: #0e0e0e !important;
+                font-weight: bold !important;
+            }
+            tr th{
+                background-color: rgb(210 209 209)!important;
+                color: #0e0e0e !important;
+                font-weight: bold !important;
+            }
+            tr th.bg-psd{
+                background-color: rgb(210 209 209)!important;
+                color: #0e0e0e !important;
+                font-weight: bold !important;
+            }
+        }
+        .fixed-top {
+            left: 82%!important;
+        }
+    </style>
+    <title>Imprimir relatorio</title>
+</head>
+{% set respondeu=0 %}
+{% set nao_respondeu=0 %}
+{% set m_respondeu=0 %}
+{% set m_nao_respondeu=0 %}
+{% set f_respondeu=0 %}
+{% set f_nao_respondeu=0 %}
+{% set masculinos=0 %}
+{% set femininos=0 %}
+<body class="A4">
+<div style="padding-left: 30px; position: absolute" class="print-menu">
+    <a href="/inquerito/ver_inquerito/{{ inquerito.id }}" class="btn w-100 btn-primary "><i class="fa fa-print "></i> Voltar</a>
+</div>
+<div class="print-menu d-flex justify-content-end fixed-top pt-5 col-md-2" style="position: fixed">
+    <a href="" onclick="window.print();" class="btn w-100 btn-primary "><i class="fa fa-print "></i> Imprimir</a>
+</div>
+{# Relatório da pesquisa #}
+<section class="sheet padding-10mm" style="height: auto;">
+    <div class="d-flex justify-content-center align-items-center ">
+        <img src="/public/ficheiros/inqueritos/logotipos/{{ inquerito.logotipo }}" alt="" width="100px;">
+    </div>
+    <h3 class="text-uppercase text-center mt-0 mb-0">{{ inquerito.pesquisador.pessoa.nome_completo() }}</h3>
+    <h3 class=" text-center mt-0 mb-0">{{ inquerito.titulo }}</h3>
+    <h4 class="">Relatório da pesquisa</h4>
+    <hr class="mb-0 mt-0">
+    <h4>Perguntas</h4>
+    <table class="table table-sm tabela m-0 table-bordered">
+        <thead>
+        <tr class="b text-white">
+            <th class="bg-psd bg-print">#</th>
+            <th class="bg-psd bg-print">Pergunta</th>
+            <th class="bg-psd bg-print" >Tipo</th>
+            <th class="bg-psd bg-print">Opções</th>
+        </tr>
+        </thead>
+        <tbody class="table-bordered">
+        {% for pergunta in inquerito.perguntas %}
+            <tr>
+                <td class="align-middle">{{ loop.index }}</td>
+                <td class="align-middle">{{ pergunta.titulo }}</td>
+                <td class="align-middle">
+                    {{ pergunta.tipo() }}
+                </td>
+                <td class="align-middle small ">
+                    {% for opcao in pergunta.opcoes %}
+                        <div class="badge bg-print  badge-primary-dark" style="margin-top: 2px;">{{ opcao.opcao }}</div>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <h4>Estatística</h4>
+    <table class="table m-0 table-bordered ">
+        <thead class="bg-psd">
+        <tr>
+            <th>Descrição</th>
+            <th>Valor</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr>
+            <td class="align-middle">
+                <span class="align-middle">Perguntas</span>
+            </td>
+            <td class="align-middle">{{ inquerito.perguntas|length }}</td>
+        </tr>
+
+        <tr>
+            <td class="align-middle">
+                <span class="align-middle">Inquiridos</span>
+            </td>
+            <td class="align-middle">{{ inquerito.inscricoes|length }}</td>
+        </tr>
+
+        <tr>
+            <td class="align-middle">
+                <span class="align-middle">Inquiridos que responderam</span>
+            </td>
+            <td class="align-middle respondeu">
+                {% for ins in inquerito.inscricoes %}
+                    {% if ins.respondido == 1 %}
+                        {% set respondeu = respondeu + 1 %}
+                        {% if ins.inquerido.pessoa.genero == "M" %}
+                            {% set m_respondeu = m_respondeu + 1 %}
+                            {% set masculinos = masculinos + 1 %}
+                        {% else %}
+                            {% set f_respondeu = f_respondeu + 1 %}
+                            {% set femininos = femininos + 1 %}
+                        {% endif %}
+                    {% else %}
+                        {% set nao_respondeu = nao_respondeu + 1  %}
+                        {% if ins.inquerido.pessoa.genero == "M" %}
+                            {% set m_nao_respondeu = m_nao_respondeu + 1 %}
+                            {% set masculinos = masculinos + 1 %}
+                        {% else %}
+                            {% set f_nao_respondeu = f_nao_respondeu + 1 %}
+                            {% set femininos = femininos + 1 %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {{ respondeu }}
+            </td>
+        </tr>
+        <tr>
+            <td class="align-middle">
+                <span class="align-middle">Inquiridos que não responderam</span>
+            </td>
+            <td class="align-middle nao_respondeu">{{ nao_respondeu }}</td>
+        </tr>
+
+        </tbody>
+    </table>
+    <hr>
+</section>
+{# Lista de distribuição por genero #}
+<section class="sheet padding-10mm"  style="height: auto!important;">
+    <div class="d-flex justify-content-center align-items-center ">
+        <img src="/public/ficheiros/inqueritos/logotipos/{{ inquerito.logotipo }}" alt="" width="100px;">
+    </div>
+    <h3 class="text-uppercase text-center mt-0 mb-0">{{ inquerito.pesquisador.pessoa.nome_completo() }}</h3>
+    <h3 class=" text-center mt-0 mb-0">{{ inquerito.titulo }}</h3>
+    <div class="d-flex justify-content-between pt-5">
+        <h5 class="text-center">Inqueridos distribuidos por gênero</h5>
+        <h5 class="text-center">Impresso em : {{ "now"|date("d/m/Y") }}</h5>
+    </div>
+    <table class="table table-bordered m-0">
+        <thead class="bg-psd">
+        <tr>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Responderam</th>
+            <th>N/Responderam</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Masculino</td>
+            <td>{{ masculinos }}</td>
+            <td>{{ m_respondeu}}</td>
+            <td>{{ m_nao_respondeu}}</td>
+        </tr>
+        <tr>
+            <td>Feminino</td>
+            <td>{{ femininos }}</td>
+            <td>{{ f_respondeu }}</td>
+            <td>{{ f_nao_respondeu }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="d-flex flex-column" style="flex-wrap: wrap!important;">
+        <div style="width: 60%">
+            <canvas id="inqueridosPorGenero" ></canvas>
+        </div>
+        <div style="width: 60%">
+            <canvas id="inqueridosPorGeneroQueResponderam" ></canvas>
+        </div>
+        <div style="width: 60%">
+            <canvas id="inqueridosPorGeneroQueNaoResponderam" ></canvas>
+        </div>
+    </div>
+
+</section>
+{#Lista de distribuição de reposta do tipo opção unica #}
+<section class="sheet padding-10mm"  style="height: auto!important;">
+    <div class="d-flex justify-content-center align-items-center ">
+        <img src="/public/ficheiros/inqueritos/logotipos/{{ inquerito.logotipo }}" alt="" width="100px;">
+    </div>
+    <h3 class="text-uppercase text-center mt-0 mb-0">{{ inquerito.pesquisador.pessoa.nome_completo() }}</h3>
+    <h3 class=" text-center mt-0 mb-0">{{ inquerito.titulo }}</h3>
+    <div class="d-flex justify-content-between pt-5">
+        <h5 class="text-center">Distribuição de reposta do tipo opção unica</h5>
+        <h5 class="text-center">Impresso em : {{ "now"|date("d/m/Y") }}</h5>
+    </div>
+    {% for pergunta in inquerito.perguntas|filter(pergunta => pergunta.tipo == "ro" ) -%}
+        <br>
+        <table class="table table-bordered tableDeOpcao">
+            <thead >
+            <tr class="bg-psd ">
+                <th colspan="3" >{{ pergunta.titulo }}</th>
+            </tr>
+            <tr class="bg-print bg-print1">
+                <th>Opções</th>
+                <th>Quantidade</th>
+                <th><b>%</b></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set total=0 %}
+            {% for opcao in pergunta.opcoes %}
+                {% set quantidade=0 %}
+                {#Cauculo de inqueridos que foram inscritos no inquerito e reponderam e escolheram esta opção #}
+                {% for inscricao in  inquerito.inscricoes|filter(inscricao => inscricao.respondido == 1 ) -%}
+                    {% for resposta in inscricao.respostas|filter(resposta => resposta.perguntas_id == pergunta.id ) -%}
+                        {% if resposta.resposta == opcao.id %}
+                            {% set quantidade=quantidade+1 %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                {#//#}
+                <tr>
+                    <td>{{ opcao.opcao }}</td>
+                    <td class="q">
+                        {{ quantidade }}
+                        {% set total=total+quantidade %}
+                    </td>
+                    <td class="p"></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr class="bg-print1 bg-print">
+                <th class="font-weight-bold">Total de inquiridos</th>
+                <th class="total">{{ inquerito.inscricoes|length }}</th>
+                <th>--</th>
+            </tr>
+            </tfoot>
+        </table>
+        <div style="width: 60%">
+            <canvas id="graficoOpcaoUnica{{ pergunta.id }}" ></canvas>
+        </div>
+    {% endfor %}
+</section>
+{# Lista de todos inqueridos#}
+<section class="sheet padding-10mm"  style="height: auto!important;">
+    <div class="d-flex justify-content-center align-items-center ">
+        <img src="/public/ficheiros/inqueritos/logotipos/{{ inquerito.logotipo }}" alt="" width="100px;">
+    </div>
+    <h3 class="text-uppercase text-center mt-0 mb-0">{{ inquerito.pesquisador.pessoa.nome_completo() }}</h3>
+    <h3 class=" text-center mt-0 mb-0">{{ inquerito.titulo }}</h3>
+    <div class="d-flex justify-content-between pt-5">
+        <h5 class="text-center">Lista de todos inqueridos</h5>
+        <h5 class="text-center">Impresso em : {{ "now"|date("d/m/Y") }}</h5>
+    </div>
+    <table class="table table-bordered tabela m-0">
+        <thead>
+        <tr class="bg-psd text-white">
+            <th style="width: 20px;">#</th>
+            <th >Data</th>
+            <th>Nome</th>
+            <th>Género</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody class="table-bordered">
+        {% for inscricao in inquerito.inscricoes %}
+            <tr>
+                <td class="align-middle">{{ loop.index }}</td>
+                <td class="align-middle">{{ inscricao.created_at|date("d/m/y",false) }}</td>
+
+                <td class="align-middle">
+                    {{ inscricao.inquerido.pessoa.nome_proprio }} {{ inscricao.inquerido.pessoa.sobrenome }}
+                </td>
+                <td class="align-middle">
+                    {{ inscricao.inquerido.pessoa.genero() }}
+                </td>
+                <td class="align-middle">
+                    {% if inscricao.respondido == 1 %}
+                        {% set respondeu = respondeu + 1 %}
+                        Respondeu
+                    {% else %}
+                        {% set nao_respondeu = nao_respondeu + 1  %}
+                        Não respondeu
+                    {% endif %}
+                </td>
+
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</section>
+{# Lista dos que Não responderam#}
+<section class="sheet padding-10mm"  style="height: auto!important;">
+    <div class="d-flex justify-content-center align-items-center ">
+        <img src="/public/ficheiros/inqueritos/logotipos/{{ inquerito.logotipo }}" alt="" width="100px;">
+    </div>
+    <h3 class="text-uppercase text-center mt-0 mb-0">{{ inquerito.pesquisador.pessoa.nome_completo() }}</h3>
+    <h3 class=" text-center mt-0 mb-0">{{ inquerito.titulo }}</h3>
+
+
+    <div class="d-flex justify-content-between pt-5">
+        <h5 class="text-center">Lista de todos inqueridos que não responderam</h5>
+        <h5 class="text-center">Impresso em : {{ "now"|date("d/m/Y") }}</h5>
+    </div>
+
+    <table class="table table-bordered tabela m-0">
+        <thead>
+        <tr class="bg-psd text-white">
+            <th style="width: 20px;">#</th>
+            <th >Data</th>
+            <th>Nome</th>
+            <th>Género</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody class="table-bordered">
+        {% for inscricao in inquerito.inscricoes|filter(inscricao => inscricao.respondido == 0 ) -%}
+            <tr>
+                <td class="align-middle">{{ loop.index }}</td>
+                <td class="align-middle">{{ inscricao.created_at|date("d/m/y",false) }}</td>
+                <td class="align-middle">
+                    {{ inscricao.inquerido.pessoa.nome_proprio }} {{ inscricao.inquerido.pessoa.sobrenome }}
+                </td>
+                <td class="align-middle">
+                    {{ inscricao.inquerido.pessoa.genero() }}
+                </td>
+                <td class="align-middle">
+                    Não respondeu
+                </td>
+
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</section>
+{# Lista dos que  Responderam#}
+<section class="sheet padding-10mm"  style="height: auto!important;">
+    <div class="d-flex justify-content-center align-items-center ">
+        <img src="/public/ficheiros/inqueritos/logotipos/{{ inquerito.logotipo }}" alt="" width="100px;">
+    </div>
+    <h3 class="text-uppercase text-center mt-0 mb-0">{{ inquerito.pesquisador.pessoa.nome_completo() }}</h3>
+    <h3 class=" text-center mt-0 mb-0">{{ inquerito.titulo }}</h3>
+
+
+    <div class="d-flex justify-content-between pt-5">
+        <h5 class="text-center">Lista de todos inquiridos que responderam</h5>
+        <h5 class="text-center">Impresso em : {{ "now"|date("d/m/Y") }}</h5>
+    </div>
+    <table class="table table-bordered tabela m-0">
+        <thead>
+        <tr class="bg-psd text-white">
+            <th style="width: 20px;">#</th>
+            <th >Data</th>
+            <th>Nome</th>
+            <th>Género</th>
+            <th>Estado</th>
+        </tr>
+        </thead>
+        <tbody class="table-bordered">
+        {% for inscricao in inquerito.inscricoes|filter(inscricao => inscricao.respondido == 1 ) -%}
+            <tr>
+                <td class="align-middle">{{ loop.index }}</td>
+                <td class="align-middle">{{ inscricao.created_at|date("d/m/y",false) }}</td>
+                <td class="align-middle">
+                    {{ inscricao.inquerido.pessoa.nome_proprio }} {{ inscricao.inquerido.pessoa.sobrenome }}
+                </td>
+                <td class="align-middle">
+                    {{ inscricao.inquerido.pessoa.genero() }}
+                </td>
+                <td class="align-middle">
+                    {% if inscricao.respondido == 1 %}
+                        {% set respondeu = respondeu + 1 %}
+                        Respondeu
+                    {% else %}
+                        {% set nao_respondeu = nao_respondeu + 1  %}
+                        Não respondeu
+                    {% endif %}
+
+                </td>
+
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</section>
+<script src="/public/vendor/jquery.min.js"></script>
+<script src="/public/js/chart/chart.js" type="text/javascript"></script>
+<script src="/public/js/chart/utils.js" type="text/javascript"></script>
+<script src="/public/js/chart/chartjs-plugin-labels.js" type="text/javascript"></script>
+<script   type="text/javascript">
+    //pega o elemento onde vai ser colocado o gráfico
+    let config1 = {
+        type: 'doughnut',
+        /*Tipo de gráfico*/
+        data: {
+            datasets: [{
+                data: [
+                    {{ masculinos }},
+                    {{ femininos }}
+                ],
+                backgroundColor: [
+                    /*gera cores aleatórias de forma automática independente da quantidade de cursos*/
+                    Samples.utils.color(5),
+                    Samples.utils.color(3),
+                ],
+                label: ''
+                /* sem utilidade no momento*/
+            }],
+            labels: [
+                // lista de label ou cursos no gráfico
+                'Masculino',
+                'Femenino'
+            ]
+        },
+        options: {
+            responsive: true,
+            /* Activa a responsabilidade  do gráfico */
+            legend:{
+                position:'left'
+                /*Localização dos labels*/
+            },
+            title:{
+                display:true,
+                text:'Gráfico de distribuição de inquiridos por género'
+                /*titulo do gráfico*/
+            },
+            plugins: {
+                labels: [
+                    {
+                        render: 'percentage',
+                        position: 'outside'
+                    },
+                    {
+                        render: 'value',
+                        // precision for percentage, default is 0
+                        precision: 0,
+
+                        // identifies whether or not labels of value 0 are displayed, default is false
+                        showZero: true,
+
+                        // font size, default is defaultFontSize
+                        fontSize: 12,
+
+                        // font color, can be color array for each data or function for dynamic color, default is defaultFontColor
+                        fontColor: '#fff',
+
+                        // font style, default is defaultFontStyle
+                        fontStyle: 'normal',
+
+                        // font family, default is defaultFontFamily
+                        fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+                        // draw text shadows under labels, default is false
+                        textShadow: true,
+
+                        // text shadow intensity, default is 6
+                        shadowBlur: 10,
+
+                        // text shadow X offset, default is 3
+                        shadowOffsetX: -5,
+
+                        // text shadow Y offset, default is 3
+                        shadowOffsetY: 5,
+
+                        // text shadow color, default is 'rgba(0,0,0,0.3)'
+                        shadowColor: 'rgba(255,0,0,0.75)',
+
+                        // draw label in arc, default is false
+                        // bar chart ignores this
+                        arc: true,
+
+                        // position to draw label, available value is 'default', 'border' and 'outside'
+                        // bar chart ignores this
+                        // default is 'default'
+                        position: 'default',
+
+                        // draw label even it's overlap, default is true
+                        // bar chart ignores this
+                        overlap: true,
+
+                        // show the real calculated percentages from the values and don't apply the additional logic to fit the percentages to 100 in total, default is false
+                        showActualPercentages: true,
+                    }
+
+
+
+                ]
+            }
+        }
+    };
+    let myPieChart = new Chart(document.getElementById('inqueridosPorGenero').getContext('2d') ,config1);
+    let config2 = {
+        type: 'doughnut',
+        /*Tipo de gráfico*/
+        data: {
+            datasets: [{
+                data: [
+                    {{ m_nao_respondeu }},
+                    {{ f_nao_respondeu }}
+                ],
+                backgroundColor: [
+                    /*gera cores aleatórias de forma automática independente da quantidade de cursos*/
+                    Samples.utils.color(1),
+                    Samples.utils.color(6),
+                ],
+                label: ''
+                /* sem utilidade no momento*/
+            }],
+            labels: [
+                // lista de label ou cursos no gráfico
+                'Masculino',
+                'Femenino'
+            ]
+        },
+        options: {
+            responsive: true,
+            /* Activa a responsabilidade  do gráfico */
+            legend:{
+                position:'left'
+                /*Localização dos labels*/
+            },
+            title:{
+                display:true,
+                text:'Não responderam'
+                /*titulo do gráfico*/
+            },
+            plugins: {
+                labels: [
+                    {
+                        render: 'percentage',
+                        position: 'outside'
+                    },
+                    {
+                        render: 'value',
+                        // precision for percentage, default is 0
+                        precision: 0,
+
+                        // identifies whether or not labels of value 0 are displayed, default is false
+                        showZero: true,
+
+                        // font size, default is defaultFontSize
+                        fontSize: 12,
+
+                        // font color, can be color array for each data or function for dynamic color, default is defaultFontColor
+                        fontColor: '#fff',
+
+                        // font style, default is defaultFontStyle
+                        fontStyle: 'normal',
+
+                        // font family, default is defaultFontFamily
+                        fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+                        // draw text shadows under labels, default is false
+                        textShadow: true,
+
+                        // text shadow intensity, default is 6
+                        shadowBlur: 10,
+
+                        // text shadow X offset, default is 3
+                        shadowOffsetX: -5,
+
+                        // text shadow Y offset, default is 3
+                        shadowOffsetY: 5,
+
+                        // text shadow color, default is 'rgba(0,0,0,0.3)'
+                        shadowColor: 'rgba(255,0,0,0.75)',
+
+                        // draw label in arc, default is false
+                        // bar chart ignores this
+                        arc: true,
+
+                        // position to draw label, available value is 'default', 'border' and 'outside'
+                        // bar chart ignores this
+                        // default is 'default'
+                        position: 'default',
+
+                        // draw label even it's overlap, default is true
+                        // bar chart ignores this
+                        overlap: true,
+
+                        // show the real calculated percentages from the values and don't apply the additional logic to fit the percentages to 100 in total, default is false
+                        showActualPercentages: true,
+                    }
+
+
+
+                ]
+            }
+        }
+    };
+    let myPieChart2 = new Chart(document.getElementById('inqueridosPorGeneroQueNaoResponderam').getContext('2d') ,config2);
+    let config3 = {
+        type: 'doughnut',
+        /*Tipo de gráfico*/
+        data: {
+            datasets: [{
+                data: [
+                    {{ m_respondeu }},
+                    {{ f_respondeu }}
+                ],
+                backgroundColor: [
+                    /*gera cores aleatórias de forma automática independente da quantidade de cursos*/
+                    Samples.utils.color(3),
+                    Samples.utils.color(8),
+                ],
+                label: ''
+                /* sem utilidade no momento*/
+            }],
+            labels: [
+                // lista de label ou cursos no gráfico
+                'Masculino',
+                'Femenino'
+            ]
+        },
+        options: {
+            responsive: true,
+            /* Activa a responsabilidade  do gráfico */
+            legend:{
+                position:'left'
+                /*Localização dos labels*/
+            },
+            title:{
+                display:true,
+                text:'Responderam'
+                /*titulo do gráfico*/
+            },
+            plugins: {
+                labels: [
+                    {
+                        render: 'percentage',
+                        position: 'outside'
+                    },
+                    {
+                        render: 'value',
+                        // precision for percentage, default is 0
+                        precision: 0,
+
+                        // identifies whether or not labels of value 0 are displayed, default is false
+                        showZero: true,
+
+                        // font size, default is defaultFontSize
+                        fontSize: 12,
+
+                        // font color, can be color array for each data or function for dynamic color, default is defaultFontColor
+                        fontColor: '#fff',
+
+                        // font style, default is defaultFontStyle
+                        fontStyle: 'normal',
+
+                        // font family, default is defaultFontFamily
+                        fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+                        // draw text shadows under labels, default is false
+                        textShadow: true,
+
+                        // text shadow intensity, default is 6
+                        shadowBlur: 10,
+
+                        // text shadow X offset, default is 3
+                        shadowOffsetX: -5,
+
+                        // text shadow Y offset, default is 3
+                        shadowOffsetY: 5,
+
+                        // text shadow color, default is 'rgba(0,0,0,0.3)'
+                        shadowColor: 'rgba(255,0,0,0.75)',
+
+                        // draw label in arc, default is false
+                        // bar chart ignores this
+                        arc: true,
+
+                        // position to draw label, available value is 'default', 'border' and 'outside'
+                        // bar chart ignores this
+                        // default is 'default'
+                        position: 'default',
+
+                        // draw label even it's overlap, default is true
+                        // bar chart ignores this
+                        overlap: true,
+
+                        // show the real calculated percentages from the values and don't apply the additional logic to fit the percentages to 100 in total, default is false
+                        showActualPercentages: true,
+                    }
+
+
+
+                ]
+            }
+        }
+    };
+    let myPieChart3 = new Chart(document.getElementById('inqueridosPorGeneroQueResponderam').getContext('2d') ,config3);
+
+
+    function caucularTabelasDeOpcoesUnicas() {
+
+        {% for pergunta in inquerito.perguntas|filter(pergunta => pergunta.tipo == "ro" ) -%}
+        let config{{ pergunta.id }} = {
+            type: 'horizontalBar',
+            /*Tipo de gráfico*/
+            data: {
+                datasets: [{
+                    data: [
+                        {% for opcao in pergunta.opcoes %}
+                        {% set quantidade2=0 %}
+                        {% for inscricao in  inquerito.inscricoes|filter(inscricao => inscricao.respondido == 1 ) -%}
+                        {% for resposta in inscricao.respostas|filter(resposta => resposta.perguntas_id == pergunta.id ) -%}
+                        {% if resposta.resposta == opcao.id %}
+                        {% set quantidade2=quantidade2+1 %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                        {{ quantidade2 }},
+                        {% endfor %}
+
+                    ],
+                    backgroundColor: [
+                        /*gera cores aleatórias de forma automática independente da quantidade de cursos*/
+
+                        {% for opcao in pergunta.opcoes %}
+                        Samples.utils.color({{ loop.index }}),
+                        {% endfor %}
+                    ],
+
+                    /* sem utilidade no momento*/
+                }],
+                labels: [
+                    // lista de label ou cursos no gráfico
+                    {% for opcao in pergunta.opcoes %}
+                    "{{ opcao.opcao }}",
+                    {% endfor %}
+                ]
+            },
+            options: {
+                responsive: true,
+                /* Activa a responsabilidade  do gráfico */
+                legend:{
+                    position:'off'
+                    /*Localização dos labels*/
+                },
+                title:{
+                    display:true,
+                    text:'{{ pergunta.titulo }}'
+                    /*titulo do gráfico*/
+                },
+                plugins: {
+                    labels: [
+                        {
+                            render: 'percentage',
+                            position: 'outside'
+                        },
+                        {
+                            render: 'value',
+                            // precision for percentage, default is 0
+                            precision: 0,
+
+                            // identifies whether or not labels of value 0 are displayed, default is false
+                            showZero: true,
+
+                            // font size, default is defaultFontSize
+                            fontSize: 12,
+
+                            // font color, can be color array for each data or function for dynamic color, default is defaultFontColor
+                            fontColor: '#fff',
+
+                            // font style, default is defaultFontStyle
+                            fontStyle: 'normal',
+
+                            // font family, default is defaultFontFamily
+                            fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+                            // draw text shadows under labels, default is false
+                            textShadow: true,
+
+                            // text shadow intensity, default is 6
+                            shadowBlur: 10,
+
+                            // text shadow X offset, default is 3
+                            shadowOffsetX: -5,
+
+                            // text shadow Y offset, default is 3
+                            shadowOffsetY: 5,
+
+                            // text shadow color, default is 'rgba(0,0,0,0.3)'
+                            shadowColor: 'rgba(255,0,0,0.75)',
+
+                            // draw label in arc, default is false
+                            // bar chart ignores this
+                            arc: true,
+
+                            // position to draw label, available value is 'default', 'border' and 'outside'
+                            // bar chart ignores this
+                            // default is 'default'
+                            position: 'default',
+
+                            // draw label even it's overlap, default is true
+                            // bar chart ignores this
+                            overlap: true,
+
+                            // show the real calculated percentages from the values and don't apply the additional logic to fit the percentages to 100 in total, default is false
+                            showActualPercentages: true,
+                        }
+
+
+
+                    ]
+                }
+            }
+        };
+
+        let myPieChart{{ pergunta.id }} = new Chart(document.getElementById('graficoOpcaoUnica{{ pergunta.id }}').getContext('2d') ,config{{ pergunta.id }});
+
+        {% endfor %}
+    }
+    function caucularTabelasDeOpcoesUnicasPercentagem() {
+
+
+        let tabelas = $(".tableDeOpcao");
+
+        for (let i = 0; i < tabelas.length; i++) {
+            let lastTr =  $(tabelas[i]).find("tr:last").find("th.total");
+            let total = parseInt($(lastTr).text());
+            let tr = $(tabelas[i]).find("tbody tr");
+            for (let j = 0; j < tr.length; j++) {
+                let tdQ = $(tr[j]).find("td.q");
+                let tdP = $(tr[j]).find("td.p");
+                let tdQInt = parseInt(tdQ.text());
+                tdP.html(parseFloat(((tdQInt/total)*100).toFixed(2))+" %");
+
+            }
+        }
+    }
+    caucularTabelasDeOpcoesUnicas();
+    caucularTabelasDeOpcoesUnicasPercentagem();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% extends "@include/main_painel.twig" %}
+
+    {% block conteudo %}
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="mt-2">
+                   Emitir Cartão de estudante
+                </h2>
+                <hr>
+    						<form  action="salvar_cartao" enctype="multipart/form-data"  method="POST">
+								        {{ csrf_field() }}
+                                           {% if alert  %}
+                     <div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert">
+                        {{ alert.getMensagem() }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                   {{  alert.destruir() }}
+                          {% endif %}
+                                        	<h5 class="mt-4">Dados</h6>
+								        	<div class="row">
+											<input type="hidden" name="id_estudante" value="{{ usuario.id }}" >
+								        	<div class="form-group col-md-4">
+								        	<input type="text" name="curso" class="form-control" required=""  placeholder="Informe o curso que frequenta">
+								        	</div>
+								        	<div class="form-group col-md-4">
+								        	<input type="text" name="turma" required="" class="form-control"  placeholder="Informe a turma">
+								        	</div>
+								        	<div class="form-group col-md-4">
+								        	  <input type="text" name="classe" required="" class="form-control"  placeholder="Informe a Classe">
+								        	</div>
+                                             <div class="form-group col-md-4">
+								        	  <input type="text" name="numero_estudantil" required="" class="form-control"  placeholder="Número Estudantil">
+								        	</div>
+								        	<div class="form-group col-md-6">
+								        	  <select name="id_instituicao" class="form-control" required="">
+										      <option>Instituição..</option>
+										     {% for instituicao in instituicoes %}
+										      <option  value="{{ instituicao.id }}">{{ instituicao.nome}}</option>
+										      {% endfor %}
+										    </select>
+								        	</div>
+								            <div class="col-md-12"></div>
+								        	<div class="form-group col-md-6">
+                                                <label> fotografia </labrl>
+											  <input name="foto" required="" class="form-control" type="file" id="formFile">
+								        	</div>
+								        	<div class="row col-md-12 mb-4"></div>
+								        	</div>
+								        <button type="submit" class="btn btn-success">Enviar</button>
+								        </form>
+        </div>
+    </div>
+
+
+    {% endblock %}

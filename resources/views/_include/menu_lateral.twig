@@ -1,0 +1,172 @@
+<div class="mdk-drawer js-mdk-drawer" id="default-drawer">
+    <div class="mdk-drawer__content">
+        <div class="mdk-drawer__inner" data-simplebar data-simplebar-force-enabled="true">
+            <nav class="drawer  drawer--dark">
+                <!-- HEADING-->
+                <div class="py-2 drawer-heading">
+                    Painel principal
+                </div>
+                <!-- DASHBOARDS MENU-->
+                <ul class="drawer-menu" id="dasboardMenu" data-children=".drawer-submenu">
+                    <li class="drawer-menu-item ">
+                        <a href="/painel">
+                            <i class="material-icons">dashboard</i>
+                            <span class="drawer-menu-text"> Meu painel</span>
+                        </a>
+                    </li>
+                </ul>
+                <!-- Biblioteca -->
+                {% for me in SESSION.MenuDoUsuario|filter(me => (me.menu == "Biblioteca") and (me.tarefas|length >= 1)  ) -%}
+                    {% if me.tarefas|length >= 1 %}
+
+                        {% if loop.first %}
+                            <div class="py-2 drawer-heading" id="Bio">
+                                Biblioteca
+                            </div>
+                        {% endif %}
+                        <!-- PAGES MENU -->
+                        <ul class="drawer-menu " id="para{{ me.id }}" data-children=".drawer-submenu" >
+                            <li class="drawer-menu-item drawer-submenu">
+                                <a data-toggle="collapse" data-parent="#para{{ me.id }}" href="#id{{ me.id }}" data-target="#id{{ me.id }}" aria-controls="errorsMenu" aria-expanded="false" class="collapsed px-2">
+                                    <i class="material-icons">{{ me.icon }}</i>
+                                    <span class="drawer-menu-text">{{ me.nome }}</span>
+                                </a>
+                                <ul class="collapse px-2" id="id{{ me.id }}">
+                                    {% for mtarefa in me.tarefas %}
+                                        <li class="drawer-menu- "><a href="{{ mtarefa.caminho }}">{{ mtarefa.nome }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+                  {% for me in SESSION.MenuDoUsuario|filter(me => (me.menu == "Instituicao") and (me.tarefas|length >= 1)  ) -%}
+                        {% if loop.first %}
+                            <div class="py-2 drawer-heading" id="Ist">
+                                Instituição
+                            </div>
+                        {% endif %}
+                        {% if me.tarefas|length >= 1 %}
+                        <!-- PAGES MENU -->
+                        <ul class="drawer-menu " id="para{{ me.id }}" data-children=".drawer-submenu" >
+                            <li class="drawer-menu-item drawer-submenu">
+            <a data-toggle="collapse" data-parent="#para{{ me.id }}" href="#id{{ me.id }}" data-target="#id{{ me.id }}" aria-controls="errorsMenu" aria-expanded="false" class="collapsed px-2">
+                                    <i class="material-icons">{{ me.icon }}</i>
+                                    <span class="drawer-menu-text">{{ me.nome }}</span>
+                                </a>
+                                <ul class="collapse px-2" id="id{{ me.id }}">
+                                    {% for mtarefa in me.tarefas %}
+                                    <li class="drawer-menu- "><a href="{{ mtarefa.caminho }}">{{ mtarefa.nome }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+
+                  {% for me in SESSION.MenuDoUsuario|filter(me => (me.menu == "Documentos") and (me.tarefas|length >= 1)  ) -%}
+                        {% if loop.first %}
+                            <div class="py-2 drawer-heading" id="Ist">
+                                Documentos
+                            </div>
+                        {% endif %}
+                        {% if me.tarefas|length >= 1 %}
+                        <!-- PAGES MENU -->
+                        <ul class="drawer-menu " id="para{{ me.id }}" data-children=".drawer-submenu" >
+                            <li class="drawer-menu-item drawer-submenu">
+            <a data-toggle="collapse" data-parent="#para{{ me.id }}" href="#id{{ me.id }}" data-target="#id{{ me.id }}" aria-controls="errorsMenu" aria-expanded="false" class="collapsed px-2">
+                                    <i class="material-icons">{{ me.icon }}</i>
+                                    <span class="drawer-menu-text">{{ me.nome }}</span>
+                                </a>
+                                <ul class="collapse px-2" id="id{{ me.id }}">
+                                    {% for mtarefa in me.tarefas %}
+                                    <li class="drawer-menu- "><a href="{{ mtarefa.caminho }}">{{ mtarefa.nome }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- COMPONENTS MENU -->
+                <!-- Inquerito -->
+                {% for me in SESSION.MenuDoUsuario|filter(me => (me.menu == "Inquerito") and (me.tarefas|length >= 1)) -%}
+                    {% if loop.first %}
+                        <div class="py-2 drawer-heading" id="Inq">
+                            Inquérito
+                        </div>
+                    {% endif %}
+                    {% if me.tarefas|length >= 1 %}
+                        <!-- PAGES MENU -->
+                        <ul class="drawer-menu " id="para{{ me.id }}" data-children=".drawer-submenu" >
+                            <li class="drawer-menu-item drawer-submenu">
+                                <a data-toggle="collapse" data-parent="#para{{ me.id }}" href="#id{{ me.id }}" data-target="#id{{ me.id }}" aria-controls="errorsMenu" aria-expanded="false" class="collapsed px-2">
+                                    <i class="material-icons">{{ me.icon }}</i>
+                                    <span class="drawer-menu-text">{{ me.nome }}</span>
+                                </a>
+                                <ul class="collapse px-2" id="id{{ me.id }}">
+                                    {% for mtarefa in me.tarefas %}
+                                        <li class="drawer-menu- "><a href="{{ mtarefa.caminho }}">{{ mtarefa.nome }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+
+                    {% endif %}
+                {% endfor %}
+                 <!-- Cartoes -->
+                {% for me in SESSION.MenuDoUsuario|filter(me => (me.menu == "Cartoes") and (me.tarefas|length >= 1)) -%}
+                    {% if loop.first %}
+                        <div class="py-2 drawer-heading" id="Inq">
+                            Cartões de Estudante
+                        </div>
+                    {% endif %}
+                    {% if me.tarefas|length >= 1 %}
+                        <!-- PAGES MENU -->
+                        <ul class="drawer-menu " id="para{{ me.id }}" data-children=".drawer-submenu" >
+                            <li class="drawer-menu-item drawer-submenu">
+                                <a data-toggle="collapse" data-parent="#para{{ me.id }}" href="#id{{ me.id }}" data-target="#id{{ me.id }}" aria-controls="errorsMenu" aria-expanded="false" class="collapsed px-2">
+                                    <i class="material-icons">{{ me.icon }}</i>
+                                    <span class="drawer-menu-text">{{ me.nome }}</span>
+                                </a>
+                                <ul class="collapse px-2" id="id{{ me.id }}">
+                                    {% for mtarefa in me.tarefas %}
+                                        <li class="drawer-menu- "><a href="{{ mtarefa.caminho }}">{{ mtarefa.nome }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+
+                    {% endif %}
+                {% endfor %}
+                <!-- PAGES MENU -->
+
+                {% for me in SESSION.MenuDoUsuario|filter(me => (me.menu == "Sistema") and (me.tarefas|length >= 1)) -%}
+                    {% if me.tarefas|length >= 1 %}
+
+                        {% if loop.first %}
+                            <div class="py-2 drawer-heading" id="Inq">
+                                Sistema
+                            </div>
+                        {% endif %}
+                        <!-- PAGES MENU -->
+                        <ul class="drawer-menu " id="para{{ me.id }}" data-children=".drawer-submenu" >
+                            <li class="drawer-menu-item drawer-submenu">
+                                <a data-toggle="collapse" data-parent="#para{{ me.id }}" href="#{{ me.id }}" data-target="#id{{ me.id }}" aria-controls="errorsMenu" aria-expanded="false" class="collapsed px-2">
+                                    <i class="material-icons">{{ me.icon }}</i>
+                                    <span class="drawer-menu-text">{{ me.nome }}</span>
+                                </a>
+                                <ul class="collapse px-2" id="id{{ me.id }}">
+                                    {% for mtarefa in me.tarefas %}
+                                        <li class="drawer-menu- "><a href="{{ mtarefa.caminho }}">{{ mtarefa.nome }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+                <!-- PAGES MENU -->
+            </nav>
+        </div>
+    </div>
+</div>

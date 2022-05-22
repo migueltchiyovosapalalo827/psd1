@@ -1,0 +1,35 @@
+{% extends "@include/main_painel.twig" %}
+
+    {% block conteudo %}
+        <div class="card ">
+            <div class="card-body p-2 d-flex">
+                <a href="/instituicao/ver_fotos"  class="btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onMouseOver="this.style.color='#25364a'" onMouseOut="this.style.color='#5999c3'">
+                    <i class="material-icons">book</i>Ver Fotos
+                </a>
+
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="mt-2">
+                    Adicionar Foto
+                </h2>
+                <hr>
+        <form class="w-100" id="needs-validation" action="salvar_foto" enctype="multipart/form-data"  method="POST">
+                 	{{ csrf_field() }}
+                     <div class="form-group col-md-8">
+                        <input type="hidden" value="{{ usuario.id }}" name="id_instituicao">
+                        <div class="form-group col-md-9">
+                            <label >Foto</label>
+                            <input type="file"  name="foto" class="form-control form-control-file p-1">
+                        </div>
+                        </div>
+                 	 <div class="d-flex align-items-end justify-content-end">
+                        <button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
+                    </div>
+        </form>
+        </div>
+    </div>
+
+
+    {% endblock %}

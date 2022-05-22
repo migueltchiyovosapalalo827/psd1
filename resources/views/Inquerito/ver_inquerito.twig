@@ -1,0 +1,639 @@
+{% extends "@include/main_painel.twig" %}
+{% block css %}
+    <link rel="stylesheet" href="/public/css/font-awesome.css">
+    <link rel="stylesheet" href="/public/css/bootstrap-social.css">
+    <style>
+
+        .page-separator {
+            position: relative;
+            color: rgba(0, 0, 0, 0.54);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 0;
+            margin: 0.5rem 0;
+        }
+        .page-separator::before {
+            content: "";
+            height: 1px;
+            background-color: #efefef;
+            width: 100%;
+            top: 50%;
+            left: 0;
+            position: absolute;
+            z-index: -1;
+        }
+        .page-separator__text {
+            display: inline-flex;
+            padding: 0.25rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: #2A2A2A;
+            line-height: 0.9375rem;
+            font-weight: bold;
+            background-color: white;
+            max-width: 90%;
+        }
+        .page-separator__text:hover {
+            text-decoration: none;
+        }
+
+    </style>
+{% endblock %}
+{% block conteudo %}
+    {% set respondeu = 0 %}
+    {% set nao_respondeu = 0 %}
+    <!-- main content -->
+    <div class="py-4 mb-3 bg-white border-bottom">
+        <div class="container-fluid container-account">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="media media-user-info align-items-center">
+                        <div class="media-body lh-1">
+                            <p class="h4 m-0">{{ inquerito.titulo }}</p>
+                            <p class="text-muted mb-0">{{ inquerito.pesquisador.nome }}</p>
+                            {% if inquerito.privacidade %}
+                                <p>Link: <a target="_blank" href="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}">http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-md-flex align-items-center justify-content-end">
+                    <p class="mb-0 mr-3">
+                        <i class="material-icons md-18 align-middle text-primary">shopping_cart</i> Perguntas: <strong>{{ inquerito.perguntas|length }}</strong>
+                    </p>
+                    <p class="mb-0">
+                        <i class="material-icons md-18 align-middle text-primary">monetization_on</i> Inqueridos: <strong>{{ inquerito.inscricoes|length }}</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="">
+        <ul class="nav nav-pills mb-2" id="accountTabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview">Inqueridos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Perguntas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="settings-tab" data-toggle="tab" href="#resumo" role="tab" aria-controls="settings">Resumo</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="accountTabsContent">
+            <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="w-100 d-flex justify-content-between align-items-end">
+                            <h4>
+                                Todos inqueridos
+                            </h4>
+                            <div class="d-flex flex-wrap">
+                                {% if inquerito.privacidade %}
+                                    <div class=" d-flex justify-content-end">
+                                        <button type="reset" data-toggle="modal" data-target="#modalCompartilhar"  class="btn-outline-primary ml-1 btn-sm  d-flex align-items-center  btn ">
+                                            <i class="material-icons">share</i>Compartilhar
+                                        </button>
+                                    </div>
+                                {% else %}
+                                    <div class=" d-flex justify-content-end">
+                                        <button type="reset" data-toggle="modal" data-target="#modalNovoInquerido"  class="btn-outline-primary ml-1 btn-sm  d-flex align-items-center  btn ">
+                                            <i class="material-icons">add</i>Novo inquerido
+                                        </button>
+                                    </div>
+                                    <div class=" d-flex justify-content-end">
+                                        <button type="reset" data-toggle="modal" data-target="#modalinscrever"  class="btn-outline-primary ml-1 btn-sm  d-flex align-items-center  btn ">
+                                            <i class="material-icons">add</i>Inscrever inquerido
+                                        </button>
+                                    </div>
+                                {% endif %}
+
+                                <div class=" d-flex justify-content-end">
+                                    <a href="/inquerito/imprimir_relatorio/{{ inquerito.id }}"  target="_blank" class="btn-outline-primary ml-1 btn-sm  d-flex align-items-center  btn ">
+                                        <i class="material-icons">local_printshop</i>Imprimir relatório
+                                    </a>
+                                </div>
+                                <div class=" d-flex justify-content-end">
+                                    <a href="/inquerito/imprimir_respostas/{{ inquerito.id }}"  target="_blank" class="btn-outline-primary ml-1 btn-sm  d-flex align-items-center  btn ">
+                                        <i class="material-icons">insert_comment</i>Imprimir respostas
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card-body ml-0 mr-0 pr-1 pl-1">
+                        <div class="input-group input-group--inline mb-2">
+                            <div class="input-group-addon">
+                                <i class="material-icons align-items-center  ">search</i>
+                            </div>
+                            <input type="text" class="form-control form-control-md input_procurar" name="search" placeholder="Pesquisar por Nome, estado, data">
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table tabela m-0">
+                                <thead>
+                                <tr class="bg-primary text-white">
+                                    <th style="width: 20px;">#</th>
+                                    <th >Data</th>
+                                    <th>Nome</th>
+                                    <th>Estado</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-bordered">
+                                {% for inscricao in inquerito.inscricoes %}
+                                    <tr>
+                                        <td class="align-middle">{{ loop.index }}</td>
+                                        <td class="align-middle">{{ inscricao.created_at|date("d/m/y",false) }}</td>
+                                        <td class="align-middle">
+                                            <div><i class="material-icons align-middle md-18 text-link-color">contacts</i> <a href="/inquerido/ficha_do_inquerido/{{ inscricao.inquerido.id }}"> {{ inscricao.inquerido.pessoa.nome_proprio }} {{ inscricao.inquerido.pessoa.sobrenome }}</a>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            {% if inscricao.respondido == 1 %}
+                                                {% set respondeu = respondeu + 1 %}
+                                                <div class="badge badge-success">Respondido</div>
+                                            {% else %}
+                                                {% set nao_respondeu = nao_respondeu + 1  %}
+                                                <div class="badge badge-warning">Não respondido</div>
+                                            {% endif %}
+
+
+                                        </td>
+                                        <td class="align-middle" style="width:40px">
+                                            <a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="material-icons md-18 align-middle">more_vert</i>
+                                            </a>
+                                            <div class="dropdown-menu">
+                                                {% if inscricao.respondido == 1 %}
+                                                    <a class="dropdown-item" href="/inquerito/imprimir_resposta/{{inscricao.id}}">
+                                                        <i class="material-icons md-14 align-middle">assignment</i>
+                                                        <span class="align-middle">Ver resposta</span>
+                                                    </a>
+                                                {% endif %}
+
+                                                <a class="dropdown-item" href="/inquerito/remover_inscricao/{{inscricao.id}}">
+                                                    <i class="material-icons md-14 align-middle">assignment</i>
+                                                    <span class="align-middle">Eliminar inscrição</span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class=" w-100 d-flex justify-content-between align-items-end">
+                                    <h4>
+                                        Todas perguntas
+                                    </h4>
+                                </div>
+                            </div>
+                            <div class="card-body">
+
+                                <table class="table tabela m-0">
+                                    <thead>
+                                    <tr class="bg-primary text-white">
+                                        <th>#</th>
+                                        <th>Pergunta</th>
+                                        <th >Tipo</th>
+                                        <th>Opções</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="table-bordered">
+                                    {% for pergunta in inquerito.perguntas %}
+                                        <tr>
+                                            <td class="align-middle">{{ loop.index }}</td>
+                                            <td class="align-middle">{{ pergunta.titulo }}</td>
+                                            <td class="align-middle">
+                                                {{ pergunta.tipo() }}
+                                            </td>
+                                            <td class="align-middle">
+                                                {% for opcao in pergunta.opcoes %}
+                                                    <div class="badge badge-primary-dark">{{ opcao.opcao }}</div>
+                                                {% endfor %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="resumo" role="tabpanel" aria-labelledby="settings-tab">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">
+                                    Resumo do inquérito
+                                </h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table m-0">
+                                        <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Valor</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <tr>
+                                            <td class="align-middle">
+                                                <span class="align-middle">Perguntas</span>
+                                            </td>
+                                            <td class="align-middle">{{ inquerito.perguntas|length }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="align-middle">
+                                                <span class="align-middle">Inqueridos</span>
+                                            </td>
+                                            <td class="align-middle">{{ inquerito.inscricoes|length }}</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="align-middle">
+                                                <span class="align-middle">Inqueridos que responderam</span>
+                                            </td>
+                                            <td class="align-middle">{{ respondeu }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="align-middle">
+                                                <span class="align-middle">Inqueridos que não responderam</span>
+                                            </td>
+                                            <td class="align-middle">{{ nao_respondeu }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        {#                        <div class="card">#}
+                        {#                            <div class="card-header">#}
+                        {#                                <div class=" w-100 d-flex justify-content-between align-items-end">#}
+                        {#                                    <h4>#}
+                        {#                                        Resumo do inquerito#}
+                        {#                                    </h4>#}
+                        {#                                </div>#}
+                        {#                            </div>#}
+                        {#                            <div class="card-body">#}
+
+                        {#                                <table class="table tabela m-0" style="width:40%;">#}
+                        {#                                    <tbody class="table-bordered">#}
+                        {#                                    <tr>#}
+                        {#                                        <th class="bg-primary text-white" style="width: 200px"></th>#}
+                        {#                                        <td  style="width: 50px"></td>#}
+                        {#                                    </tr>#}
+                        {#                                    <tr>#}
+                        {#                                        <th class="bg-primary text-white" style="width: 200px"></th>#}
+                        {#                                        <td  style="width: 50px"></td>#}
+                        {#                                    </tr>#}
+                        {#                                    <tr>#}
+                        {#                                        <th class="bg-primary text-white" style="width: 200px"></th>#}
+                        {#                                        <td  style="width: 50px"></td>#}
+                        {#                                    </tr>#}
+                        {#                                    <tr>#}
+                        {#                                        <th class="bg-primary text-white" style="width: 200px"></th>#}
+                        {#                                        <td  style="width: 50px"></td>#}
+                        {#                                    </tr>#}
+                        {#                                    <tr>#}
+                        {#                                        <th class="bg-primary text-white" style="width: 200px"></th>#}
+                        {#                                        <td  style="width: 50px"></td>#}
+                        {#                                    </tr>#}
+                        {#                                    </tbody>#}
+                        {#                                </table>#}
+                        {#                                #}
+                        {#                            </div>#}
+                        {#                        </div>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block modal %}
+
+    <div class="modal fade " id="modalCompartilhar" tabindex="-1" role="dialog" aria-labelledby="modalCompartilhar" aria-hidden="true">
+        <div class="modal-dialog modal-xs" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="defaultModalLabel">Compartilhar  </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="d-flex justify-content-end mb-3">
+                        <input id="elementodeCopiar" type="text" class="input_procurar form-control" readonly  value="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}">
+                        <button type="button" class="btn btn-white ml-2 align-self-end" data-clipboard-action="copy" data-clipboard-target="#elementodeCopiar">Copiar</button>
+                    </div>
+                    <div class="page-separator">
+                        <div class="page-separator__text">Ou</div>
+                    </div>
+                    <div>
+                        <div class=" social-buttons">
+                            <button href="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}" class="btn  btn-block btn-social text-white btn-facebook"
+                               onclick="
+                            window.open(
+                              'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent($(this).attr('href')),
+                              'facebook-share-dialog',
+                              'width=626,height=436');
+                            return false;">
+                                <span class="fa fa-facebook"></span> Partilhar no facebook
+                            </button>
+{#
+<a class="btn  btn-block btn-social text-white btn-instagram">
+        <span class="fa fa-instagram"></span> Partilhar no Instagram
+    </a>
+    <a style="background: #005983" class="btn  btn-block btn-social  text-white btn-linkedin">
+        <span class="fa fa-linkedin"></span> Partilhar no LinkedIn
+        </a>
+   #}
+                            <button onclick="
+                            window.open(
+                              'https://twitter.com/intent/tweet?text={{ inquerito.titulo }}&url='+encodeURIComponent($(this).attr('href'))+'&hashtags=psd',
+                              'width=626,height=436');
+                            return false;" href="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}"  class="btn  btn-block btn-social text-white btn-twitter">
+                                <span class="fa fa-twitter"></span> Partilhar no Twitter
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade " id="modalinscrever" tabindex="-1" role="dialog" aria-labelledby="modalinscrever" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="defaultModalLabel">Inscrever inqueridos  </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/inquerito/inscrever_inquerido" id="salvar_permicoes" method="post">
+                        <div class="d-flex justify-content-end mb-3">
+                            <input type="text" class="input_procurar form-control" placeholder="Filtrar por nome" >
+                            <button  trAllSelect type="button" class="btn btn-white ml-2 align-self-end">Selecionar tudo</button>
+                        </div>
+                        <div class="table-responsive" style="height: 300px; overflow-y: scroll;">
+                            <table class="table tabela tablaAllSelect  table-bordered  bg-white bg-primary"   >
+                                <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nome</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for inquerido  in  inqueridos%}
+                                    <tr role="button" tr-selecionada2 style="cursor: pointer" class="perm_{{ inquerido.id }}">
+                                        <td>{{ loop.index }}<input  type="checkbox" name="inqueridos[]"  class="invisible"  multiple="" value="{{ inquerido.id }}"></td>
+                                        <td>{{ inquerido.pessoa.nomeComSobrenome() }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr >
+                                        <td colspan="2">Todos inqueridos já foram inscritos neste inquérito ou não tem nenhum cadastrado</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <input type="hidden" name="inquerito" value="{{ inquerito.id }}">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+
+                    <button type="submit" form="salvar_permicoes" class="btn btn-primary">Inscrever inqueridos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modalNovoInquerido" tabindex="-1" role="dialog" aria-labelledby="popoverModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog  modal-lg" role="document">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <form action="/inquerido/salvar_inqueridoInscrevendo" method="get" id="form_salvar_inquerido">
+                        <h3>Usuário</h3>
+                        <hr>
+                        <div class="form-row">
+                            <div class="form-group col-md-4 ">
+                                <label>Email</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">person</i>
+                                    </div>
+                                    <input type="email" class="form-control" name="u_email" placeholder="exemplo@exemplo.com">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Telefone</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">local_phone</i>
+                                    </div>
+                                    <input type="tel" class="form-control" name="u_contacto" placeholder="9xxxxxxxx">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Senha</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">vpn_key</i>
+                                    </div>
+                                    <input type="password" class="form-control" name="u_senha" placeholder="Minimo 6 caracteres" required>
+                                </div>
+                            </div>
+                        </div>
+                        <h3>Informações pessoais</h3>
+                        <hr>
+                        <div class="form-row">
+                            <div class="form-group col-md-4 ">
+                                <label>Primeiro nome</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">person</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_nome" placeholder="Primeiro nome" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4 ">
+                                <label>Sobrenome</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">person</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_sobrenome" placeholder="Sobrenome" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Pai</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">person</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_pai" placeholder="Nome do pai">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Mãe</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">person</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_mae" placeholder="Nome da mãe">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Nº do documento</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">credit_card</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_n_documento" placeholder="xxxxxxxxxxxxxxxx">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Tipo de documento</label>
+                                <select name="p_t_documento" id="" class="form-control">
+                                    <option value="bi">Bilhete de identidade</option>
+                                    <option value="pt">Passaporte</option>
+                                    <option value="outros">Outros</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Género</label>
+                                <select name="p_genero" class="form-control">
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Feminino</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Data de nascimento</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">date_range</i>
+                                    </div>
+                                    <input type="date" class="form-control" name="p_data_de_nascimento" placeholder="dd/mm/aaaa">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Provincia</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">location_city</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_provincia" placeholder="Benguela">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Municipio</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">location_city</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_municipio" placeholder="Lobito">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Bairro</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">home</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_bairro" placeholder="Liro">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Local de nascimento</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">local_hospital</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_local_de_nascimento" placeholder="Benguela">
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>Naturalidade</label>
+                                <div class="input-group input-group--inline">
+                                    <div class="input-group-addon">
+                                        <i class="material-icons">flag</i>
+                                    </div>
+                                    <input type="text" class="form-control" name="p_naturalidade" placeholder="Angolana">
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="inquerito" value="{{ inquerito.id }}" >
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+                    <button type="submit" form="form_salvar_inquerido" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script type="application/javascript" src="/public/js/clipboard.min.js">
+
+    </script>
+
+    <!-- 3. Instantiate clipboard -->
+    <script>
+        var clipboard = new ClipboardJS('.btn');
+
+        clipboard.on('success', function(e) {
+            PNotify.success({
+                title: "Link copiado",
+                text: "Link copiado com sucesso",
+                type: "success",
+                styling: 'bootstrap3',
+                icons: 'fontawesome4',
+                delay: 2000,
+                destroy: true,
+                remove: true,
+                textTrusted: true,
+            });
+        });
+
+        clipboard.on('error', function(e) {
+            PNotify.error({
+                title: "Não foi possivel copiar",
+                text: "erro desconhecido"+e,
+                type: "error",
+                styling: 'bootstrap3',
+                icons: 'fontawesome4',
+                delay: 2000,
+                destroy: true,
+                remove: true,
+                textTrusted: true,
+
+            });
+        });
+    </script>
+{% endblock %}

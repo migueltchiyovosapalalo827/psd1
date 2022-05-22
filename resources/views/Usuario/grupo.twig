@@ -1,0 +1,159 @@
+{% extends "@include/main_painel.twig" %}
+
+{% block conteudo %}
+
+    <div class="w-100">
+        <div class="row">
+            <div class="col-md-12">
+                <div class=" w-100 d-flex justify-content-between align-items-center">
+                    {% if grupo %}
+                        <h4>
+                            {{ grupo.nome }}
+                        </h4>
+                    {% endif %}
+                    <div class=" d-flex justify-content-end">
+                        {% if grupo %}
+                            <button type="reset" data-toggle="modal" data-target="#defaultModal" class="btn-warning btn-sm  d-flex align-items-center  btn ">
+                                <i class="material-icons">add</i>Editar permições do grupo
+                            </button>
+                        {% endif %}
+                        <button type="reset" data-toggle="modal" data-target="#defaultModalNovoGrupo"  class="btn-outline-primary ml-1 btn-sm  d-flex align-items-center  btn ">
+                            <i class="material-icons">add</i>Novo grupo
+                        </button>
+                    </div>
+
+                </div>
+                <hr>
+            </div>
+
+            <div class="col-md-9">
+                {% if grupo  %}
+
+                    <div class="">
+                        <div class="car">
+                            <input type="text" class="input_procurar form-control" placeholder="Filtrar por tarefa, menu" list=""><br>
+                            <table class="table tabela table-bordered table-responsive-xl bg-white">
+                                <thead>
+                                <tr class="text-white bg-primary">
+                                    <th  class="text-center">#</th>
+                                    <th  class="text-center">Nome</th>
+                                    <th  class="text-center">Caminho</th>
+                                    <th  class="text-center">Menu</th>
+
+                                </tr>
+                                </thead>
+                                <tbody tb_perm_grupo>
+                                {% for tarefa in tarefasDoGrupo %}
+                                    <tr>
+                                        <input type="hidden" value="{{ tarefa.tarefas.id }}">
+                                        <td> {{ loop.index }}</td>
+                                        <td> {{ tarefa.tarefas.nome }}</td>
+                                        <td> {{ tarefa.tarefas.caminho }}</td>
+                                        <td> {{ tarefa.tarefas.menus.nome }}</td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="10" class="text-center">Este grupo não tem  nenhum permissão.</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                {% else %}
+                    <p class="h2 text-muted">Selecione um grupo</p>
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                <ul class="list-group ">
+                    {% for grupo in grupos %}
+                        <a href="/usuario/grupo/{{ grupo.id }}" class="btn btn-primary mt-1">{{ grupo.nome }}</a>
+                    {% else %}
+                        <p class="text-muted">Não tem grupos cadastrados.</p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="modal fade " id="defaultModal" tabindex="-1" role="dialog" aria-labelledby="defaultModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="defaultModalLabel">Permições do grupo {{ grupo.nome }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/usuario/salvar_permicoes" id="salvar_permicoes" method="post">
+                        {{ csrf_field() }}
+                        <input type="text" class="input_procurar form-control" placeholder="Filtrar por tarefa, menu" list=""><br>
+                        <div class="table-responsive" style="height: 400px;">
+                            <table class="table tabela table-bordered  bg-white bg-primary" >
+                                <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tarefa</th>
+                                    <th>Menu</th>
+                                </tr>
+                                </thead>
+                                <tbody >
+                                {% for tarefaAdd in  tarefas %}
+                                    <tr role="button" tr-selecionada2 style="cursor: pointer" class="perm_{{ tarefaAdd.id }}">
+                                        <td>{{ loop.index }}<input  type="checkbox" name="tarefas[]"  class="invisible"  multiple="" value="{{ tarefaAdd.id }}"></td>
+                                        <td>{{ tarefaAdd.nome }}</td>
+                                        <td> {{ tarefaAdd.menus.nome }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <input type="hidden" name="grupo_id" value="{{ grupo.id }}">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+                    <button type="submit" form="salvar_permicoes" class="btn btn-primary">Save alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="defaultModalNovoGrupo" tabindex="-1" role="dialog" aria-labelledby="popoverModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="popoverModalLabel">Novo grupo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/usuario/salvar_grupo" id="form_grupo" method="post">
+                     {{ csrf_field() }}
+
+                        <div class="form-group">
+                            <label for="">Nome</label>
+                            <input type="text" class="form-control" placeholder="Nome do grupo" name="g_nome">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-white" data-dismiss="modal">Fechar</button>
+                    <button type="submit" form="form_grupo" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        let permicoes = new permicoesModulo();
+        permicoes.init();
+    </script>
+{% endblock %}

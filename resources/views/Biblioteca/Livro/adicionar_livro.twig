@@ -1,0 +1,101 @@
+{% extends "@include/main_painel.twig" %}
+
+
+{% block conteudo %}
+
+    <div class="w-100 ">
+        <div class="card ">
+            <div class="card-body p-2 d-flex">
+                <a href="/biblioteca/adicionar_livro"  class="btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onMouseOver="this.style.color='#25364a'" onMouseOut="this.style.color='#5999c3'">
+                    <i class="material-icons">book</i>Novo livro
+                </a>
+                <a href="/biblioteca/adicionar_area"  class="btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;"  onMouseOver="this.style.color='#25364a'" onMouseOut="this.style.color='#5999c3'">
+                    <i class="material-icons">book</i>Nova área
+                </a>
+                <a href="/biblioteca/adicionar_autor"  class="btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;"  onMouseOver="this.style.color='#25364a'" onMouseOut="this.style.color='#5999c3'">
+                    <i class="material-icons">book</i>Novo autor
+                </a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h2>
+                    {% if livro %}Editar livro{% else %}Adicionar livro{% endif %}
+                </h2>
+                <hr>
+                <form class="w-100" id="needs-validation" novalidate=""  action="{% if livro %}/biblioteca/editar_livro{% else %}/biblioteca/salvar_livro{% endif %}"  method="POST" enctype="multipart/form-data">
+                  {{ csrf_field() }}
+                    <div class="row">
+                        <div class="form-group col-md-4 ">
+                            <label for="isigla">Sigla  </label>
+                            <input type="text" class="form-control" placeholder="Exemplo: IG..."   value="{{ livro.sigla }}" name="sigla" id="isigla" autocomplete="off" >
+                        </div>
+                        <div class="form-group col-md-4 ">
+                            <label for="itutulo">Título * </label>
+                            <input type="text" class="form-control"   name="titulo" id="itutulo" autocomplete="off" value="{{ livro.titulo }}" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="icurso">Área *</label>
+                            <select class="form-control" id="icurso" required="" name="curso">
+                                <option disabled="" selected>Selecione uma área</option>
+                                {% if livro %}
+                                    {% if livro.curso %}
+                                        <option selected value="{{ livro.curso.id }}">{{ livro.curso.nome }}(selecionado)</option>
+                                    {% endif %}
+                                {% endif %}
+                                {% for curso in cursos %}
+                                    <option value="{{ curso.id }}">{{ curso.nome }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4 ">
+                            <label for="iautor">Autor</label>
+                            <select name="autor" required="" class="form-control" id="iautor">
+                                <option  disabled="" selected>Selecione um autor</option>
+                                {% if livro %}
+                                    {% if livro.autor %}
+                                        <option selected value="{{ livro.autor.id }}">{{ livro.autor.nome }}(selecionado)</option>
+                                    {% endif %}
+                                {% endif %}
+                                {% for autor in autores %}
+                                    <option value="{{ autor.id }}">{{ autor.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="icapa">Capa</label>
+                            <input type="file" id="icapa" name="capa" class="form-control form-control-file p-1">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="ifd">Livro</label>
+                            <input type="file" name="ficheiro" id="ifd" class="form-control form-control-file p-1">
+                        </div>
+                        <input type="hidden" name="id" value="{{ livro.id }}">
+                        <div class="form-group col-md-12">
+                            <label for="idescricao">Descrição</label>
+                            <textarea name="descricao" class="form-control"  id="idescricao" placeholder="Breve descrição sobre o livro." rows="3">{{ livro.descricao }}</textarea>
+                        </div>
+                    </div>
+                    <p class="small ">* Campos obrigatórios <br><br>
+                        Capa: formatos válidos png, jpg, jpeg não superior a >{{ sistema.max_imagem }} KB <br><br>
+                        Sigla: Se não preencher, o sistema gera automaticamente.</p>
+
+                    <div class="d-flex align-items-end justify-content-end">
+                        <button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="mdc-snackbar mdc-snackbar--align-start mdc-snackbar--right" aria-live="assertive" aria-atomic="true" aria-hidden="true">
+        <div class="mdc-snackbar__text"></div>
+        <div class="mdc-snackbar__action-wrapper">
+            <button type="button" class="mdc-snackbar__action-button"></button>
+        </div>
+    </div>
+{% endblock %}
+

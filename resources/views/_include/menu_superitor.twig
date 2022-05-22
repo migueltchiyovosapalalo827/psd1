@@ -1,0 +1,20 @@
+<nav class="navbar navbar-dark bg-primary d-flex align-items-center  flex-nowrap justify-content-between">
+    <div class="d-flex align-items-center">
+        <button class="btn btn-link text-white pl-0" type="button" data-toggle="sidebar">
+            <i class="material-icons align-middle md-36">short_text</i>
+        </button>
+        <div class="page-title m-0">{{ sistema.nome }}</div>
+    </div>
+    <div class="" id="mainNavbar">
+        <ul class="navbar-nav ml-auto align-items-center">
+            <li class="nav-item btn d-flex align-items-center  dropdown-toggle dropdown-clear-caret"  data-toggle="sidebar" data-target="#user-drawer" >
+                <i class="material-icons text-white">person</i>
+                <a href="#" class="nav-link" >
+                    {{ SESSION.usuario.pessoa.nomeComSobrenome()}}
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+

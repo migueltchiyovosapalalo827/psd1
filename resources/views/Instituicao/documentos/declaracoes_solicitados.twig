@@ -1,0 +1,158 @@
+{% extends "@include/main_painel.twig" %}
+
+    {% block conteudo %}
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="mt-2">
+                   Declarações solicitados
+                </h2>
+                <hr>
+ <nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-docespera-tab" data-toggle="tab" href="#nav-docespera" role="tab" aria-controls="nav-docespera" aria-selected="true">Documentos em espera</a>
+    <a class="nav-item nav-link" id="nav-docpronto-tab" data-toggle="tab" href="#nav-docpronto" role="tab" aria-controls="nav-docpronto" aria-selected="false">Documentos prontos</a>
+    <a class="nav-item nav-link" id="nav-docentregue-tab" data-toggle="tab" href="#nav-docentregue" role="tab" aria-controls="nav-docentregue" aria-selected="false">Documentos entregues</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-docespera" role="tabpanel" aria-labelledby="nav-docespera-tab">
+        <div class="col-md-12 mt-4 mb-4">
+        <table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+                        <thead class="bg-primary text-white">
+                        <tr  class="text-center">
+                            <th class="text-white">#</th>
+                            <th class="text-white">Nome</th>
+                            <th class="text-white">Curso</th>
+                            <th class="text-white">Turma</th>
+                            <th class="text-white">Classe</th>
+                            <th class="text-white">Tipo declaração</th>
+                            <th class="text-white">Efeito</th>
+                             <th class="text-white">Documento</th>
+                            <th class="text-white">Requerimento</th>
+                            <th class="text-white">comprovativo</th>
+                            <th class="text-white">Validação</th>
+                        </tr>
+                        </thead>
+                        <tbody class="border-left-0">
+                        {% for declaracao in declaracoes %}
+                         {% if declaracao and declaracoe.estado == 0 %}
+                            <tr class="text-center">
+
+                                <td>{{ lood.index }}</td>
+                               <td>{{ declaracao.estudante.pessoa.nome_proprio}} {{ declaracao.estudante.pessoa.sobrenome}}</td>
+                                <td>{{ declaracao.curso}}</td>
+                                <td>{{ declaracao.turma}}</td>
+                                <td>{{ declaracao.classe}}</td>
+                                <td>{{ declaracao.tipo_declaracao}}</td>
+                                <td>{{ declaracao.efeito}}</td>
+                                <td> <a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/documento{{declaracao.estudante.pessoa.n_do_documento}}.pdf">Documento</a> </td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/requerimento{{declaracao.id }}.pdf">requerimento</a></td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/{{ declaracao.comprovativo }}">Comprovativo</a></td>
+                                <td><form action="validacao_pronto_decl" method="post"><input type="hidden" name="id" value="{{ declaracoes.id}}"><input class="btn btn-primary" type="submit" value="pronto"></td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                            </tbody>
+
+        </table>
+
+    </div>
+  </div>
+  <div class="tab-pane fade" id="nav-docpronto" role="tabpanel" aria-labelledby="nav-docpronto-tab">
+ <div class="col-md-12 mt-4 mb-4">
+
+         <table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+                        <thead class="bg-primary text-white">
+                        <tr  class="text-center">
+                            <th class="text-white">#</th>
+                            <th class="text-white">Nome</th>
+                            <th class="text-white">Curso</th>
+                            <th class="text-white">Turma</th>
+                            <th class="text-white">Classe</th>
+                            <th class="text-white">Tipo declaração</th>
+                            <th class="text-white">Efeito</th>
+                            <th class="text-white">Documento</th>
+                            <th class="text-white">Requerimento</th>
+                            <th class="text-white">comprovativo</th>
+                            <th class="text-white">Validação</th>
+                        </tr>
+                        </thead>
+                        <tbody class="border-left-0">
+                        {% for declaracao in declaracoes %}
+                            {% if declaracao and declaracao.estado == 1 %}
+                            <tr class="text-center">
+
+                                <td>{{ lood.index }}</td>
+                               <td>{{ declaracao.estudante.pessoa.nome_proprio}} {{ declaracao.estudante.pessoa.sobrenome}}</td>
+                                <td>{{ declaracao.curso}}</td>
+                                <td>{{ declaracao.turma}}</td>
+                                <td>{{ declaracao.classe}}</td>
+                                <td>{{ declaracao.tipo_declaracao}}</td>
+                                <td>{{ declaracao.efeito}}</td>
+                              <td> <a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/documento{{declaracao.estudante.pessoa.n_do_documento}}.pdf">Documento</a> </td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/requerimento{{declaracao.id }}.pdf">requerimento</a></td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/{{ declaracao.comprovativo }}">Comprovativo</a></td>
+                                <td><form action="validacao_entregue_decl" method="post"><input type="hidden" name="id" value="{{ declaracoes.id}}"><input class="btn btn-primary" type="submit" value="entregue"></td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            </tbody>
+
+        </table>
+    </div>
+  </div>
+   <div class="tab-pane fade" id="nav-docentregue" role="tabpanel" aria-labelledby="nav-docentregue-tab">
+ <div class="col-md-12 mt-4 mb-4">
+
+
+
+        <table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+                        <thead class="bg-primary text-white">
+                        <tr  class="text-center">
+                            <th class="text-white">#</th>
+                            <th class="text-white">Nome</th>
+                            <th class="text-white">Curso</th>
+                            <th class="text-white">Turma</th>
+                            <th class="text-white">Classe</th>
+                            <th class="text-white">Tipo declaração</th>
+                            <th class="text-white">Efeito</th>
+                            <th class="text-white">Documento</th>
+                            <th class="text-white">Requerimento</th>
+                            <th class="text-white">comprovativo</th>
+                            <th class="text-white">Estado</th>
+
+                        </tr>
+                        </thead>
+                        <tbody class="border-left-0">
+                        {% for declaracao in declaracoes %}
+                            {% if declaracao and declaracao.estado == 2 %}
+                            <tr class="text-center">
+
+                                <td>{{ lood.index }}</td>
+                               <td>{{ declaracao.estudante.pessoa.nome_proprio}} {{ declaracao.estudante.pessoa.sobrenome}}</td>
+                                <td>{{ declaracoes.curso}}</td>
+                                <td>{{ declaracoes.turma}}</td>
+                                <td>{{ declaracoes.classe}}</td>
+                                <td>{{ declaracoes.tipo_declaracao}}</td>
+                                <td>{{ declaracoes.efeito}}</td>
+                                <td> <a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/documento{{declaracao.estudante.pessoa.n_do_documento}}.pdf">Documento</a> </td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/requerimento{{declaracao.id }}.pdf">requerimento</a></td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/{{ declaracao.comprovativo }}">Comprovativo</a></td>
+                                <td>documento entregue</td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            </tbody>
+
+        </table>
+
+    </div>
+  </div>
+
+</div>
+            </div>
+        </div>
+
+
+    {% endblock %}

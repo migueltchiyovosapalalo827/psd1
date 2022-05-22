@@ -1,0 +1,50 @@
+<script type="text/javascript" src="/public/js/pnotify/PNotify.js"></script>
+{% if alert.tipo == 'sucesso' %}
+    <script charset="${_response_encoding}">
+        PNotify.success({
+            title: "{{ alert.getTitulo() }}",
+            text: "{{ alert.getMensagem() }}",
+            type: "success",
+            styling: 'bootstrap3',
+            icons: 'fontawesome4',
+            delay: 2000,
+            destroy: true,
+            remove: true,
+            textTrusted: true,
+        });
+        {{ alert.destruir() }}
+    </script>
+{% endif %}
+{%  if alert.tipo == 'erro' %}
+    <script charset="${_response_encoding}">
+        PNotify.error({
+            title: "{{ alert.getTitulo() }}",
+            text: "{{ alert.getMensagem() }}",
+            type: "error",
+            styling: 'bootstrap3',
+            icons: 'fontawesome4',
+            delay: 2000,
+            destroy: true,
+            remove: true,
+            textTrusted: true,
+
+        });
+    </script>
+    {{ alert.destruir() }}
+{% endif %}
+
+{%  if alert.tipo  == 'aviso' %}
+    <script charset="${_response_encoding}">
+        PNotify.info({
+            title: "{{ alert.getTitulo() }}",
+            text: "{{ alert.getMensagem() }}",
+            styling: 'bootstrap3',
+            icons: 'fontawesome4',
+            delay: 2000,
+            destroy: true,
+            remove: true,
+            textTrusted: true,
+        });
+    </script>
+    {{ alert.destruir() }}
+{% endif %}

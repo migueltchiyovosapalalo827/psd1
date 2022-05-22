@@ -1,0 +1,29 @@
+{% extends "@include/main_painel.twig" %}
+
+    {% block conteudo %}
+
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="mt-2">
+                    Fotos
+                </h2>
+                <hr>
+
+               <div class="card-deck">
+                         {% for foto in fotos %}
+                        <div class="card" >
+                        <a href="{{asset('ficheiros/escolas/fotos')}}/{{ foto.foto }}">
+                        <img style="height:250px"  class="card-img-top" src="/public/ficheiros/escolas/fotos/{{ foto.foto }}">
+                        <a href="/instituicao/eliminar_fotos/{{ foto.id }}"><button type="button" class="mt-1 btn btn-outline-danger">Eliminar</button></a>
+                        </a>
+                      </div>
+                        {% endfor %}
+
+                 </div>
+
+            </div>
+    </div>
+
+
+    {% endblock %}

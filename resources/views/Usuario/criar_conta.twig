@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Entrar</title>
+    <!-- Prevent the demo from appearing in search engines -->
+    <meta name="robots" content="noindex">
+    <!-- App CSS -->
+    <link type="text/css" href="{{asset('css/app2.css')}}" rel="stylesheet">
+    <!-- Font Awesome FREE Icons -->
+    <link type="text/css" href="{{asset('css/fontawesome-free.css')}}" rel="stylesheet">
+
+    <!-- For old IEs -->
+    <link rel="shortcut icon" href="{{asset('images/favicon/favicon.ico')}}" />
+    <!-- For new browsers multisize ico  -->
+    <link rel="icon" type="image/x-icon" sizes="16x16 32x32" href="{{asset('images/favicon/favicon.ico')}}">
+    <!-- Chrome for Android -->
+    <link rel="icon" sizes="192x192" href="{{asset('images/favicon/favicon-192.png')}}">
+    <!-- For iPhone 6+ downscaled for other devices -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{asset('images/favicon/favicon-180-precomposed.png')}}">
+    <!-- For IE10 Metro -->
+    <meta name="msapplication-TileColor" content="#FFFFFF">
+    <meta name="msapplication-TileImage" content="favicon-114-precomposed.png">
+</head>
+<body class="layout-login-centered-boxed" background="{{asset('images/fundo.png')}}">
+<div class=" d-flex flex-column col-lg-4 col-md-5 mt-5 pt-5">
+    <div class="d-flex flex-column justify-content-center align-items-center mt-2 mb-2 navbar-light">
+        <a href="index.html" class="navbar-brand text-center mb-2 mr-0" style="min-width: 0">
+            <!-- LOGO -->
+            <img width="100px;" src="{{asset('images/logo_psd_azul.png')}}" alt="" class="">
+        </a>
+    </div>
+
+    <div class="card card-body">
+        <form action="/salvar_nova_conta"  method="POST">
+        {{ csrf_field() }}
+            {% if erros.mensagem  %}
+                <div class="alert alert-{{erros.tipo}} alert-dismissable fade show" role="alert">
+                    {{ erros.mensagem }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
+
+            <div class="row">
+                <div class="form-group mb-2 col-md-6">
+                    <label class="text-label" for="email_2">Primeiro nome:</label>
+                    <div class="input-group input-group-merge">
+                        <input id="p.nome" type="text" required="" name="p_nome" class="form-control form-control-prepended" placeholder="Primeiro nome">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="fa fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-2 col-md-6">
+                    <label class="text-label" for="email_2">Sobrenome</label>
+                    <div class="input-group input-group-merge">
+                        <input id="p_sobrenome" type="text" required="" name="p_sobrenome" class="form-control form-control-prepended" placeholder="Sobrenome">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <span class="fa fa-user"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mb-2">
+                <label class="text-label" for="password_2">Email:</label>
+                <div class="input-group input-group-merge">
+                    <input id="u_email" type="email" required="" name="u_email" class="form-control form-control-prepended" placeholder="Entre com sua senha!">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <span class="fa fa-envelope"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group mb-2">
+                <label class="text-label" for="password_2">Género:</label>
+                <div class="row   col-md-12">
+                    <div class="custom-control custom-radio mr-1">
+                        <input type="radio" id="p_generoF" name="p_genero" value="F" class="custom-control-input">
+                        <label class="custom-control-label align-middle "   for="p_generoF">Femenino</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" id="p_generoM" name="p_genero" value="M" class="custom-control-input">
+                        <label class="custom-control-label align-middle"   for="p_generoM">Masculino</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group mb-2">
+                <label class="text-label" for="password_2">Senha:</label>
+                <div class="input-group input-group-merge">
+                    <input id="u_senha" type="password" required="" name="u_senha" class="form-control form-control-prepended" placeholder="Entre com sua senha!">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <span class="fa fa-key"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <input type="hidden" name="tipo" value="{{ tipo }}">
+            <div class="form-group mb-2">
+                <button class="btn btn-block btn-primary" type="submit">Criar conta</button>
+            </div>
+
+
+            <div class="page-separator">
+                <div class="page-separator__text">Ou</div>
+            </div>
+            <a href="/entrar" class="btn btn-light btn-block">
+                Entrar
+            </a>
+        </form>
+    </div>
+</div>
+
+</body>
+
+</html>

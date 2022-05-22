@@ -1,0 +1,73 @@
+{% extends "@include/main_painel.twig" %}
+
+{% block conteudo %}
+
+    <form action="" method="get">
+        <div class="container pt-1 pb-3">
+            <div class="input-group input-group--inline w-100" >
+                <div class="input-group-addon pb-1">
+                    <i class="material-icons align-middle">search</i>
+                </div>
+                <input type="text" list="lcursos"  onchange="$('form').submit()" autocomplete="off" class="form-control js-shuffle-search" name="q"  id="input_procurar" placeholder="Filtrar por área">
+                <datalist id="lcursos">
+                    {% for curso in cursos  %}
+                        <option value="{{ curso.id }}">{{ curso.nome }}</option>
+                    {% endfor %}
+                </datalist>
+            </div>
+        </div>
+    </form>
+
+    {% if curso  %}
+        <h2 class="text-center">Livros de {{ curso.nome }}</h2>
+    {% endif %}
+    <div class="container ">
+        <div class="row">
+            {% for livro in livros %}
+                <div class="col-md-4 col-lg-4" >
+                    <div class="card card-property">
+                        <a href="/biblioteca/ver_livro/{{ livro.id }}">
+                            {% if livro.capa %}
+                                <img style="height: 220px;" src="{{asset('ficheiros/livros/capas/')}}{{ livro.capa }}" class="card-img" alt="{{ livro.titulo }}">
+                            {% else %}
+                                <img style="height: 220px;" src="{{asset('ficheiros/livros/capas/capa_geral.png')}}" class="card-img" alt="Sem capa">
+                            {% endif %}
+                        </a>
+                        <div class="card-body">
+                            <div class="badge badge-primary-dark filtro" >{{ livro.sigla }}</div>
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <a href="/biblioteca/ver_livro/{{ livro.id }}" class="h6 text-primary-dark mb-0 filtro">{{ livro.titulo }}</a>
+                            </div>
+                            <ul class="list-unstyled m-0">
+                                <li class="d-flex mb-1">
+                                    <i class="material-icons md-18 align-middle mr-2 text-muted">bookmark_border</i>
+                                    <span class="">{{ curso.nome }}</span>
+                                </li>
+                                <li class="d-flex mb-1">
+                                    <i class="material-icons md-18 align-middle mr-2 text-muted">person</i>
+                                    <span class="">{{ livro.autor.nome }}</span>
+                                </li>
+                                <li class="d-flex mb-1">
+                                    <i class="material-icons md-18 align-middle mr-2 text-muted">access_time</i>
+                                    <span>{{ livro.created_at|date("d/m/Y", false) }}</span>
+                                </li>
+                                {% if livro.ficheiro %}
+                                    <a type="button" rel="button" class=" btn    btn-success btn-block text-white" target="_blank" href="{{asset('ficheiros/livros/ficheiros/')}}{{ livro.ficheiro }}">  <i class="material-icons font-1 align-bottom">file_download</i>Descarregar ficheiro</a>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p class=" col-md-12 text-muted text-center">Não foi possivel encontrar um livro {{ q }}</p>
+            {% endfor %}
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

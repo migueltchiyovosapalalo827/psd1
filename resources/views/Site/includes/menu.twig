@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="format-detection" content="telephone=no">
+		<title>{{ titulo }}</title>
+		<meta name="author" content="">
+		<meta name="description" content="Portal do Estudante">
+		<meta name="keywords" content="Escolas Lobito, Escolas públicas, Escolas Privadas, Escolas do Lobito, Gestão de inquerito, Biblioteca Virtual">
+		<!-- CSS FILES -->
+		<link rel="stylesheet" href="{{ asset('site/css/bootstrap.min.css')}}">
+		<link rel="stylesheet" href="{{ asset('site/fonts/iconfont.css')}}">
+		<link rel="stylesheet" href="{{ asset('site/css/swiper.min.css')}}">
+		<link rel="stylesheet" href="{{ asset('site/css/venobox.css')}}">
+		<link rel="stylesheet" href="{{ asset('site/css/animate.css')}}">
+		<link rel="stylesheet" href="{{ asset('site/css/select2.min.css')}}">
+		<link rel="stylesheet" href="{{ asset('site/css/style.css')}}">
+		<link rel="stylesheet" href="{{ asset('site/css/responsive.css')}}">
+		<link rel="stylesheet" href="{{ asset('site/css/color-1.css')}}">
+		<style type="text/css">
+		@media (min-width: 992px){
+			.container {
+				max-width: 1000px !important;
+			}
+		}
+		</style>
+	</head>
+	<body>
+		<div id="dtr-wrapper" class="clearfix">
+			<!-- Header
+			============================================= -->
+			<header id="dtr-header-global" class="fixed-top" >
+				<nav class="navbar navbar-expand-lg navbar-dark dtr-menu">
+					<div class="container">
+						<!-- light logo -->
+						<a class="navbar-brand logo-light" href="#home"><img src="{{asset('site/images/logo.png')}}" alt="logo"></a>
+						<!-- dark logo -->
+						<a class="navbar-brand logo-dark" href="#home"><img src="{{asset('site/images/logo-sticky.png')}}" alt="logo"></a>
+						<!-- button ends -->
+						<!-- nav menu toggler-->
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+						</button>
+						<!-- menu starts-->
+						<div class="collapse navbar-collapse" id="navbarSupportedContent">
+							<ul class="dtr-scrollspy navbar-nav ml-auto">
+								<li class="nav-item" > <a class="nav-link" href="/home" style="color:#142752" >Início</a> </li>
+								<li class="nav-item"> <a class="nav-link"  href="#about" style="color:#142752" >Sobre</a> </li>
+								<li class="nav-item"> <a class="nav-link" href="#cta" style="color:#142752" >Contactos</a> </li>
+
+								<li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color:#142752" >ESCOLAS</a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                        <a href="escolas_publicas" class="dropdown-item">Públicas</a>
+                        <a href="escolas_privadas" class="dropdown-item">Privadas</a>
+
+								</li>
+							</ul>
+						</div>
+						<button class="dtr-btn" >
+						{% if  SESSION.usuario.pessoa.nomeComSobrenome() %}
+						<a href="entrar">{{SESSION.usuario.pessoa.nomeComSobrenome()}}
+							<span>
+								<i class="fa fa-user" aria-hidden="true"></i>
+							</span>
+						</a>
+						{% else %}
+						<a href="entrar">Login
+							<span>
+								<i class="fa fa-user" aria-hidden="true"></i>
+							</span>
+						</a>
+						{% endif %}
+
+						</button>
+						<!-- menu ends-->
+					</div>
+				</nav>
+			</header>
