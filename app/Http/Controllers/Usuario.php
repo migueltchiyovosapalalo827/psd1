@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Models\Estudantes;
 use App\Models\Grupo_de_usuarios;
 use App\Models\Inqueridos;
+use App\Models\Instituicoes;
 use App\Models\Pesquisadores;
 use App\Models\Pessoas;
 use App\Models\Tarefas;
@@ -43,7 +44,6 @@ class  Usuario  extends Controller
           $grupoU = Grupo_de_usuarios::where("nome","=","inqueridos")->first()->toArray();
       }
 
-
      //Recuperando valores do request
       $u_email=$r->post("u_email");
       $u_senha=$r->post("u_senha");
@@ -66,7 +66,7 @@ class  Usuario  extends Controller
         $usuario->pessoas_id=$pessoa->id;
         $usuario->grupo_de_usuarios_id=$u_grupo;
         if ($usuario->save()){
-            if ($r->post('tipo') == "inquirido") {
+       if ($r->post('tipo') == "inquirido") {
                     #usuario foi salvo
                 $inquerido = new Inqueridos();
                 $inquerido->pessoas_id=$pessoa->id;
@@ -76,14 +76,15 @@ class  Usuario  extends Controller
                   Http::redirecionar("/entrar");
               }
           }else{
-            $inquerido = new Inqueridos();
-            $inquerido->pessoas_id=$pessoa->id;
+            $pesquisador = new Pesquisadores();
+            $pesquisador->pessoas_id=$pessoa->id;
+            $pesquisador->nome=Testos::primeiroEultimo($p_nome,$p_sobrenome);
             $estudante = new Estudantes();
             $estudante->pessoas_id = $pessoa->id;
             $estudante->nome = Testos::primeiroEultimo($p_nome,$p_sobrenome);
             if ($estudante->save())
             {
-            $inquerido->save();
+            $pesquisador->save();
             new Alert("Use seu email e senha para entrar","success","");
              Http::redirecionar("/entrar");
          }
@@ -275,12 +276,13 @@ public function entrar_finalizar(Request $req)
             if ($inquerido->first()){
                 $inqueridoObj= new Inquerido();
                 Sessoes::adicionar("inquerido",$inquerido->first()->id);
-               // Http::redirecionar("/inquerido/responderInqueritos/".$inquerido->first()->id);
-               Http::redirecionar("painel");
+                Http::redirecionar("/inquerido/responderInqueritos/".$inquerido->first()->id);
+
                 return;
             }
-           // dd(Sessoes::obter("MenuDoUsuario"));
+
             Http::redirecionar("painel");
+            return;
         }
         else{
             new Alert("Senha invalida", "danger");
@@ -316,11 +318,12 @@ public function meu_perfil()
 
     $usuario = Usuarios::where("id","=",$usuarioLogado["id"]);
     $usuario = $usuario->get();
+    $instituicoes = Instituicoes::all();
     if ($usuario->count()){
         $usuario = $usuario->first();
     }
 
-    return view("Usuario.meu_perfil",["titulo"=>"Meu perfil","pessoa"=>$pessoa,"usuario"=>$usuario]);
+    return view("Usuario.meu_perfil",["titulo"=>"Meu perfil","pessoa"=>$pessoa,"usuario"=>$usuario,"instituicoes"=>$instituicoes]);
 }
 public function atualizar_informacoes_pessoais(Request $r): void
 {
@@ -344,6 +347,7 @@ public function atualizar_informacoes_pessoais(Request $r): void
     $p_bairro=$r->post("p_bairro");
     $p_local_de_nascimento=$r->post("p_local_de_nascimento");
     $p_naturalidade=$r->post("p_naturalidade");
+    $p_instituicao = $r->post("p_instituicao");
     $pessoa->nome_proprio=$p_nome;
     $pessoa->sobrenome=$p_sobrenome;
     $pessoa->data_de_nascimento=$p_data_de_nascimento;
@@ -358,7 +362,7 @@ public function atualizar_informacoes_pessoais(Request $r): void
     $pessoa->tipo_de_documento=$p_t_documento;
     $pessoa->data_de_emissao =  $p_data_de_emissao;
     $pessoa->naturalidade=$p_naturalidade;
-
+    $pessoa->estudante->update(["id_instituicao" =>$p_instituicao]);
     if ($pessoa->update([
         "nome_proprio",
         "sobrenome",
@@ -375,6 +379,7 @@ public function atualizar_informacoes_pessoais(Request $r): void
         "tipo_de_documento",
         "naturalidade", "data_de_emissao"
         ])){
+
         $documento->move("ficheiros/escolas/doc_emiss_certificado/","documento".$pessoa->n_do_documento.".pdf");
         new Alert("Dados pessoais atualizados com sucesso");
         Http::redirecionar("/usuario/meu_perfil");

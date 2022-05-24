@@ -23,7 +23,7 @@ class Instituicoes extends Model
     }
     public function cursos_escola(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Cursos_escola::class, 'id_instituicao');
+        return $this->hasMany(Cursos_escolas::class, 'id_instituicao');
     }
     public function historial_escolas(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
@@ -48,5 +48,12 @@ class Instituicoes extends Model
     {
         return $this->hasMany(CartaoModel::class, 'id_instituicao');
     }
+
+  //relação de um para  muito entre instituição e estudante
+  public function estudantes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Estudantes::class, 'id_instituicao');
+    }
+
 
 }

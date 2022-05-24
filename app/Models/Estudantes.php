@@ -18,7 +18,7 @@ class Estudantes extends Model
     /**
      * @var array
      */
-    protected $fillable = ['pessoas_id','nome','logo'];
+    protected $fillable = ['pessoas_id','nome','logo','id_instituicao'];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -36,7 +36,11 @@ class Estudantes extends Model
     {
         return $this->HasMany(Emissao_declaracoes::class, 'id_estudante');
     }
-
+// relação inverso de um para muitos entre estudante e instituição
+    public function instituicao(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Instituicoes::class, 'id_instituicao');
+    }
 
 
 }

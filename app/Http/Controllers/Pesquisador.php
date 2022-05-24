@@ -170,7 +170,7 @@ class Pesquisador extends Controller
     $p_n_documento=$r->post("p_n_documento");
     $p_t_documento=$r->post("p_t_documento");
     $p_genero=$r->post("p_genero");
-    $p_data_de_nascimento=$r->post("p_data_de_nascimento");
+    $p_data_de_nascimento=$r->post ("p_data_de_nascimento");
     $p_provincia=$r->post("p_provincia");
     $p_municipio=$r->post("p_municipio");
     $p_bairro=$r->post("p_bairro");

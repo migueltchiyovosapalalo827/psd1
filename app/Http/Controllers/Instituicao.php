@@ -62,6 +62,7 @@ class Instituicao extends Controller
         $logotipo->move("ficheiros/escolas/logotipo/",$logotipoNovoNome);
         $instituicao->logotipo =$logotipoNovoNome;
     }
+
     $instituicao->nome =$nome;
     $instituicao->email =$email;
     $instituicao->telefone =$telefone;
@@ -364,17 +365,15 @@ public function ver_fotos()
 
     }
     else{*/
-
-        $instituicao = Instituicoes::find($req->post("id_instituicao"));
+        $estudante = Estudantes::find($req->post("id_estudante"));
+        $instituicao = $estudante->instituicao;
         $curso=$req->post("curso");
         $turma=$req->post("turma");
-        $id_estudante=$req->post("id_estudante");
+        $id_estudante= $estudante->id;
         $numero_estudantil=$req->post("numero_estudantil");
         $ano_termino=$req->post("ano_termino");
-        $tipo_documento=$req->post("tipo_documento");
         $comprovativo = $req->file('comprovativo', null);
-        $id_instituicao=$req->post("id_instituicao");
-        $efeito = $req->post("efeito");
+        $id_instituicao= $instituicao->id;
         $docNovoNome="";
         if ($comprovativo != null){
             if(!Ficheiros::eDocumentoValido($comprovativo)){
@@ -421,6 +420,7 @@ public function ver_fotos()
         $vrfca=Usuarios::where("id","=",$usuario)->get()->first();
         $estudante=Estudantes::where("pessoas_id","=",$vrfca['pessoas_id'])->get()->first();
         $instituicoes=Instituicoes::all();
+        $curso_escolas = Cursos_escolas::where(["id_instituicao" => $estudante->id_instituicao])->get();
        return view("Instituicao.documentos.emitir_declaracao", ["titulo" => "Emitir Declaração","instituicoes"=>$instituicoes,"usuario"=>$estudante]);
     }
     public function salvar_declaracao(Request $req)
@@ -434,14 +434,15 @@ public function ver_fotos()
 
     }
     else{*/
-        $instituicao = Instituicoes::find($req->post("id_instituicao"));
+        $estudante = Estudantes::find($req->post("id_estudante"));
+        $instituicao = $estudante->instituicao;
         $curso=$req->post("curso");
         $turma=$req->post("turma");
         $id_estudante=$req->post("id_estudante");
         $classe=$req->post("classe");
         $tipo_declaracao=$req->post("tipo_declaracao");
         $comprovativo=$req->file('comprovativo', null);
-        $id_instituicao=$req->post("id_instituicao");
+        $id_instituicao= $instituicao->id;
         $efeito=$req->post("efeito");
 
       $docNovoNome="";

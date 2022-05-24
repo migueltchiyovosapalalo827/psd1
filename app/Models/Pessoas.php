@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property int $id
@@ -76,6 +77,14 @@ class Pessoas extends Model
         }
         return "Feminino";
     }
+   // relação de um para um entre pessoa e estudante
+    public function estudante(): HasOne
+    {
+        return $this->hasOne(Estudantes::class, 'pessoas_id');
+    }
+
+
+
     /**
      * @return string
      */
