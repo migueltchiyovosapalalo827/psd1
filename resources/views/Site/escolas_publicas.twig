@@ -12,9 +12,9 @@
 
                                 </div>
                                 <div class="el-card-content">
-                                    <h6 class="mt-2 text-center"><a class="nav-link" href="/escola/{{ escolapu.id }}">{{ escolapu.nome }}</a></h6>
+                                    <h6 class="mt-2 text-center"><a class="nav-link" href="{{ route('escola', escolapu.id)}}">{{ escolapu.nome }}</a></h6>
 
-                            <center><a href="/escola/{{ escolapu.id }}" class="mb-3 btn btn-primary btn-rounded waves-effect waves-light m-b-40">Saber mais <i class=" icon-arrow-right" aria-hidden="true"></i></a></center>
+                            <center><a href="{{ route('escola', escolapu.id)}}" class="mb-3 btn btn-primary btn-rounded waves-effect waves-light m-b-40">Saber mais <i class=" icon-arrow-right" aria-hidden="true"></i></a></center>
 
                                 </div>
 

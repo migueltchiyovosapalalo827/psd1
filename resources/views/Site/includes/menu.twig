@@ -45,28 +45,28 @@
 						<!-- menu starts-->
 						<div class="collapse navbar-collapse" id="navbarSupportedContent">
 							<ul class="dtr-scrollspy navbar-nav ml-auto">
-								<li class="nav-item" > <a class="nav-link" href="/home" style="color:#142752" >Início</a> </li>
+								<li class="nav-item" > <a class="nav-link" href="{{'/'}}" style="color:#142752" >Início</a> </li>
 								<li class="nav-item"> <a class="nav-link"  href="#about" style="color:#142752" >Sobre</a> </li>
 								<li class="nav-item"> <a class="nav-link" href="#cta" style="color:#142752" >Contactos</a> </li>
 
 								<li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" style="color:#142752" >ESCOLAS</a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <a href="escolas_publicas" class="dropdown-item">Públicas</a>
-                        <a href="escolas_privadas" class="dropdown-item">Privadas</a>
+                        <a href="{{ route('escolas_publicas') }}" class="dropdown-item">Públicas</a>
+                        <a href="{{ route('escolas_privadas') }}" class="dropdown-item">Privadas</a>
 
 								</li>
 							</ul>
 						</div>
 						<button class="dtr-btn" >
 						{% if  SESSION.usuario.pessoa.nomeComSobrenome() %}
-						<a href="entrar">{{SESSION.usuario.pessoa.nomeComSobrenome()}}
+						<a href="{{ route('usuario.entrar') }}">{{SESSION.usuario.pessoa.nomeComSobrenome()}}
 							<span>
 								<i class="fa fa-user" aria-hidden="true"></i>
 							</span>
 						</a>
 						{% else %}
-						<a href="entrar">Login
+						<a href="{{ route('usuario.entrar') }}">Login
 							<span>
 								<i class="fa fa-user" aria-hidden="true"></i>
 							</span>
