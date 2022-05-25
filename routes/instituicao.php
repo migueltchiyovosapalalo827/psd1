@@ -58,6 +58,7 @@ $router->group(['prefix' => 'cartao','namespace' => 'App\\Http\\Controllers'], f
     $router->get('/emitir_cartao', 'Cartao@criar')->name("cartao.criar");
     $router->get('/', 'Cartao@index')->name('cartao.index');
     $router->post('/salvar_cartao', 'Cartao@salvar')->name('cartao.salvar');
+    $router->get('/pesquisar_cartao', 'Cartao@index')->name('cartao.pesquisar');
     $router->get('/ver_cartao/{id}', 'Cartao@verCartao')->name('cartao.ver');
     $router->get('/editar_cartao/{id}', 'Cartao@editarCartao')->name('cartao.editar');
     $router->post('/update_cartao/{id}', 'Cartao@salvarEditarCartao')->name('cartao.update');

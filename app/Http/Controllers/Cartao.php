@@ -13,9 +13,29 @@ use Illuminate\Http\Request;
 
 class Cartao extends Controller
 {
-    public function index()
-    {  $cartoes = CartaoModel::paginate(10);
-        return view('Cartao.cartoes_emtidos',['cartoes'=>$cartoes]);
+    public function index(Request $request)
+    {
+       // $this->verifica();
+        $instituicoes = Instituicoes::all();
+        $search = function ($query) use($request) {
+            $iguais = $request->only('id_instituicao');
+
+            foreach ($iguais as $nome => $valor) {
+                if ($valor) {
+                    $query->where($nome, '=', $valor);
+                }
+            }
+            $termos = $request->only('curso','classe');
+
+            foreach ($termos as $nome => $valor) {
+                if ($valor) {
+                    $query->orWhere($nome, 'LIKE', '%' . $valor . '%');
+                }
+            }
+        };
+
+        $cartoes = CartaoModel::where($search)->paginate(10);
+        return view('Cartao.cartoes_emtidos',['cartoes'=>$cartoes,'instituicoes'=>$instituicoes]);
     }
 
     public function criar()

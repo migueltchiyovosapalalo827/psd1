@@ -14,9 +14,34 @@
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="nav-docespera" role="tabpanel" aria-labelledby="nav-docespera-tab">
-        <div class="col-md-12 mt-4 mb-4">
 
+  <div class="tab-pane fade show active" id="nav-docespera" role="tabpanel" aria-labelledby="nav-docespera-tab">
+
+        <div class="col-md-12 mt-4 mb-4">
+        <form class="form-inline" method="get"  action="{{route('cartao.pesquisar')}}">
+        {{ csrf_field() }}
+    <div class="form-group mb-2">
+    <label for="instituicao" class="sr-only">curso</label>
+    <select class="custom-select" id="instituicao" name="id_instituicao" >
+        <option selected disabled value="">Pesquisar por Instituição</option>
+        {% for instituicao in instituicoes %}
+             <option value="{{ instituicao.id }}">{{instituicao.nome}}</option>
+        {% endfor %}
+
+      </select>
+  </div>
+  <div class="form-group mb-2">
+    <label for="curso" class="sr-only">curso</label>
+    <input type="text"  class="form-control" id="curso" placeholder="pesquisar por curso" name="curso">
+  </div>
+  <div class="form-group mb-2">
+    <label for="classe" class="sr-only">Classe</label>
+    <input type="text" class="form-control" id="classe" placeholder="pesquisar por classe" name="classe">
+  </div>
+    <button type="submit" class="btn  mb-2  material-icons">search</button>
+
+
+</form>
         {% if cartoes %}
         <table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
                         <thead class="bg-primary text-white">

@@ -8,7 +8,8 @@
 				Emitir Cartão de estudante
 			</h2>
 			<hr>
-			<form action="/cartao/update_cartao/{{cartao.id}}" enctype="multipart/form-data" method="POST"> {{ csrf_field() }}
+			<form action="/cartao/update_cartao/{{cartao.id}}" enctype="multipart/form-data" method="POST">
+             {{ csrf_field() }}
 				{% if alert  %}
 					<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
