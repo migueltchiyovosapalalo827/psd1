@@ -67,9 +67,14 @@
                                 </td>
                             </tr>
                             {% endfor %}
-                            </tbody>
 
+                            </tbody>
         </table>
+         <br>
+        <div class="d-flex justify-content-center">
+          {{ cartoes.links }}
+      </div>
+
         {% else %}
         <p class="ml-2">Não há solicitação de Cartões.</p>
         {% endif %}

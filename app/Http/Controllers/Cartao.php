@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class Cartao extends Controller
 {
     public function index()
-    {  $cartoes = CartaoModel::all();
+    {  $cartoes = CartaoModel::paginate(10);
         return view('Cartao.cartoes_emtidos',['cartoes'=>$cartoes]);
     }
 
@@ -30,6 +30,9 @@ class Cartao extends Controller
     }
     public function salvar(Request $r)
     {
+        # code...
+        $this->verifica();
+
         $cartao = new CartaoModel();
         $cartao->curso = $r->curso;
         $cartao->turma = $r->turma;
@@ -46,6 +49,7 @@ class Cartao extends Controller
     }
     $cartao->foto = $docNovoNome;
     $cartao->save();
+
     new Alert("A Emissão do catão do estudante foi enviada com Sucesso", "sucesso", );
     Http::redirecionar("/cartao/emitir_cartao");
     return;

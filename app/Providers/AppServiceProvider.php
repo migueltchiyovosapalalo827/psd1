@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Uteis\Flash;
 use App\Uteis\Sessoes;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Twig\Environment;
 use TwigBridge\Command\TwigBridge;
@@ -29,9 +30,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Paginator::useBootstrap();
         $loader = new \Twig\Loader\FilesystemLoader();
         $loader->addPath(base_path() . '/resources/views/_include', 'include');
          Twig::getLoader()->addLoader($loader);
+
     }
 
 }
