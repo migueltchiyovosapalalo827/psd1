@@ -66,7 +66,7 @@ public function editarCartao($id)
         $estudante=Estudantes::where("pessoas_id","=",$vrfca['pessoas_id'])->get()->first();
         $instituicoes=Instituicoes::all();
         $cartao = CartaoModel::find($id);
-    return view('Cartao.editar_cartao',["cartao"=>$cartao,"instituicoes"=>$instituicoes,"estudante"=>$estudante]);
+      return view('Cartao.editar_cartao',["cartao"=>$cartao,"instituicoes"=>$instituicoes,"estudante"=>$estudante]);
 }
 
 public function salvarEditarCartao(Request $r,$id)
