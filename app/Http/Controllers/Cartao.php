@@ -59,12 +59,13 @@ public function verCartao($id)
 
 public function editarCartao($id)
 {
-    $cartao = CartaoModel::find($id);
+
     $this->verifica();
-    $usuario = Sessoes::obter("usuario");
-    $vrfca=Usuarios::where("id","=",$usuario)->get()->first();
-    $estudante=Estudantes::where("pessoas_id","=",$vrfca['pessoas_id'])->get()->first();
-    $instituicoes=Instituicoes::all();
+        $usuario = Sessoes::obter("usuario");
+        $vrfca=Usuarios::where("id","=",$usuario)->get()->first();
+        $estudante=Estudantes::where("pessoas_id","=",$vrfca['pessoas_id'])->get()->first();
+        $instituicoes=Instituicoes::all();
+        $cartao = CartaoModel::find($id);
     return view('Cartao.editar_cartao',["cartao"=>$cartao,"instituicoes"=>$instituicoes,"estudante"=>$estudante]);
 }
 
