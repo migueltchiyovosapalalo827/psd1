@@ -25,7 +25,7 @@ class Cartao extends Controller
         $vrfca=Usuarios::where("id","=",$usuario)->get()->first();
         $estudante=Estudantes::where("pessoas_id","=",$vrfca['pessoas_id'])->get()->first();
         $instituicoes=Instituicoes::all();
-        return view("Cartao.emitir_cartao", ["titulo" => "Emitir Declaração","instituicoes"=>$instituicoes,"usuario"=>$estudante]);
+        return view("Cartao.emitir_cartao", ["titulo" => "Emitir Cartão","instituicoes"=>$instituicoes,"usuario"=>$estudante]);
 
     }
     public function salvar(Request $r)
@@ -74,7 +74,7 @@ public function salvarEditarCartao(Request $r,$id)
     $cartao->curso = $r->curso;
     $cartao->turma = $r->turma;
     $estudante =  Estudantes::find($r->id_estudante);
-    $cartao->pessoas_id = $r->id_estudante;
+    $cartao->pessoas_id = $estudante->pessoa->id;
     $cartao->classe = $r->classe;
     $foto = $r->file('foto',null);
     $docNovoNome=Ficheiros::novoNome("psddocemiss".$estudante->pessoa->id,$foto->clientExtension());
