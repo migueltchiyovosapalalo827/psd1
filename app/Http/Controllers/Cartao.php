@@ -85,7 +85,7 @@ public function salvarEditarCartao(Request $r,$id)
     $cartao->foto = $docNovoNome;
     $cartao->save();
     new Alert("A Emissão do catão do estudante foi actualizado com sucesso", "sucesso", );
-    Http::redirecionar("/cartao");
+    Http::redirecionar("/cartao/meu_cartao");
 }
 
 public function excluirCartao($id)
