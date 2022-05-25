@@ -73,11 +73,11 @@ public function salvarEditarCartao(Request $r,$id)
     $cartao = CartaoModel::find($id);
     $cartao->curso = $r->curso;
     $cartao->turma = $r->turma;
-    //$studante =  Estudantes::find($r->id_estudante);
+    $estudante =  Estudantes::find($r->id_estudante);
     $cartao->pessoas_id = $r->id_estudante;
     $cartao->classe = $r->classe;
     $foto = $r->file('foto',null);
-    $docNovoNome=Ficheiros::novoNome("psddocemiss".$r->id_instituicao,$foto->clientExtension());
+    $docNovoNome=Ficheiros::novoNome("psddocemiss".$estudante->pessoa->id,$foto->clientExtension());
     if (!empty($docNovoNome)){
         $foto->move("ficheiros/escolas/foto/",$docNovoNome);
     }
