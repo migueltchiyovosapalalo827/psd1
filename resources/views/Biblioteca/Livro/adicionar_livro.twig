@@ -22,6 +22,14 @@
                 <h2>
                     {% if livro %}Editar livro{% else %}Adicionar livro{% endif %}
                 </h2>
+
+                 {% if alert  %}
+					<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div> {{  alert.destruir() }}
+				{% endif %}
                 <hr>
                 <form class="w-100" id="needs-validation" novalidate=""  action="{% if livro %}/biblioteca/editar_livro{% else %}/biblioteca/salvar_livro{% endif %}"  method="POST" enctype="multipart/form-data">
                   {{ csrf_field() }}

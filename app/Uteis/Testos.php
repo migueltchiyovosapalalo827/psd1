@@ -66,7 +66,7 @@ class  Testos
      * @param String $testo
      * @return string
      */
-    public static function sigla(string $sigla,string $testo)
+    public static function sigla( $sigla , $testo)
     {
         if (empty($sigla)){
             $siglas=str_split($testo, 3);

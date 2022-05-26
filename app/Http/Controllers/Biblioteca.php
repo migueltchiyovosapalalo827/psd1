@@ -256,8 +256,8 @@ class Biblioteca extends Controller
         return view("Biblioteca.Curso.adicionar_curso",["titulo"=>"Adicionar curso"]);
     }
     public function salvar_curso(Request $req)
-    {  $this->verifica();
-
+    {
+         $this->verifica();
         $nome = $req->get("nome");
         $sigla = Testos::sigla($req->sigla,$nome);
 
@@ -265,13 +265,14 @@ class Biblioteca extends Controller
         $curso->nome = $nome;
         $curso->sigla = $sigla;
         if ($curso->save()){
-            new Alert("O curso".$nome." foi salvo com sucesso", "sucesso", "Curso salvo." );
-            Http::redirecionar("/biblioteca/adicionar_curso");
+            new Alert("O curso   ".$nome." foi salvo com sucesso", "sucesso", "Curso salvo." );
+            Http::redirecionar("/biblioteca/adicionar_area");
         }else{
             new Alert("Não foi possivel salvar o curso.", "erro", "Erro ao salvar o curso." );
-            Http::redirecionar("/biblioteca/adicionar_curso");
+            Http::redirecionar("/biblioteca/adicionar_area");
         }
     }
+
     public function editar_curso(Request $req)
     {  $this->verifica();
         $id=$req->get("id");

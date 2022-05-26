@@ -29,6 +29,13 @@
 
                         <div class="card-body">
                             <h3 class="card-title">Adicionar Autor</h3>
+                             {% if alert  %}
+					<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div> {{  alert.destruir() }}
+				{% endif %}
                             <hr>
 
                             <form class="w-100" method="POST" action="/biblioteca/salvar_autor">

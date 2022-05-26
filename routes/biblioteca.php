@@ -31,6 +31,7 @@ $router->group(['prefix' => 'biblioteca','namespace' => 'App\\Http\\Controllers'
     $router->get('/listar_areas', 'Biblioteca@listar_cursos')->name('biblioteca.listar_cursos');
     $router->get('/ver_area', 'Biblioteca@ver_curso')->name('biblioteca.ver_curso');
     $router->get('/salvar_area', 'Biblioteca@salvar_curso')->name('biblioteca.salvar_curso');
+   //$router->get('/store_area','Biblioteca@salvar_curso')->name('biblioteca.salvar_curso');
     $router->get('/editar_area', 'Biblioteca@editar_curso')->name('biblioteca.editar_curso');
     $router->get('/eliminar_areas/{id}', 'Biblioteca@eliminar_curso')->name('biblioteca.eliminar_curso');
     #autor
