@@ -8,6 +8,13 @@ class CartaoModel extends Model
     protected $table = 'cartao';
     protected $fillable = [ 'curso', 'turma', 'pessoas_id', 'classe', 'foto', 'id_instituicao','numero_estudantil'];
 
+     /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
+
     public function pessoa()
     {
         return $this->belongsTo(Pessoas::class, 'pessoas_id');
@@ -16,10 +23,25 @@ class CartaoModel extends Model
     {
         return $this->belongsTo(Instituicoes::class, 'id_instituicao');
     }
-     /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
+    //função para buscar um cartão  por meio de uma query e um request
+    public static function buscar($request)
+    {
+        $iguais = $request->only('id_instituicao');
+        $termos = $request->only('curso','classe');
+        $query = CartaoModel::query();
+        foreach ($iguais as $nome => $valor) {
+            if ($valor) {
+                $query->where($nome, '=', $valor);
+            }
+        }
+        foreach ($termos as $nome => $valor) {
+            if ($valor) {
+               // $query->orWhere($nome, 'LIKE', '%' . $valor . '%');
+               $query->where($nome, 'LIKE', '%' . $valor . '%');
+            }
+        }
+        return $query->paginate(10);
+    }
+
+
 }

@@ -17,25 +17,9 @@ class Cartao extends Controller
     {
        // $this->verifica();
         $instituicoes = Instituicoes::all();
-        $search = function ($query) use($request) {
-            $iguais = $request->only('id_instituicao');
-
-            foreach ($iguais as $nome => $valor) {
-                if ($valor) {
-                    $query->where($nome, '=', $valor);
-                }
-            }
-            $termos = $request->only('curso','classe');
-
-            foreach ($termos as $nome => $valor) {
-                if ($valor) {
-                    $query->orWhere($nome, 'LIKE', '%' . $valor . '%');
-                }
-            }
-        };
-
-        $cartoes = CartaoModel::where($search)->paginate(10);
-        return view('Cartao.cartoes_emtidos',['cartoes'=>$cartoes,'instituicoes'=>$instituicoes]);
+        $cartoes = CartaoModel::buscar($request);
+        return view('Cartao.cartoes_emtidos',['cartoes'=>$cartoes,'instituicoes'=>$instituicoes,
+        'curso'=>$request->curso,'classe'=>$request->classe,'id_instituicao'=>$request->id_instituicao]);
     }
 
     public function criar()
@@ -133,35 +117,15 @@ public function cartaoEstudante()
     $cartao=CartaoModel::where("pessoas_id","=",$vrfca['pessoas_id'])->get()->first();
     return view('Cartao.ver_cartao',["cartao"=>$cartao]);
 }
-//cartao por classe
-public function cartaoClasse($classe)
-{
-    $cartao = CartaoModel::where('classe',$classe)->get();
-    return view('Cartao.cartaoClasse',["cartao"=>$cartao]);
-}
-//cartao por turma
-public function cartaoTurma($turma)
-{
-    $cartao = CartaoModel::where('turma',$turma)->get();
-    return view('Cartao.cartaoTurma',["cartao"=>$cartao]);
-}
-//cartao por curso
-public function cartaoCurso($curso)
-{
-    $cartao = CartaoModel::where('curso',$curso)->get();
-    return view('Cartao.cartaoCurso',["cartao"=>$cartao]);
-}
+
 // pesquisar cartao por instituicao, estudante, classe, turma, curso e numero estudantil
-public function pesquisarCartao(Request $r)
+public function pesquisarCartao(Request $request)
 {
-    $cartao = CartaoModel::where('id_instituicao',$r->id_instituicao)
-    ->orWhere('pessoas_id',$r->id_estudante)
-    ->orWhere('classe',$r->classe)
-    ->orWhere('turma',$r->turma)
-    ->orWhere('curso',$r->curso)
-    ->orWhere('numero_estudantil',$r->numero_estudantil)
-    ->get();
-    return view('Cartao.cartaoInstituicao',["cartao"=>$cartao]);
+    $usuario = Sessoes::obter("usuario");
+    $instituicao=Instituicoes::where("id_usuario","=",$usuario['id'])->get()->first();
+    $request->merge(['id_instituicao"' => $instituicao['id']]);
+    $cartoes = CartaoModel::buscar($request);
+     return view('Cartao.pesquisarCartao',['cartoes'=>$cartoes,'curso'=>$request->curso,'classe'=>$request->classe]);
 
 }
 
