@@ -21,7 +21,7 @@
 						<form class="form-inline" method="get" action="{{route('cartao.pesquisar')}}"> {{ csrf_field() }}
 							<div class=" col-md-12 pt-1 pb-3">
 								<div class="input-group input-group--inline w-100">
-									<select class="control" id="instituicao" name="id_instituicao">
+									<select  id="instituicao" name="id_instituicao">
 										<option selected disabled value="">Pesquisar por Instituição</option>
 										{% for instituicao in instituicoes %}
 											<option value="{{ instituicao.id }}" {% if id_instituicao == instituicao.id   %} selected {% endif %}
