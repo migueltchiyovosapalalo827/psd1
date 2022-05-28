@@ -48,7 +48,9 @@
                                 <td> <a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a> </td>
                                 <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/requerimento{{certificado.id }}.pdf">requerimento</a></td>
                                 <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a></td>
-                                <td><form action="validacao_pronto_cert" method="post"><input type="hidden" name="id" value="{{certificado.id}}"><input class="btn btn-primary" type="submit" value="pronto"></td>
+                                <td><form action="validacao_pronto_cert" method="post">
+                                 {{ csrf_field() }}
+                                <input type="hidden" name="id" value="{{certificado.id}}"><input class="btn btn-primary" type="submit" value="pronto"></td>
                             </tr>
                          {% endif %}
                         {% endfor %}
@@ -89,7 +91,9 @@
                                 <td> <a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a> </td>
                                 <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/requerimento{{certificado.id }}.pdf">requerimento</a></td>
                                 <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a></td>
-                                <td><form action="validacao_entregue_cert" method="post"><input type="hidden" name="id" value="{{ certificado.id}}"><input class="btn btn-primary" type="submit" value="entregue"></td>
+                                <td><form action="validacao_entregue_cert" method="post">
+                                  {{ csrf_field() }}
+                                <input type="hidden" name="id" value="{{ certificado.id}}"><input class="btn btn-primary" type="submit" value="entregue"></td>
                             </tr>
                       {% endif %}
                         {% endfor %}
