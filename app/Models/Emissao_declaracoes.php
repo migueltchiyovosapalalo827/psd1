@@ -12,7 +12,7 @@ class Emissao_declaracoes extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id_estudante','curso','turma','id_instituicao','classe','tipo_declaracao','comprovativo','efeito'];
+    protected $fillable = ['id_estudante','curso','turma','id_instituicao','classe','tipo_declaracao','comprovativo','efeito','requerimento'];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

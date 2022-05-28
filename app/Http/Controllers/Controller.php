@@ -47,7 +47,8 @@ class Controller extends BaseController
     {
         if(!Sessoes::obter("usuario")) {
             new Alert("Faça login para continuar!", "danger","Erro");
-            Http::redirecionar("entrar");
+            //Http::redirecionar("entrar");
+            Http::redirecionar("/");
             exit();
         }
     }

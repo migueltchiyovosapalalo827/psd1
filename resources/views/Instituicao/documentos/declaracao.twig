@@ -14,6 +14,7 @@
     font-weight: bold;
     padding: 10px;
     text-align: center;
+  line-height:2;
   }
     .cabecalho2principal{
         width: 100%;
@@ -30,7 +31,9 @@
     font-size: 15px;
     padding: 10px;
     text-align: justify;
-    line-height:normal;
+    line-height:2;
+     /* espaçamento em css;*/
+
   }
     .rodape{
         font-size: 15px;
@@ -57,7 +60,7 @@ do (a) aluno (a) <strong> {{emitir_certificado.estudante.pessoa.nome_proprio}} {
 {% endif %} {% if emitir_certificado.instituicao.nivel == "medio"  %}
 Eu  <strong> {{emitir_certificado.estudante.pessoa.nome_proprio}} {{emitir_certificado.estudante.pessoa.sobrenome}}  </strong>,
 {% endif %} Filho (a) de <strong>{{emitir_certificado.estudante.pessoa.pai}}</strong>,
-e de <strong>{{emitir_certificado.estudante.pessoa.mae}}</strong>, Nascido (a) aos <strong>{{emitir_certificado.estudante.pessoa.data_nascimento}}</strong>,
+e de <strong>{{emitir_certificado.estudante.pessoa.mae}}</strong> Nascido (a) aos <strong>{{emitir_certificado.estudante.pessoa.data_nascimento}}</strong>,
 natural de <strong>{{emitir_certificado.estudante.pessoa.local_de_nascimento}}</strong>, Municipio de <strong>{{emitir_certificado.estudante.pessoa.municipio}}</strong>,
 Provincia de <strong>{{emitir_certificado.estudante.pessoa.provincia}}</strong>, Portador do {{emitir_certificado.estudante.pessoa.tipo_documento}} nº <strong>{{emitir_certificado.estudante.pessoa.n_do_documento}}</strong>,
 Passado  pelo Arquivo de Identificação de {{emitir_certificado.estudante.pessoa.provincia}}, aos {{ emitir_certificado.estudante.pessoa.data_de_emissao}}, que Frequentou e  concluiu  a {{emitir_certificado.classe}} Classe, Turma {{emitir_certificado.turma}}, curso

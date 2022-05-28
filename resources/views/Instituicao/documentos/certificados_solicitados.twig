@@ -46,7 +46,7 @@
                                 <td>{{ certificado.numero_estudantil}}</td>
                                 <td>{{ certificado.ano_termino}}</td>
                                 <td> <a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a> </td>
-                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/requerimento{{certificado.id }}.pdf">requerimento</a></td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{certificado.requerimento }}">requerimento</a></td>
                                 <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a></td>
                                 <td><form action="validacao_pronto_cert" method="post">
                                  {{ csrf_field() }}
@@ -89,7 +89,7 @@
                                 <td>{{ certificado.numero_estudantil}}</td>
                                 <td>{{ certificado.ano_termino}}</td>
                                 <td> <a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a> </td>
-                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/requerimento{{certificado.id }}.pdf">requerimento</a></td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{certificado.requerimento }}">requerimento</a></td>
                                 <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a></td>
                                 <td><form action="validacao_entregue_cert" method="post">
                                   {{ csrf_field() }}
@@ -133,7 +133,7 @@
                                 <td>{{ certificado.numero_estudantil}}</td>
                                 <td>{{ certificado.ano_termino}}</td>
                                 <td> <a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a> </td>
-                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/requerimento{{certificado.id }}.pdf">requerimento</a></td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{certificado.requerimento }}">requerimento</a></td>
                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a></td>
                                 <td>documento entregue</td>
                             </tr>

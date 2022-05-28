@@ -377,7 +377,7 @@ public function ver_fotos()
         $docNovoNome="";
         if ($comprovativo != null){
             if(!Ficheiros::eDocumentoValido($comprovativo)){
-                new Alert("O Documento não é valida.", "erro", "Foto invalida.");
+                new Alert("O Documento não é valida.", "erro", "documento invalida.");
                 Http::redirecionar("/documentos/emitir_certificado");
                 return;
             }
@@ -388,7 +388,7 @@ public function ver_fotos()
         $comprovativo->move("ficheiros/escolas/doc_emiss_certificado/",$docNovoNome);
         $emitir_certificado->comprovativo = $docNovoNome;
     }
-   //$emitir_certificado->documento =$docNovoNome;
+    $requerimento  = Testos::sigla("","requerimento");
    $emitir_certificado->id_instituicao=$id_instituicao;
    $emitir_certificado->curso=$curso;
    $emitir_certificado->turma=$turma;
@@ -396,15 +396,16 @@ public function ver_fotos()
    $emitir_certificado->ano_termino=$ano_termino;
    $emitir_certificado->id_estudante=$id_estudante;
    //$emitir_certificado->efeito=$efeito;
+    $emitir_certificado->requerimento=$requerimento.".pdf";
    $emitir_certificado->save();
   $emitir_certificado = Emissao_Certificados::where("id_estudante","=",$id_estudante)->get()->first();
     if($instituicao->nivel =="superior"){
     $dompdf = PDF::loadView('Instituicao.documentos.certificado', ['emitir_certificado' => $emitir_certificado,'tipo_documento'=>'certificado']);
-    $dompdf->save("ficheiros/escolas/doc_emiss_certificado/"."requerimento".$emitir_certificado->id.".pdf");
+    $dompdf->save("ficheiros/escolas/doc_emiss_certificado/".$requerimento.".pdf");
     }
     else{
         $dompdf = PDF::loadView('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_certificado,'tipo_documento'=>'certificado']);
-        $dompdf->save("ficheiros/escolas/doc_emiss_certificado/"."requerimento".$emitir_certificado->id.".pdf");
+        $dompdf->save("ficheiros/escolas/doc_emiss_certificado/".$requerimento.".pdf");
         }
     new Alert("A Emissão do Certificado foi enviado com Sucesso", "sucesso", );
     Http::redirecionar("/documentos/emitir_certificado");
@@ -448,7 +449,7 @@ public function ver_fotos()
       $docNovoNome="";
         if ($comprovativo != null){
             if(!Ficheiros::eDocumentoValido($comprovativo)){
-                new Alert("O Documento não é valido.", "erro", "Foto invalida.");
+                new Alert("O Documento não é valido.", "erro", "documento invalida.");
                 Http::redirecionar("/documentos/emitir_declaracao");
                 return;
             }
@@ -460,7 +461,7 @@ public function ver_fotos()
         $comprovativo->move("ficheiros/escolas/doc_emiss_declaracao/",$docNovoNome);
         $emitir_declaracao->comprovativo = $docNovoNome;
     }
-   // $emitir_declaracao->documento =$docNovoNome;
+   $requerimento  = Testos::sigla("","requerimento");
     $emitir_declaracao->curso =$curso;
     $emitir_declaracao->turma =$turma;
     $emitir_declaracao->id_estudante =$id_estudante;
@@ -468,15 +469,19 @@ public function ver_fotos()
     $emitir_declaracao->tipo_declaracao =$tipo_declaracao;
     $emitir_declaracao->id_instituicao =$id_instituicao;
     $emitir_declaracao->efeito =$efeito;
+    $emitir_declaracao->requerimento =$requerimento.".pdf";
     $emitir_declaracao->save();
     $emitir_declaracao = Emissao_declaracoes::where("id_estudante","=",$id_estudante)->get()->first();
-    if($instituicao->nivel =="superior"){
+
+    if($instituicao->nivel =="superior")
+    {
         $dompdf = PDF::loadView('Instituicao.documentos.certificado', ['emitir_certificado' => $emitir_declaracao,'tipo_documento'=>'Declaração']);
-        $dompdf->save("ficheiros/escolas/doc_emiss_declaracao/"."requerimento".$emitir_declaracao->id.".pdf");
-        }
+        $dompdf->save("ficheiros/escolas/doc_emiss_declaracao/".$requerimento.".pdf");
+
+    }
         else{
             $dompdf = PDF::loadView('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_declaracao,'tipo_documento'=>'Declaração']);
-            $dompdf->save("ficheiros/escolas/doc_emiss_declaracao/"."requerimento".$emitir_declaracao->id.".pdf");
+            $dompdf->save("ficheiros/escolas/doc_emiss_declaracao/".$requerimento.".pdf");
             }
     new Alert("A Emissão da Declaração foi enviada com Sucesso", "sucesso", );
     Http::redirecionar("/documentos/emitir_declaracao");
