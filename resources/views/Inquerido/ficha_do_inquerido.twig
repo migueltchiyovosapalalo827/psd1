@@ -108,25 +108,16 @@
 
 
                                         <div class="form-row">
-                                            <div class="form-group col-md-4 ">
-                                                <label>Primeiro nome</label>
+                                            <div class="form-group col-md-8 ">
+                                                <label> nome completo</label>
                                                 <div class="input-group input-group--inline">
                                                     <div class="input-group-addon">
                                                         <i class="material-icons">person</i>
                                                     </div>
-                                                    <input disabled type="text" class="form-control" name="p_nome" value="{{ inquerido.pessoa.nome_proprio }}" placeholder="Primeiro nome">
+                                                    <input disabled type="text" class="form-control" name="p_nome" value="{{ inquerido.pessoa.nome }}" placeholder=" nome completo">
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-4 ">
 
-                                                <label>Sobrenome</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">person</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.sobrenome }}"  type="text" class="form-control" name="p_sobrenome" placeholder="Sobrenome" disabled="">
-                                                </div>
-                                            </div>
                                             <div class="form-group col-md-4">
                                                 <label>Pai</label>
                                                 <div class="input-group input-group--inline">
@@ -268,7 +259,7 @@
                                             <tr>
                                                 <td>{{ loop.index }}</td>
                                                 <td>{{ inscricao.inquerito.titulo }}</td>
-                                                <td>{{ inscricao.inquerito.pesquisador.pessoa.nome_proprio}} {{ inscricao.inquerito.pesquisador.pessoa.sobrenome}}</td>
+                                                <td>{{ inscricao.inquerito.pesquisador.pessoa.nome}} </td>
                                                 <td>{{ inscricao.created_at|date("d/m/y",false) }}</td>
                                                 <td>
                                                     {% if inscricao.respondido == 1 %}

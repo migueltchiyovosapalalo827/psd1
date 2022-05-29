@@ -72,7 +72,6 @@ class Pesquisador extends Controller
         $u_contacto=Testos::semEspaco($u_contacto);
         $u_grupo=$grupoU["id"];
         $p_nome=$r->post("p_nome");
-        $p_sobrenome=$r->post("p_sobrenome");
         $p_pai=$r->post("p_pai");
         $p_mae=$r->post("p_mae");
         $p_n_documento=$r->post("p_n_documento");
@@ -86,8 +85,7 @@ class Pesquisador extends Controller
         $p_naturalidade=$r->post("p_naturalidade");
         #Criando a pessoa
         $pessoa = new Pessoas();
-        $pessoa->nome_proprio=$p_nome;
-        $pessoa->sobrenome=$p_sobrenome;
+        $pessoa->nome=$p_nome;
         $pessoa->data_de_nascimento=$p_data_de_nascimento;
         $pessoa->pai=$p_pai;
         $pessoa->mae=$p_mae;
@@ -105,7 +103,7 @@ class Pesquisador extends Controller
             //CRIANDO USUARIO
             $usuario = new Usuarios();
             $usuario->email = $u_email;
-            $usuario->usuario =  Testos::primeiroEultimo($p_nome,$p_sobrenome);
+            $usuario->usuario =  Testos::primeiroEultimo($p_nome,"");
             $usuario->senha=Testos::encriptar($u_senha);
             $usuario->contacto=$u_contacto;
             $usuario->pessoas_id=$pessoa->id;
@@ -113,7 +111,7 @@ class Pesquisador extends Controller
             if ($usuario->save()){
                 #usuario foi salvo
                 $pesquisador->pessoas_id=$pessoa->id;
-                $pesquisador->nome=Testos::primeiroEultimo($p_nome,$p_sobrenome);
+                $pesquisador->nome=Testos::primeiroEultimo($p_nome,"");
                 if ($pesquisador->save())
                 {
                     new Alert("Pesquisador cadastrado com sucesso.");
@@ -164,7 +162,7 @@ class Pesquisador extends Controller
     $u_contacto=Testos::semEspaco($u_contacto);
     $u_grupo=$grupoU["id"];
     $p_nome=$r->post("p_nome");
-    $p_sobrenome=$r->post("p_sobrenome");
+
     $p_pai=$r->post("p_pai");
     $p_mae=$r->post("p_mae");
     $p_n_documento=$r->post("p_n_documento");
@@ -178,8 +176,7 @@ class Pesquisador extends Controller
     $p_naturalidade=$r->post("p_naturalidade");
         #Criando a pessoa
     $pessoa = new Pessoas();
-    $pessoa->nome_proprio=$p_nome;
-    $pessoa->sobrenome=$p_sobrenome;
+    $pessoa->nome=$p_nome;
     $pessoa->data_de_nascimento=$p_data_de_nascimento;
     $pessoa->pai=$p_pai;
     $pessoa->mae=$p_mae;
@@ -197,7 +194,7 @@ class Pesquisador extends Controller
             //CRIANDO USUARIO
         $usuario = new Usuarios();
         $usuario->email = $u_email;
-        $usuario->usuario =  Testos::primeiroEultimo($p_nome,$p_sobrenome);
+        $usuario->usuario =  Testos::primeiroEultimo($p_nome,"");
         $usuario->senha=Testos::encriptar($u_senha);
         $usuario->contacto=$u_contacto;
         $usuario->pessoas_id=$pessoa->id;
@@ -205,7 +202,7 @@ class Pesquisador extends Controller
         if ($usuario->save()){
                 #usuario foi salvo
             $pesquisador->pessoas_id=$pessoa->id;
-            $pesquisador->nome=Testos::primeiroEultimo($p_nome,$p_sobrenome);
+            $pesquisador->nome=Testos::primeiroEultimo($p_nome,"");
             if ($pesquisador->save())
             {
                 new Alert("Bem vindo. entre com seu email e senha");

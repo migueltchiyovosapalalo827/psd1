@@ -42,7 +42,7 @@ class Pessoas extends Model
     /**
      * @var array
      */
-    protected $fillable = ['nome_proprio', 'sobrenome', 'data_de_nascimento', 'pai', 'mae', 'genero', 'deficiencia', 'contacto', 'provincia', 'municipio', 'bairro', 'local_de_nascimento', 'n_do_documento', 'tipo_de_documento', 'naturalidade'];
+    protected $fillable = ['nome', 'data_de_nascimento', 'pai', 'mae', 'genero', 'deficiencia', 'contacto', 'provincia', 'municipio', 'bairro', 'local_de_nascimento', 'n_do_documento', 'tipo_de_documento', 'naturalidade'];
 
     /**
      * @return HasMany
@@ -120,15 +120,15 @@ class Pessoas extends Model
     }
     public function nomeComSobrenome(): string
     {
-        return Testos::primeiroEultimo($this->nome_proprio, $this->sobrenome," ");
+        return Testos::primeiroEultimo($this->nome,"" ," ");
     }
     public function nome(): string
     {
-        return Testos::primeiroEultimo($this->nome_proprio, $this->sobrenome," ");
+        return Testos::primeiroEultimo($this->nome,"" ," ");
     }
     public function nome_completo(): string
     {
-        return $this->nome_proprio." ".$this->sobrenome;
+        return $this->nome;
     }
     public  function  entidade(){
         $pesquisador = $this->pesquisadores()->first();

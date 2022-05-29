@@ -36,22 +36,13 @@
                                 <form action="/usuario/atualizar_informacoes_pessoais" method="post"  enctype="multipart/form-data">
                                    {{ csrf_field() }}
                                     <div class="form-row">
-                                        <div class="form-group col-md-4 ">
-                                            <label>Primeiro nome</label>
+                                        <div class="form-group col-md-8 ">
+                                            <label>nome completo</label>
                                             <div class="input-group input-group--inline">
                                                 <div class="input-group-addon">
                                                     <i class="material-icons">person</i>
                                                 </div>
-                                                <input type="text" class="form-control"  value="{{ pessoa.nome_proprio }}" name="p_nome"  placeholder="Primeiro nome">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4 ">
-                                            <label>Sobrenome</label>
-                                            <div class="input-group input-group--inline">
-                                                <div class="input-group-addon">
-                                                    <i class="material-icons">person</i>
-                                                </div>
-                                                <input value="{{ pessoa.sobrenome }}"  type="text" class="form-control" name="p_sobrenome" placeholder="Sobrenome" >
+                                                <input type="text" class="form-control"  value="{{ pessoa.nome }}" name="p_nome"  placeholder="Primeiro nome">
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4">

@@ -56,13 +56,11 @@
 <p>
 {% if emitir_certificado.instituicao.nivel == "basico" %}
 Eu <strong> {{emitir_certificado.estudante.pessoa.pai}}</strong>, Encarregado (a)
-do (a) aluno (a) <strong> {{emitir_certificado.estudante.pessoa.nome_proprio}} {{emitir_certificado.estudante.pessoa.sobrenome}}  </strong>,
-{% endif %} {% if emitir_certificado.instituicao.nivel == "medio"  %}
-Eu  <strong> {{emitir_certificado.estudante.pessoa.nome_proprio}} {{emitir_certificado.estudante.pessoa.sobrenome}}  </strong>,
-{% endif %} Filho (a) de <strong>{{emitir_certificado.estudante.pessoa.pai}}</strong>,
+do (a) aluno (a) <strong> {{emitir_certificado.estudante.pessoa.nome_proprio}} </strong>, {% endif %} {% if emitir_certificado.instituicao.nivel == "medio"  %}
+Eu  <strong> {{emitir_certificado.estudante.pessoa.nome}}  </strong>, {% endif %} Filho (a) de <strong>{{emitir_certificado.estudante.pessoa.pai}}</strong>,
 e de <strong>{{emitir_certificado.estudante.pessoa.mae}}</strong> Nascido (a) aos <strong>{{emitir_certificado.estudante.pessoa.data_nascimento}}</strong>,
 natural de <strong>{{emitir_certificado.estudante.pessoa.local_de_nascimento}}</strong>, Municipio de <strong>{{emitir_certificado.estudante.pessoa.municipio}}</strong>,
-Provincia de <strong>{{emitir_certificado.estudante.pessoa.provincia}}</strong>, Portador do {{emitir_certificado.estudante.pessoa.tipo_documento}} nº <strong>{{emitir_certificado.estudante.pessoa.n_do_documento}}</strong>,
+Provincia de <strong>{{emitir_certificado.estudante.pessoa.provincia}}</strong>, Portador do {{emitir_certificado.estudante.pessoa.tipo_de_documento }} nº <strong>{{emitir_certificado.estudante.pessoa.n_do_documento}}</strong>,
 Passado  pelo Arquivo de Identificação de {{emitir_certificado.estudante.pessoa.provincia}}, aos {{ emitir_certificado.estudante.pessoa.data_de_emissao}}, que Frequentou e  concluiu  a {{emitir_certificado.classe}} Classe, Turma {{emitir_certificado.turma}}, curso
 {{emitir_certificado.curso}}, no ano lectivo de {{emitir_certificado.ano_termino}} sob o processo nº ___, no (a) {{emitir_certificado.instituicao.nome}}.
 

@@ -49,19 +49,17 @@ class  Usuario  extends Controller
       $u_senha=$r->post("u_senha");
       $u_grupo=$grupoU["id"];
       $p_nome=$r->post("p_nome");
-      $p_sobrenome=$r->post("p_sobrenome");
       $p_genero=$r->post("p_genero");
         #Criando a pessoa
       $pessoa = new Pessoas();
-      $pessoa->nome_proprio=$p_nome;
-      $pessoa->sobrenome=$p_sobrenome;
+      $pessoa->nome =$p_nome;
       $pessoa->genero=$p_genero;
       if ($pessoa->save()){
             #Pessoa foi salva
             //CRIANDO USUARIO
         $usuario = new Usuarios();
         $usuario->email = $u_email;
-        $usuario->usuario =  Testos::primeiroEultimo($p_nome,$p_sobrenome);
+        $usuario->usuario =  Testos::primeiroEultimo($p_nome,"");
         $usuario->senha=Testos::encriptar($u_senha);
         $usuario->pessoas_id=$pessoa->id;
         $usuario->grupo_de_usuarios_id=$u_grupo;
@@ -78,10 +76,10 @@ class  Usuario  extends Controller
           }else{
             $pesquisador = new Pesquisadores();
             $pesquisador->pessoas_id=$pessoa->id;
-            $pesquisador->nome=Testos::primeiroEultimo($p_nome,$p_sobrenome);
+            $pesquisador->nome=Testos::primeiroEultimo($p_nome,"");
             $estudante = new Estudantes();
             $estudante->pessoas_id = $pessoa->id;
-            $estudante->nome = Testos::primeiroEultimo($p_nome,$p_sobrenome);
+            $estudante->nome = Testos::primeiroEultimo($p_nome,"");
             if ($estudante->save())
             {
             $pesquisador->save();
@@ -195,7 +193,6 @@ public function salvar_usuario(Request $r)
     $u_contacto=Testos::semEspaco($u_contacto);
     $u_grupo=$r->post("u_grupo");
     $p_nome=$r->post("p_nome");
-    $p_sobrenome=$r->post("p_sobrenome");
     $p_pai=$r->post("p_pai");
     $p_mae=$r->post("p_mae");
     $p_n_documento=$r->post("p_n_documento");
@@ -211,8 +208,7 @@ public function salvar_usuario(Request $r)
     $documento = $r->file('documento',null);
         #Criando a pessoa
     $pessoa = new Pessoas();
-    $pessoa->nome_proprio=$p_nome;
-    $pessoa->sobrenome=$p_sobrenome;
+    $pessoa->nome=$p_nome;
     $pessoa->data_de_nascimento=$p_data_de_nascimento;
     $pessoa->pai=$p_pai;
     $pessoa->mae=$p_mae;
@@ -234,7 +230,7 @@ public function salvar_usuario(Request $r)
      $documento->move("ficheiros/escolas/doc_emiss_certificado/","documento".$pessoa->n_do_documento.".pdf");
         $usuario = new Usuarios();
         $usuario->email = $u_email;
-        $usuario->usuario =  Testos::primeiroEultimo($p_nome,$p_sobrenome);
+        $usuario->usuario =  Testos::primeiroEultimo($p_nome,"");
         $usuario->senha=Testos::encriptar($u_senha);
         $usuario->contacto=$u_contacto;
         $usuario->pessoas_id=$pessoa->id;
@@ -333,7 +329,6 @@ public function atualizar_informacoes_pessoais(Request $r): void
     $pessoa = Pessoas::where("id","=",$id_pessoa);
     $pessoa = $pessoa->get()->first();
     $p_nome=$r->post("p_nome");
-    $p_sobrenome=$r->post("p_sobrenome");
     $p_pai=$r->post("p_pai");
     $p_mae=$r->post("p_mae");
     $p_n_documento=$r->post("p_n_documento");
@@ -348,8 +343,7 @@ public function atualizar_informacoes_pessoais(Request $r): void
     $p_local_de_nascimento=$r->post("p_local_de_nascimento");
     $p_naturalidade=$r->post("p_naturalidade");
     $p_instituicao = $r->post("p_instituicao");
-    $pessoa->nome_proprio=$p_nome;
-    $pessoa->sobrenome=$p_sobrenome;
+    $pessoa->nome=$p_nome;
     $pessoa->data_de_nascimento=$p_data_de_nascimento;
     $pessoa->pai=$p_pai;
     $pessoa->mae=$p_mae;
