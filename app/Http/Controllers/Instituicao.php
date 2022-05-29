@@ -369,6 +369,7 @@ public function ver_fotos()
         $instituicao = $estudante->instituicao;
         $curso=$req->post("curso");
         $turma=$req->post("turma");
+        $classe=$req->post("classe");
         $id_estudante= $estudante->id;
         $numero_estudantil=$req->post("numero_estudantil");
         $ano_termino=$req->post("ano_termino");
@@ -392,6 +393,7 @@ public function ver_fotos()
    $emitir_certificado->id_instituicao=$id_instituicao;
    $emitir_certificado->curso=$curso;
    $emitir_certificado->turma=$turma;
+   $emitir_certificado->classe=$classe;
    $emitir_certificado->numero_estudantil=$numero_estudantil;
    $emitir_certificado->ano_termino=$ano_termino;
    $emitir_certificado->id_estudante=$id_estudante;

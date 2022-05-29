@@ -11,7 +11,7 @@ class Emissao_certificados extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id_estudante','curso','turma','numero_estudantil','efeito','ano_termino','id_instituicao','comprovativo','requerimento'];
+    protected $fillable = ['id_estudante','curso','turma','numero_estudantil','efeito','ano_termino','id_instituicao','comprovativo','requerimento','classe'];
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

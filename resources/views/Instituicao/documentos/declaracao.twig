@@ -14,7 +14,6 @@
     font-weight: bold;
     padding: 10px;
     text-align: center;
-  line-height:2;
   }
     .cabecalho2principal{
         width: 100%;
@@ -61,8 +60,8 @@ Eu  <strong> {{emitir_certificado.estudante.pessoa.nome}}  </strong>, {% endif %
 e de <strong>{{emitir_certificado.estudante.pessoa.mae}}</strong> Nascido (a) aos <strong>{{emitir_certificado.estudante.pessoa.data_nascimento}}</strong>,
 natural de <strong>{{emitir_certificado.estudante.pessoa.local_de_nascimento}}</strong>, Municipio de <strong>{{emitir_certificado.estudante.pessoa.municipio}}</strong>,
 Provincia de <strong>{{emitir_certificado.estudante.pessoa.provincia}}</strong>, Portador do {{emitir_certificado.estudante.pessoa.tipo_de_documento }} nº <strong>{{emitir_certificado.estudante.pessoa.n_do_documento}}</strong>,
-Passado  pelo Arquivo de Identificação de {{emitir_certificado.estudante.pessoa.provincia}}, aos {{ emitir_certificado.estudante.pessoa.data_de_emissao}}, que Frequentou e  concluiu  a {{emitir_certificado.classe}} Classe, Turma {{emitir_certificado.turma}}, curso
-{{emitir_certificado.curso}}, no ano lectivo de {{emitir_certificado.ano_termino}} sob o processo nº ___, no (a) {{emitir_certificado.instituicao.nome}}.
+Passado  pelo Arquivo de Identificação de {{emitir_certificado.estudante.pessoa.provincia}}, aos {{ emitir_certificado.estudante.pessoa.data_de_emissao}}, que Frequentou e  concluiu  a {{emitir_certificado.classe}} Classe, Turma {{emitir_certificado.turma}}
+ curso {{emitir_certificado.curso}}, no ano lectivo de {{emitir_certificado.ano_termino}} sob o processo nº ___, no (a) {{emitir_certificado.instituicao.nome}}.
 
 </p>
 
