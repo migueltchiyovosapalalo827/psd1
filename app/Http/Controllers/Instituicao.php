@@ -20,8 +20,10 @@ use App\Uteis\Testos;
 use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Barryvdh\DomPDF\Facade\Pdf;
+//use Barryvdh\DomPDF\Facade\Pdf;
+use PDF;
 /**
  * Class Instituicao
  * @package App\Controllers
@@ -356,15 +358,7 @@ public function ver_fotos()
     }
     public function salvar_certificado(Request $req)
     {
-       /* $estudante = Emissao_Certificados::where("id_estudante","=",$req->post("id_estudante"))->first();
-        if ($estudante != null){
-
-            new Alert("Já existe uma solicitação com esses dados.", "erro", "Solicitação existente.");
-            Http::redirecionar("/documentos/emitir_certificado");
-            return;
-
-    }
-    else{*/
+        $this->verifica();
         $estudante = Estudantes::find($req->post("id_estudante"));
         $instituicao = $estudante->instituicao;
         $curso=$req->post("curso");
@@ -389,7 +383,8 @@ public function ver_fotos()
         $comprovativo->move("ficheiros/escolas/doc_emiss_certificado/",$docNovoNome);
         $emitir_certificado->comprovativo = $docNovoNome;
     }
-    $requerimento  = Testos::sigla("","requerimento");
+
+   $requerimento  = Testos::sigla("","requerimento");
    $emitir_certificado->id_instituicao=$id_instituicao;
    $emitir_certificado->curso=$curso;
    $emitir_certificado->turma=$turma;
@@ -400,20 +395,23 @@ public function ver_fotos()
    //$emitir_certificado->efeito=$efeito;
     $emitir_certificado->requerimento=$requerimento.".pdf";
    $emitir_certificado->save();
-  $emitir_certificado = Emissao_Certificados::where("id_estudante","=",$id_estudante)->get()->first();
     if($instituicao->nivel =="superior"){
-    $dompdf = PDF::loadView('Instituicao.documentos.certificado', ['emitir_certificado' => $emitir_certificado,'tipo_documento'=>'certificado']);
-    $dompdf->save("ficheiros/escolas/doc_emiss_certificado/".$requerimento.".pdf");
+
+    $pdf = App::make('dompdf.wrapper');
+    $pdf->loadView('Instituicao.documentos.certificado', ['emitir_certificado' => $emitir_certificado,'tipo_documento'=>'certificado']);
+    $pdf->save("ficheiros/escolas/doc_emiss_certificado/".$requerimento.".pdf");
+
     }
     else{
-        $dompdf = PDF::loadView('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_certificado,'tipo_documento'=>'certificado']);
-        $dompdf->save("ficheiros/escolas/doc_emiss_certificado/".$requerimento.".pdf");
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_certificado,'tipo_documento'=>'certificado']);
+        $pdf->save("ficheiros/escolas/doc_emiss_certificado/".$requerimento.".pdf");
         }
     new Alert("A Emissão do Certificado foi enviado com Sucesso", "sucesso", );
     Http::redirecionar("/documentos/emitir_certificado");
     return;
 
-    //}
 
 }
     public function emitir_declaracao()
@@ -429,14 +427,7 @@ public function ver_fotos()
     public function salvar_declaracao(Request $req)
     {
         $this->verifica();
-        /*$estudante = Emissao_declaracoes::where("id_estudante","=",$req->post("id_estudante"))->first();
-        if ($estudante != null){
-            new Alert("Já existe uma solicitação com esses dados.", "erro", "Solicitação existente.");
-            Http::redirecionar("/documentos/emitir_declaracao");
-            return;
 
-    }
-    else{*/
         $estudante = Estudantes::find($req->post("id_estudante"));
         $instituicao = $estudante->instituicao;
         $curso=$req->post("curso");
@@ -463,7 +454,7 @@ public function ver_fotos()
         $comprovativo->move("ficheiros/escolas/doc_emiss_declaracao/",$docNovoNome);
         $emitir_declaracao->comprovativo = $docNovoNome;
     }
-   $requerimento  = Testos::sigla("","requerimento");
+    $requerimento  = Testos::sigla("","requerimento");
     $emitir_declaracao->curso =$curso;
     $emitir_declaracao->turma =$turma;
     $emitir_declaracao->id_estudante =$id_estudante;
@@ -473,23 +464,24 @@ public function ver_fotos()
     $emitir_declaracao->efeito =$efeito;
     $emitir_declaracao->requerimento =$requerimento.".pdf";
     $emitir_declaracao->save();
-    $emitir_declaracao = Emissao_declaracoes::where("id_estudante","=",$id_estudante)->get()->first();
-
     if($instituicao->nivel =="superior")
     {
-        $dompdf = PDF::loadView('Instituicao.documentos.certificado', ['emitir_certificado' => $emitir_declaracao,'tipo_documento'=>'Declaração']);
-        $dompdf->save("ficheiros/escolas/doc_emiss_declaracao/".$requerimento.".pdf");
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML('Instituicao.documentos.certificado', ['emitir_certificado' => $emitir_declaracao,'tipo_documento'=>'Declaração']);
+        $pdf->save("ficheiros/escolas/doc_emiss_declaracao/".$requerimento.".pdf");
 
     }
         else{
-            $dompdf = PDF::loadView('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_declaracao,'tipo_documento'=>'Declaração']);
-            $dompdf->save("ficheiros/escolas/doc_emiss_declaracao/".$requerimento.".pdf");
+
+            $pdf = App::make('dompdf.wrapper');
+            $pdf->loadHTML('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_declaracao,'tipo_documento'=>'Declaração']);
+            $pdf->save("ficheiros/escolas/doc_emiss_declaracao/".$requerimento.".pdf");
             }
     new Alert("A Emissão da Declaração foi enviada com Sucesso", "sucesso", );
     Http::redirecionar("/documentos/emitir_declaracao");
     return;
 
-    //}
+
 
     }
 
@@ -531,10 +523,10 @@ public function ver_fotos()
     {
         $dados=1;
         $id= $req->post("id");
-        $certificado_pronto=Emissao_certificados::where("id","=",$id)->get()->first();
-        $certificado_pronto->estado =$dados;
-        if ($certificado_pronto->update()){
-            new Alert("Os Dados foram Actualizados com Sucesso!.");
+        $certificado_pronto=Emissao_certificados::find($id);
+        $certificado_pronto->estado= $dados;
+        if ($certificado_pronto->save()) {
+            new Alert("O certificado esta pronto para ser entregue !.");
             Http::redirecionar("/documentos/certificados_solicitados");
             return;
         }
@@ -543,10 +535,10 @@ public function ver_fotos()
     {
         $dados=2;
         $id= $req->post("id");
-        $certificado_pronto=Emissao_certificados::where("id","=",$id)->get()->first();
+        $certificado_pronto=Emissao_certificados::find($id);
         $certificado_pronto->estado =$dados;
-        if ($certificado_pronto->update()){
-            new Alert("Os Dados foram Actualizados com Sucesso!.");
+        if ($certificado_pronto->save()){
+            new Alert("O certificado foi entregue com Sucesso!.");
             Http::redirecionar("/documentos/certificados_solicitados");
             return;
         }
@@ -569,10 +561,10 @@ public function ver_fotos()
     {
         $dados=1;
         $id= $req->post("id");
-        $declaracao_pronto=Emissao_declaracoes::where("id","=",$id)->get()->first();
+        $declaracao_pronto=Emissao_declaracoes::find($id);
         $declaracao_pronto->estado =$dados;
-        if ($declaracao_pronto->update()){
-            new Alert("Os Dados foram Actualizados com Sucesso!.");
+        if ($declaracao_pronto->save()){
+            new Alert("A declaração esta pronta para ser entregue!.");
             Http::redirecionar("/documentos/declaracoes_solicitados");
             return;
         }
@@ -581,12 +573,13 @@ public function ver_fotos()
     {
         $dados=2;
         $id= $req->post("id");
-        $declaracao_pronto=Emissao_declaracoes::where("id","=",$id)->get()->first();
+        $declaracao_pronto=Emissao_declaracoes::find($id);
         $declaracao_pronto->estado =$dados;
-        if ($declaracao_pronto->update()){
-            new Alert("Os Dados foram Actualizados com Sucesso!.");
+        if ($declaracao_pronto->save()){
+            new Alert("a declaração foi entregue Sucesso!.");
             Http::redirecionar("/documentos/declaracoes_solicitados");
             return;
         }
     }
+
 }

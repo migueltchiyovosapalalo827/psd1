@@ -175,6 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         'TwigBridge\ServiceProvider',
+        Barryvdh\DomPDF\ServiceProvider::class,
 
 
     ],
@@ -229,6 +230,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Twig' => 'TwigBridge\Facade\Twig',
+        'PDF' => Barryvdh\DomPDF\Facade::class,
 
 
     ],

@@ -8,6 +8,15 @@
                    Certificados solicitados
                 </h2>
                 <hr>
+                  {% if alert  %}
+                     <div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert">
+                        {{ alert.getMensagem() }}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                   {{  alert.destruir() }}
+{% endif %}
  <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link active" id="nav-docespera-tab" data-toggle="tab" href="#nav-docespera" role="tab" aria-controls="nav-docespera" aria-selected="true">Documentos em espera</a>
@@ -37,7 +46,7 @@
                         </thead>
                         <tbody class="border-left-0">
                         {% for certificado in certificados %}
-                        {% if certificado and certificado.estado == 0 %}
+                        {% if  certificado.estado == 0 %}
                             <tr class="text-center">
                                 <td>{{ loop.index }}</td>
                                 <td>{{ certificado.estudante.pessoa.nome_proprio}} {{ certificado.estudante.pessoa.sobrenome}}</td>
@@ -50,7 +59,9 @@
                                 <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a></td>
                                 <td><form action="validacao_pronto_cert" method="post">
                                  {{ csrf_field() }}
-                                <input type="hidden" name="id" value="{{certificado.id}}"><input class="btn btn-primary" type="submit" value="pronto"></td>
+                                <input type="hidden" name="id" value="{{certificado.id}}">
+                                <input class="btn btn-primary" type="submit" value="pronto">
+                                </td>
                             </tr>
                          {% endif %}
                         {% endfor %}
@@ -80,7 +91,7 @@
                         </thead>
                         <tbody class="border-left-0">
                         {% for certificado in certificados %}
-                         {% if certificado and certificado.estado == 1 %}
+                         {% if  certificado.estado == 1 %}
                             <tr class="text-center">
                                 <td>{{ loop.index }}</td>
                                 <td>{{ certificado.estudante.pessoa.nome_proprio}} {{ certificado.estudante.pessoa.sobrenome}}</td>
@@ -124,7 +135,7 @@
                         </thead>
                         <tbody class="border-left-0">
                         {% for certificado in certificados %}
-                            {% if certificado and certificado.estado == 2 %}
+                            {% if certificado.estado == 2 %}
                             <tr class="text-center">
                                 <td>{{ loop.index }}</td>
                                 <td>{{ certificado.estudante.pessoa.nome_proprio}} {{ certificado.estudante.pessoa.sobrenome}}</td>
@@ -134,7 +145,7 @@
                                 <td>{{ certificado.ano_termino}}</td>
                                 <td> <a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a> </td>
                                 <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{certificado.requerimento }}">requerimento</a></td>
-                               <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a></td>
+                                <td><a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a></td>
                                 <td>documento entregue</td>
                             </tr>
                             {% endif %}
