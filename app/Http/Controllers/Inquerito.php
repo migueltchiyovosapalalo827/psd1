@@ -44,7 +44,7 @@ class Inquerito extends Controller
             }
 
         }
-        new Alert("Não foi possivel eliminar a inscrição.","erro","Erro ao eliminar inscrição");
+        new Alert("Não foi possivel eliminar a inscrição.","danger","Erro ao eliminar inscrição");
         Http::redirecionar("/inquerito/ver_inquerito/0");
         return;
     }
@@ -104,11 +104,11 @@ class Inquerito extends Controller
             } catch (\PDOException $e) {
                 Http::redirecionar("/500");
             }
-            new Alert("Inquerito eliminado com sucesso","sucesso","Sucesso");
+            new Alert("Inquerito eliminado com sucesso","success","Sucesso");
             Http::redirecionar("/inquerito/todos_inqueritos");
             return;
         }
-        new Alert("Não foi possivel eliminar iquerito.","erro","erro");
+        new Alert("Não foi possivel eliminar iquerito.","danger","erro");
         Http::redirecionar("/inquerito/todos_inqueritos");
         return;
     }
@@ -128,7 +128,7 @@ class Inquerito extends Controller
         $i_logotipo = $r->file('logotipo',null);
         if ($i_logotipo != null){
             if(!Ficheiros::eImagemValida($i_logotipo)){
-                new Alert("O logo do inquerito não é valido.", "erro", "Logo invalido.");
+                new Alert("O logo do inquerito não é valido.", "danger", "Logo invalido.");
                 Http::redirecionar("/inquerito/criar_inquerito");
                 return;
             }
@@ -138,7 +138,7 @@ class Inquerito extends Controller
                 $i_logotipo->move("ficheiros/inqueritos/logotipos/",$i_logotipoNovoNome);
                 $inquerito->logotipo = $i_logotipoNovoNome;
             } catch (\Exception $e) {
-                new Alert("Erro ao tentar mover o ficheiro para o servidor", "erro", "Tente novamente");
+                new Alert("Erro ao tentar mover o ficheiro para o servidor", "danger", "Tente novamente");
                 Http::redirecionar("/inquerito/criar_inquerito");
                 return;
             }
@@ -194,7 +194,7 @@ class Inquerito extends Controller
                 unlink("ficheiros/inqueritos/logotipos/".$inquerito->logotipo);
             }
             $inquerito->delete();
-            new Alert("Não foi possivel salvar o inquerito por falta de perguntas.","erro","Inquerito sem perguntas!");
+            new Alert("Não foi possivel salvar o inquerito por falta de perguntas.","danger","Inquerito sem perguntas!");
             Http::redirecionar("/inquerito/criar_inquerito");
             return;
         }
@@ -216,7 +216,7 @@ class Inquerito extends Controller
                 $inscricoes->save();
             }
         }
-        new Alert("Inqueridos foram inscritos!","sucesso","Sucesso");
+        new Alert("Inqueridos foram inscritos!","success","Sucesso");
         Http::redirecionar("/inquerito/ver_inquerito/".$r->get("inquerito"));
         return;
 
@@ -249,7 +249,7 @@ class Inquerito extends Controller
             return view("Inquerito.imprimir_resposta",["titulo"=>"Imprimir relatorio","inscricao"=>$inscricao->first()]);
             return;
         }
-        new Alert("Inscrição invalida ou não existe!", "erro", "Erro de inscrição");
+        new Alert("Inscrição invalida ou não existe!", "danger", "Erro de inscrição");
         Http::redirecionar("/inquerito/todos_inqueritos");
     }
 

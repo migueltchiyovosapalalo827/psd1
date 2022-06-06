@@ -265,10 +265,10 @@ class Biblioteca extends Controller
         $curso->nome = $nome;
         $curso->sigla = $sigla;
         if ($curso->save()){
-            new Alert("O curso   ".$nome." foi salvo com sucesso", "sucesso", "Curso salvo." );
+            new Alert("O curso   ".$nome." foi salvo com sucesso", "success", "Curso salvo." );
             Http::redirecionar("/biblioteca/adicionar_area");
         }else{
-            new Alert("Não foi possivel salvar o curso.", "erro", "Erro ao salvar o curso." );
+            new Alert("Não foi possivel salvar o curso.", "danger", "Erro ao salvar o curso." );
             Http::redirecionar("/biblioteca/adicionar_area");
         }
     }
@@ -282,7 +282,7 @@ class Biblioteca extends Controller
         $curso->nome = $nome;
         $curso->sigla = $sigla;
         if ($curso->update(["nome,sigla"])){
-            new Alert("O curso ".$nome." foi atualizado com sucesso", "sucesso", "Sucesso" );
+            new Alert("O curso ".$nome." foi atualizado com sucesso", "success", "Sucesso" );
             Http::redirecionar("/biblioteca/adicionar_curso/".$id);
         }else{
             new Alert("Não foi possivel atualizar o curso.", "erro", "Erro critico" );
@@ -298,7 +298,7 @@ class Biblioteca extends Controller
             try{
                 $cursoE=$curso->delete();
                 if (($cursoE != null) || ($cursoE != false)){
-                    new Alert("Curso eliminado com sucesso", "sucesso", "Curso eliminado" );
+                    new Alert("Curso eliminado com sucesso", "success", "Curso eliminado" );
                     Http::redirecionar("/biblioteca/listar_cursos/");
                     return;
                 }
@@ -349,7 +349,7 @@ class Biblioteca extends Controller
             try{
                 $autorE=$autor->delete();
                 if (($autorE != null) || ($autorE != false)){
-                    new Alert("Autor eliminado com sucesso", "sucesso", "Autor eliminado." );
+                    new Alert("Autor eliminado com sucesso", "success", "Autor eliminado." );
                     Http::redirecionar("/biblioteca/adicionar_autor/");
                     return;
                 }
@@ -372,7 +372,7 @@ class Biblioteca extends Controller
             Http::redirecionar("/biblioteca/adicionar_autor");
             return;
         }else{
-            new Alert("Não foi possivel salvar o autor.", "erro", "Erro critico" );
+            new Alert("Não foi possivel salvar o autor.", "danger", "Erro critico" );
             Http::redirecionar("/biblioteca/adicionar_autor/");
             return;
         }

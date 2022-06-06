@@ -12,7 +12,12 @@ $router->group(['prefix' => 'instituicao','namespace' => 'App\\Http\\Controllers
     $router->get('/editar_instituicao', 'Instituicao@editar_instituicao')->name("instituicao.editar_instituicao");
     $router->post('/update_instituicao', 'Instituicao@update_instituicao')->name("instituicao.update_instituicao");
     $router->get('/minha_instituicao', 'Instituicao@minha_instituicao')->name("instituicao.minha_instituicao");
+    $router->get('/listar_instituicoes', 'Instituicao@ListarInstituicao')->name("instituicao.listar_instituicoes");
+    $router->get('/actualizar_instituicao/{instituicao}', 'Instituicao@AtualizarInstituicao')->name("instituicao.actualizar");
+    $router->put('/actualizar_instituicao/{instituicao}', 'Instituicao@actualizar_Instituicao')->name("instituicao.update");
+    $router->delete('/deletar_instituicao/{instituicao}', 'Instituicao@eliminar_Instituicao')->name("instituicao.deletar");
 
+    //CURSOS
     $router->get('/adicionar_curso', 'Instituicao@adicionar_curso')->name("instituicao.adicionar_curso");
     $router->post('/salvar_curso', 'Instituicao@salvar_curso')->name("instituicao.salvar_curso");
     $router->get('/cursos_leccionados', 'Instituicao@cursos_leccionados')->name("instituicao.cursos_leccionados");
@@ -67,6 +72,8 @@ $router->group(['prefix' => 'cartao','namespace' => 'App\\Http\\Controllers'], f
     $router->get('/cartao_foto/{id}', 'Cartao@baixarFoto')->name('cartao.foto');
     //meu cartão rota
     $router->get('/meu_cartao', 'Cartao@cartaoEstudante')->name('cartao.meu_cartao');
+    //mudar o estado do cartão
+    $router->post('/mudar_estado','Cartao@mudarEstado')->name('cartao.mudar_estado');
 
 
 });

@@ -1,12 +1,12 @@
 {% extends "@include/main_painel.twig" %}
 
     {% block conteudo %}
-        
+
         <div class="card">
             <div class="card-body">
                 <h2 class="mt-2">
-                    Cursos Leccionados 
-                </h2> 
+                    Cursos Leccionados
+                </h2>
                 <hr>
                 <div class="card">
                 <div class="">
@@ -36,6 +36,8 @@
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" >
                                                 <form method="POST" action="editar_curso">
+                                                 {{ csrf_field() }}
+
                                                 <input type="hidden" value="{{ curso.id }}" name="id_curso">
 
                                                 <button type="submit" style="border-color:#f1f3f04f;background:#f1f3f04f;color:#333" class="btn btn-success" value="Salvar">Editar </button>
@@ -54,9 +56,9 @@
                     </table>
                 </div>
             </div>
-             
+
         </div>
     </div>
-   
+
 
     {% endblock %}

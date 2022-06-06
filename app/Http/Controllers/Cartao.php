@@ -54,7 +54,7 @@ class Cartao extends Controller
     $cartao->foto = $docNovoNome;
     $cartao->save();
 
-    new Alert("A Emissão do catão do estudante foi enviada com Sucesso", "sucesso", );
+    new Alert("A Emissão do catão do estudante foi enviada com Sucesso", "success","" );
     Http::redirecionar("/cartao/emitir_cartao");
     return;
 }
@@ -92,7 +92,7 @@ public function salvarEditarCartao(Request $r,$id)
     }
     $cartao->foto = $docNovoNome;
     $cartao->save();
-    new Alert("A Emissão do catão do estudante foi actualizado com sucesso", "sucesso", );
+    new Alert("A Emissão do catão do estudante foi actualizado com sucesso", "success","" );
     Http::redirecionar("/cartao/meu_cartao");
 }
 
@@ -100,7 +100,8 @@ public function excluirCartao($id)
 {
     $cartao = CartaoModel::find($id);
     $cartao->delete();
-    Http::redirecionar("/cartao");
+    new Alert("O catão do estudante foi eliminado com Sucesso", "success","" );
+    return redirect()->back();
 }
 //cartao por instituicao
 public function cartaoInstituicao($id)
@@ -136,6 +137,20 @@ public function baixarFoto($id)
     $ficheiro = $cartao->foto;
     $ficheiro = "ficheiros/escolas/foto/".$ficheiro;
     return response()->download($ficheiro);
+}
+
+public function mudarEstado(Request $request)
+{
+    $cartao = CartaoModel::find($request->id);
+    ($request->estado == "pronto") ? $cartao->estado = 1 : $cartao->estado = 2;
+    $mensagem = ($request->estado == "pronto") ? "o cartão de estudante esta pronto para ser entregue" : "o cartão de estudante foi entregue" ;
+    if ($cartao->save()) {
+        # code...
+        new Alert($mensagem, "success","" );
+        return redirect()->back();
+       }
+
+
 }
 
 

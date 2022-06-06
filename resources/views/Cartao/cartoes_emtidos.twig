@@ -1,24 +1,31 @@
 {% extends "@include/main_painel.twig" %}
-
 {% block conteudo %}
 
 	<div class="card">
 		<div class="card-body">
 			<h2 class="mt-2">
-				Cartões solicitados
+					Cartões solicitados
 			</h2>
 			<hr>
+			{% if alert  %}
+				<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div> {{  alert.destruir() }}
+			{% endif %}
 			<nav>
 				<div class="nav nav-tabs" id="nav-tab" role="tablist">
-					<a class="nav-item nav-link active" id="nav-docespera-tab" data-toggle="tab" href="#nav-docespera" role="tab" aria-controls="nav-docespera" aria-selected="true">Cartões de estudante</a>
-				</div>
+				    <a class="nav-item nav-link active" id="nav-docespera-tab" data-toggle="tab" href="#nav-docespera" role="tab" aria-controls="nav-docespera" aria-selected="true">Cartões de estudante em espera</a>
+					<a class="nav-item nav-link" id="nav-docpronto-tab" data-toggle="tab" href="#nav-docpronto" role="tab" aria-controls="nav-docpronto" aria-selected="false">Cartões de estudante prontos</a>
+					<a class="nav-item nav-link" id="nav-docentregue-tab" data-toggle="tab" href="#nav-docentregue" role="tab" aria-controls="nav-docentregue" aria-selected="false">Cartões de estudante entregues</a>
+                </div>
 			</nav>
 			<div class="tab-content" id="nav-tabContent">
-
 				<div class="tab-pane fade show active" id="nav-docespera" role="tabpanel" aria-labelledby="nav-docespera-tab">
-
 					<div class="col-md-12 mt-4 mb-4">
-						<form class="form-inline" method="get" action="{{route('cartao.pesquisar')}}">
+
+                       	<form class="form-inline" method="get" action="{{route('cartao.pesquisar')}}">
 							<div class=" col-md-12 pt-1 pb-3">
 								<div class="input-group input-group--inline w-100">
 									<select  id="instituicao" name="id_instituicao">
@@ -36,11 +43,10 @@
 								</div>
 							</div>
 							</form>
-							{% if cartoes %}
-								<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
-									<thead class="bg-primary text-white">
-										<tr>
-											<th class="text-white">#</th>
+						<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+							<thead class="bg-primary text-white">
+								<tr>
+										<th class="text-white">#</th>
 											<th class="text-white">Nome</th>
 											<th class="text-white">Instituição</th>
 											<th class="text-white">Curso</th>
@@ -48,12 +54,15 @@
 											<th class="text-white">Turma</th>
 											<th class="text-white">Número estudantil</th>
 											<th class="text-white">Fotografia</th>
+                                            <th class="text-white">Data de solicitação</th>
+                                            <th class="text-white">Validação</th>
 											<th class="text-white">Acção</th>
-										</tr>
-									</thead>
-									<tbody class="border-left-0">
-										{% for cartao in cartoes %}
-											<tr class="text-center">
+								</tr>
+							</thead>
+							<tbody class="border-left-0">
+								{% for cartao in cartoes %}
+									{% if  cartao.estado == 0 %}
+										<tr class="text-center">
 												<td>{{ loop.index }}</td>
 												<td>{{cartao.pessoa.nome}}</td>
 												<td>{{cartao.instituicao.nome}}</td>
@@ -64,6 +73,13 @@
 												<td>
 													<a target="_blank" href="/cartao/cartao_foto/{{cartao.id}}">Fotografia</a>
 												</td>
+                                                <td>{{ cartao.created_at.format('d-m-Y')}}</td>
+                                                <td>
+												<form action="{{ route('cartao.mudar_estado')}}" method="post"> {{ csrf_field() }}
+                                                  	<input type="hidden" name="estado" value="pronto">
+													<input type="hidden" name="id" value="{{cartao.id}}"><input class="btn btn-primary" type="submit" value="pronto">
+                                                    </form>
+                                                    </td>
 												<td class="p-2">
 													<div class="dropdown show ">
 														<a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -87,22 +103,191 @@
 													</div>
 												</td>
 											</tr>
-										{% endfor %}
+									{% endif %}
+								{% endfor %}
+							</tbody>
 
-									</tbody>
-								</table>
-								<br>
-								<div class="d-flex justify-content-center"> {{ cartoes.links }}
-								</div>
+						</table>
 
-							{% else %}
-								<p class="ml-2">Não há solicitação de Cartões.</p>
-							{% endif %}
-						</div>
 					</div>
 				</div>
+				<div class="tab-pane fade" id="nav-docpronto" role="tabpanel" aria-labelledby="nav-docpronto-tab">
+					<div class="col-md-12 mt-4 mb-4">
+                       	<form class="form-inline" method="get" action="{{route('cartao.pesquisar')}}">
+							<div class=" col-md-12 pt-1 pb-3">
+								<div class="input-group input-group--inline w-100">
+									<select  id="instituicao" name="id_instituicao">
+										<option selected disabled value="">Pesquisar por Instituição</option>
+										{% for instituicao in instituicoes %}
+											<option value="{{ instituicao.id }}" {% if id_instituicao == instituicao.id   %} selected {% endif %}
+                                            >{{instituicao.nome}}</option>
+										{% endfor %}
+									</select>
+									<input type="text" class="form-control" name="curso" value="{{ curso }}" placeholder="Pesquisar por curso">
+									<input type="text" class="form-control" name="classe" value="{{ classe }}" placeholder="Pesquisar por classe">
+									<div class="input-group-append">
+										<button type="submit" class=" input-group-text material-icons">search</button>
+									</div>
+								</div>
+							</div>
+							</form>
+						<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+							<thead class="bg-primary text-white">
+								<tr>
+										<th class="text-white">#</th>
+											<th class="text-white">Nome</th>
+											<th class="text-white">Instituição</th>
+											<th class="text-white">Curso</th>
+											<th class="text-white">Classe</th>
+											<th class="text-white">Turma</th>
+											<th class="text-white">Número estudantil</th>
+											<th class="text-white">Fotografia</th>
+                                            <th class="text-white">Data</th>
+                                            <th class="text-white">Validação</th>
+											<th class="text-white">Acção</th>
+								</tr>
+							</thead>
+							<tbody class="border-left-0">
+								{% for cartao in cartoes %}
+									{% if  cartao.estado == 1 %}
+										<tr class="text-center">
+												<td>{{ loop.index }}</td>
+												<td>{{cartao.pessoa.nome}}</td>
+												<td>{{cartao.instituicao.nome}}</td>
+												<td>{{ cartao.curso}}</td>
+												<td>{{ cartao.classe}}</td>
+												<td>{{ cartao.turma}}</td>
+												<td>{{ cartao.numero_estudantil}}</td>
+												<td>
+													<a target="_blank" href="/cartao/cartao_foto/{{cartao.id}}">Fotografia</a>
+												</td>
+                                                <td>{{cartao.updated_at.format('d-m-Y')}}</td>
+                                                <td>
+												<form action="{{ route('cartao.mudar_estado')}}" method="post"> {{ csrf_field() }}
+                                                  	<input type="hidden" name="estado" value="entregue">
+													<input type="hidden" name="id" value="{{cartao.id}}"><input class="btn btn-primary" type="submit" value="entregue">
+                                                    </form>
+                                                    </td>
+												<td class="p-2">
+													<div class="dropdown show ">
+														<a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															<i class="material-icons md-18 align-middle">more_horiz</i>
+														</a>
+
+														<div class="dropdown-menu">
+															<a class="dropdown-item" href="/cartao/ver_cartao/{{cartao.id }}">
+																<i class="material-icons md-14 align-middle">edit</i>
+																<span class="align-middle">Ver</span>
+															</a>
+															<a class="dropdown-item" href="/cartao/editar_cartao/{{cartao.id }}">
+																<i class="material-icons md-14 align-middle">edit</i>
+																<span class="align-middle">Editar</span>
+															</a>
+															<a class="dropdown-item" href="/cartao/eliminar_cartao/{{cartao.id }}">
+																<i class="material-icons md-14 align-middle">remove_circle</i>
+																<span class="align-middle">Eliminar</span>
+															</a>
+														</div>
+													</div>
+												</td>
+											</tr>
+									{% endif %}
+								{% endfor %}
+							</tbody>
+
+						</table>
+
+					</div>
+				</div>
+				<div class="tab-pane fade" id="nav-docentregue" role="tabpanel" aria-labelledby="nav-docentregue-tab">
+					<div class="col-md-12 mt-4 mb-4">
+
+                    	<form class="form-inline" method="get" action="{{route('cartao.pesquisar')}}">
+							<div class=" col-md-12 pt-1 pb-3">
+								<div class="input-group input-group--inline w-100">
+									<select  id="instituicao" name="id_instituicao">
+										<option selected disabled value="">Pesquisar por Instituição</option>
+										{% for instituicao in instituicoes %}
+											<option value="{{ instituicao.id }}" {% if id_instituicao == instituicao.id   %} selected {% endif %}
+                                            >{{instituicao.nome}}</option>
+										{% endfor %}
+									</select>
+									<input type="text" class="form-control" name="curso" value="{{ curso }}" placeholder="Pesquisar por curso">
+									<input type="text" class="form-control" name="classe" value="{{ classe }}" placeholder="Pesquisar por classe">
+									<div class="input-group-append">
+										<button type="submit" class=" input-group-text material-icons">search</button>
+									</div>
+								</div>
+							</div>
+							</form>
+						<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+							<thead class="bg-primary text-white">
+								<tr>
+										<th class="text-white">#</th>
+											<th class="text-white">Nome</th>
+											<th class="text-white">Instituição</th>
+											<th class="text-white">Curso</th>
+											<th class="text-white">Classe</th>
+											<th class="text-white">Turma</th>
+											<th class="text-white">Número estudantil</th>
+											<th class="text-white">Fotografia</th>
+                                            <th class="text-white">Validação</th>
+                                            <th class="text-white">Data de entrega</th>
+											<th class="text-white">Acção</th>
+								</tr>
+							</thead>
+							<tbody class="border-left-0">
+								{% for cartao in cartoes %}
+									{% if cartao.estado == 2 %}
+										<tr class="text-center">
+												<td>{{ loop.index }}</td>
+												<td>{{cartao.pessoa.nome}}</td>
+												<td>{{cartao.instituicao.nome}}</td>
+												<td>{{ cartao.curso}}</td>
+												<td>{{ cartao.classe}}</td>
+												<td>{{ cartao.turma}}</td>
+												<td>{{ cartao.numero_estudantil}}</td>
+												<td>
+													<a target="_blank" href="/cartao/cartao_foto/{{cartao.id}}">Fotografia</a>
+												</td>
+                                                <td> cartao de estudante entregue </td>
+                                                <td>{{cartao.updated_at}}</td>
+												<td class="p-2">
+													<div class="dropdown show ">
+														<a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															<i class="material-icons md-18 align-middle">more_horiz</i>
+														</a>
+
+														<div class="dropdown-menu">
+															<a class="dropdown-item" href="/cartao/ver_cartao/{{cartao.id }}">
+																<i class="material-icons md-14 align-middle">edit</i>
+																<span class="align-middle">Ver</span>
+															</a>
+															<a class="dropdown-item" href="/cartao/editar_cartao/{{cartao.id }}">
+																<i class="material-icons md-14 align-middle">edit</i>
+																<span class="align-middle">Editar</span>
+															</a>
+															<a class="dropdown-item" href="/cartao/eliminar_cartao/{{cartao.id }}">
+																<i class="material-icons md-14 align-middle">remove_circle</i>
+																<span class="align-middle">Eliminar</span>
+															</a>
+														</div>
+													</div>
+												</td>
+											</tr>
+									{% endif %}
+								{% endfor %}
+							</tbody>
+
+						</table>
+
+					</div>
+				</div>
+
 			</div>
 		</div>
+	</div>
 
 
-	{% endblock %}
+{% endblock %}
+

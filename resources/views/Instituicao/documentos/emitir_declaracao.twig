@@ -1,70 +1,68 @@
 {% extends "@include/main_painel.twig" %}
 
-    {% block conteudo %}
+{% block conteudo %}
 
-        <div class="card">
-            <div class="card-body">
-                <h2 class="mt-2">
-                   Emitir Declaração
-                </h2>
-                <hr>
-    			<form  action="salvar_declaracao" enctype="multipart/form-data"  method="POST">
-                {{ csrf_field() }}
-                           {% if alert  %}
-                     <div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert">
-                        {{ alert.getMensagem() }}
-                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                   {{  alert.destruir() }}
-                   
-                    {% endif %}
-					<h5 class="mt-4">Dados</h5>
-								        	<div class="row">
-                                              <input type="hidden" name="id_estudante" class="form-control"  value="{{ usuario.id }}">
-                                            <div class="form-group col-md-6">
-                                            <input type="text" name="instituicao" class="form-control" disabled="" value="{{ usuario.instituicao.nome}}" >
-								        	</div>
-								        	<div class="form-group col-md-6">
-								        	  <select name="curso" class="form-control" required="">
-										      <option>cursos..</option>
-										     {% for curso in  usuario.instituicao.cursos_escola %}
-										      <option  value="{{ curso.nome }}">{{ curso.nome}}</option>
-										      {% endfor %}
-										    </select>
-								        	</div>
-								        	<div class="form-group col-md-6">
-								        	<input type="text"  required="" name="turma" class="form-control"  placeholder="Informe a sua turma">
-								        	</div>
-											<div class="form-group col-md-6">
-                                            <input type="text"  required="" class="form-control" name="classe" class="form-control"  placeholder="Informe a classe">
-								        	</div>
-											<div class="form-group col-md-6">
-								        	  <select class="form-control" name="tipo_declaracao"  required="">
-										      <option>Tipo..</option>
-										      <option value="Com notas">Com notas</option>
-										      <option value="Sem notas">Sem notas</option>
-
-										    </select>
-								        	</div>
-											<div class="form-group col-md-6">
-								        	<input type="text"  required="" name="efeito" class="form-control"  placeholder="Para qual efeito?">
-
-								        	</div>
-								        	<div class="col-md-12"></div>
-								            <div class="form-group col-md-12">
-                                                <label> comprovativo de pagamento </labrl>
-											  <input name="comprovativo" required="" class="form-control" type="file" id="formFile">
-								        	</div>
-								        	<div class="row col-md-12"></div>
+	<div class="card">
+		<div class="card-body">
+			<h2 class="mt-2">
+				Emitir Declaração
+			</h2>
+			{% if alert  %}
+				<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div> {{  alert.destruir() }}
+			{% endif %}
+			<hr>
+			<form action="salvar_declaracao" enctype="multipart/form-data" method="POST"> {{ csrf_field() }}
 
 
-								        	</div>
-								        <button type="submit" class="btn btn-success">Enviar</button>
-				</form>
-        </div>
-    </div>
+			{% endif %}
+			<h5 class="mt-4">Dados</h5>
+			<div class="row">
+				<input type="hidden" name="id_estudante" class="form-control" value="{{ usuario.id }}">
+				<div class="form-group col-md-6">
+					<input type="text" name="instituicao" class="form-control" disabled="" value="{{ usuario.instituicao.nome}}">
+				</div>
+				<div class="form-group col-md-6">
+					<select name="curso" class="form-control" required="">
+						<option>cursos..</option>
+						{% for curso in  usuario.instituicao.cursos_escola %}
+							<option value="{{ curso.nome }}">{{ curso.nome}}</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<input type="text" required="" name="turma" class="form-control" placeholder="Informe a sua turma">
+				</div>
+				<div class="form-group col-md-6">
+					<input type="text" required="" class="form-control" name="classe" class="form-control" placeholder="Informe a classe">
+				</div>
+				<div class="form-group col-md-6">
+					<select class="form-control" name="tipo_declaracao" required="">
+						<option>Tipo..</option>
+						<option value="Com notas">Com notas</option>
+						<option value="Sem notas">Sem notas</option>
+
+					</select>
+				</div>
+				<div class="form-group col-md-6">
+					<input type="text" required="" name="efeito" class="form-control" placeholder="Para qual efeito?">
+
+				</div>
+				<div class="col-md-12"></div>
+				<div class="form-group col-md-12">
+					<label>
+						comprovativo de pagamento
+					</labrl>
+					<input name="comprovativo" required="" class="form-control" type="file" id="formFile">
+				</div>
+				<div class="row col-md-12"></div>
 
 
-    {% endblock %}
+			</div>
+			<button type="submit" class="btn btn-success">Enviar</button>
+		</form>
+	</div>
+</div>{% endblock %}

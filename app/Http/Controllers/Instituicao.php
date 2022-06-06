@@ -34,10 +34,14 @@ class Instituicao extends Controller
     public function adicionar_instituicao()
     {
         $this->verifica();
-        $instituicao = Usuarios::where("grupo_de_usuarios_id", "=", "11")->get();
+        $instituicao = Usuarios::where("grupo_de_usuarios_id", "=", "11")->whereNotIn('id',function ($query) {
+        return $query->select('id_usuario')->from('instituicoes');
+        })->get();
 
        return view("Instituicao.gerais.adicionar_instituicao", ["titulo" => "Adicionar Instituição", "instituicoes" => $instituicao]);
     }
+
+
     public function salvar_instituicao(Request $requisicao)
     {
         $this->verifica();
@@ -75,7 +79,7 @@ class Instituicao extends Controller
     $instituicao->logotipo =$logotipoNovoNome;
 
         if ($instituicao->save()){
-            new Alert("Os Dados foram Salvos com Sucesso.");
+            new Alert("Os Dados foram Salvos com Sucesso.","success","");
             Http::redirecionar("/instituicao/adicionar_instituicao");
             return;
         }
@@ -98,7 +102,7 @@ class Instituicao extends Controller
         $instituicao->sobre =$req->post("sobre_escola");
 
         if ($instituicao->update()){
-            new Alert("Os Dados foram Actualizados com Sucesso!.");
+            new Alert("Os Dados foram Actualizados com Sucesso!.","success","");
             Http::redirecionar("/instituicao/minha_instituicao");
             return;
         }
@@ -136,7 +140,7 @@ class Instituicao extends Controller
         $cursos->perfil_de_saida = $req->post("perfil_de_saida");
         $cursos->id_instituicao = $req->post("id_instituicao");
         if ($cursos->save()){
-            new Alert("Os Dados foram Salvos com Sucesso.");
+            new Alert("Os Dados foram Salvos com Sucesso.","success","");
             Http::redirecionar("/instituicao/adicionar_curso");
             return;
         }
@@ -166,7 +170,7 @@ class Instituicao extends Controller
         $curso->perfil_de_saida =$req->post("perfil_de_saida");
 
         if ($curso->update()){
-            new Alert("Os Dados foram Actualizados com Sucesso!.");
+            new Alert("Os Dados foram Actualizados com Sucesso!.","success","");
             Http::redirecionar("/instituicao/cursos_leccionados");
             return;
         }
@@ -177,7 +181,7 @@ class Instituicao extends Controller
         $curso = Cursos_escolas::find($id);
         if($curso != null){
             $curso->delete();
-            new Alert("Curso eliminado com sucesso");
+            new Alert("Curso eliminado com sucesso","success","");
             Http::redirecionar("/instituicao/cursos_leccionados");
             return;
         }
@@ -198,7 +202,7 @@ class Instituicao extends Controller
         $historial->id_instituicao = $req->post("id_instituicao");
 
         if ($historial->save()){
-            new Alert("Os Dados foram Salvos com Sucesso.");
+            new Alert("Os Dados foram Salvos com Sucesso.","success","");
             Http::redirecionar("/instituicao/adicionar_historial");
             return;
         }
@@ -227,7 +231,7 @@ class Instituicao extends Controller
         $historial = Historial_escolas::where("id","=",$req->post("id"))->get()->first();
         $historial->historial =$req->post("historial");
         if ($historial->update()){
-            new Alert("Os Dados foram Actualizados com Sucesso!.");
+            new Alert("Os Dados foram Actualizados com Sucesso!.","success","");
             Http::redirecionar("/instituicao/ver_historial");
             return;
         }
@@ -248,7 +252,7 @@ class Instituicao extends Controller
         $arquitectura->id_instituicao = $req->post("id_instituicao");
 
         if ($arquitectura->save()){
-            new Alert("Os Dados foram Salvos com Sucesso.");
+            new Alert("Os Dados foram Salvos com Sucesso.","success","");
             Http::redirecionar("/instituicao/adicionar_arquitectura");
             return;
         }
@@ -276,7 +280,7 @@ class Instituicao extends Controller
         $arquitectura = Arquitectura_escola::where("id","=",$req->post("id"))->get()->first();
         $arquitectura->arquitectura =$req->post("arquitectura");
         if ($arquitectura->update()){
-            new Alert("Os Dados foram Actualizados com Sucesso!.");
+            new Alert("Os Dados foram Actualizados com Sucesso!.","success","");
             Http::redirecionar("/instituicao/ver_arquitectura");
             return;
         }
@@ -287,7 +291,7 @@ class Instituicao extends Controller
         $arquitectura = Arquitectura_escola::find($id);
         if($arquitectura != null){
             $arquitectura->delete();
-            new Alert("Arquitectura eliminada com sucesso");
+            new Alert("Arquitectura eliminada com sucesso"."success","");
             Http::redirecionar("/instituicao/ver_arquitectura");
             return;
         }
@@ -321,7 +325,7 @@ class Instituicao extends Controller
    $fotos->foto =$fotoNovoNome;
    $fotos->id_instituicao=$id_instituicao;
     $fotos->save();
-    new Alert("A foto foi salva com Sucesso", "sucesso", );
+    new Alert("A foto foi salva com Sucesso","success","");
     Http::redirecionar("/instituicao/adicionar_fotos");
     return;
 }
@@ -340,7 +344,7 @@ public function ver_fotos()
 
         $foto->delete();
                 if ($foto != null){
-                    new Alert("Foto eliminado com sucesso", "sucesso", "Foto eliminado" );
+                    new Alert("Foto eliminado com sucesso", "success", "Foto eliminado" );
                     Http::redirecionar("/instituicao/ver_fotos");
                     return;
             }
@@ -408,7 +412,7 @@ public function ver_fotos()
         $pdf->loadView('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_certificado,'tipo_documento'=>'certificado']);
         $pdf->save("ficheiros/escolas/doc_emiss_certificado/".$requerimento.".pdf");
         }
-    new Alert("A Emissão do Certificado foi enviado com Sucesso", "sucesso", );
+    new Alert("A Emissão do Certificado foi enviado com Sucesso", "success","");
     Http::redirecionar("/documentos/emitir_certificado");
     return;
 
@@ -442,7 +446,7 @@ public function ver_fotos()
       $docNovoNome="";
         if ($comprovativo != null){
             if(!Ficheiros::eDocumentoValido($comprovativo)){
-                new Alert("O Documento não é valido.", "erro", "documento invalida.");
+                new Alert("O Documento não é valido.", "error", "documento invalida.");
                 Http::redirecionar("/documentos/emitir_declaracao");
                 return;
             }
@@ -477,7 +481,7 @@ public function ver_fotos()
             $pdf->loadHTML('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_declaracao,'tipo_documento'=>'Declaração']);
             $pdf->save("ficheiros/escolas/doc_emiss_declaracao/".$requerimento.".pdf");
             }
-    new Alert("A Emissão da Declaração foi enviada com Sucesso", "sucesso", );
+    new Alert("A Emissão da Declaração foi enviada com Sucesso","success","");
     Http::redirecionar("/documentos/emitir_declaracao");
     return;
 
@@ -526,7 +530,7 @@ public function ver_fotos()
         $certificado_pronto=Emissao_certificados::find($id);
         $certificado_pronto->estado= $dados;
         if ($certificado_pronto->save()) {
-            new Alert("O certificado esta pronto para ser entregue !.");
+            new Alert("O certificado esta pronto para ser entregue !.","success","");
             Http::redirecionar("/documentos/certificados_solicitados");
             return;
         }
@@ -538,7 +542,7 @@ public function ver_fotos()
         $certificado_pronto=Emissao_certificados::find($id);
         $certificado_pronto->estado =$dados;
         if ($certificado_pronto->save()){
-            new Alert("O certificado foi entregue com Sucesso!.");
+            new Alert("O certificado foi entregue com Sucesso!.","success","");
             Http::redirecionar("/documentos/certificados_solicitados");
             return;
         }
@@ -564,7 +568,7 @@ public function ver_fotos()
         $declaracao_pronto=Emissao_declaracoes::find($id);
         $declaracao_pronto->estado =$dados;
         if ($declaracao_pronto->save()){
-            new Alert("A declaração esta pronta para ser entregue!.");
+            new Alert("A declaração esta pronta para ser entregue!.","success","");
             Http::redirecionar("/documentos/declaracoes_solicitados");
             return;
         }
@@ -576,10 +580,42 @@ public function ver_fotos()
         $declaracao_pronto=Emissao_declaracoes::find($id);
         $declaracao_pronto->estado =$dados;
         if ($declaracao_pronto->save()){
-            new Alert("a declaração foi entregue Sucesso!.");
+            new Alert("a declaração foi entregue Sucesso!.","success","");
             Http::redirecionar("/documentos/declaracoes_solicitados");
             return;
         }
     }
+//listar instituição
+public function ListarInstituicao()
+{
+    # code...
 
+    $instituicoes=Instituicoes::all();
+    return view("Instituicao.gerais.listar", ["titulo" =>'Lista de Instituição','instituicoes'=>$instituicoes]);
+}
+//listar actulizar instituição
+public function AtualizarInstituicao($id)
+{  # code...
+    $instituicao=Instituicoes::find($id);
+    $usuarios = Usuarios::where("grupo_de_usuarios_id", "=", "11")->get();
+    return view("Instituicao.gerais.atualizar", ["titulo" =>"Atualizar Instituicao",
+    "instituicao"=>$instituicao,'usuarios'=>$usuarios]);
+}
+//atualizar instituição
+
+public function actualizar_Instituicao(Request $request, Instituicoes $instituicao)
+{
+    # code...
+    $instituicao->update($request->all());
+    new Alert("Instituicao Atualizada com Sucesso!.","success","");
+    Http::redirecionar("/instituicao/listar_instituicoes");
+}
+//eliminar instituição
+public function eliminar_Instituicao(Instituicoes $instituicao)
+{
+    # code...
+    $instituicao->delete();
+    new Alert("Instituicao Eliminada com Sucesso!.","success","");
+    Http::redirecionar("/instituicao/listar_instituicoes");
+}
 }

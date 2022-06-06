@@ -8,8 +8,7 @@
 				Emitir Cartão de estudante
 			</h2>
 			<hr>
-			<form action="/cartao/update_cartao/{{cartao.id}}" enctype="multipart/form-data" method="POST">
-             {{ csrf_field() }}
+			<form action="/cartao/update_cartao/{{cartao.id}}" enctype="multipart/form-data" method="POST"> {{ csrf_field() }}
 				{% if alert  %}
 					<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -40,9 +39,9 @@
 					<div class="form-group col-md-4">
 						<input type="text" name="numero_estudantil" required="" class="form-control" placeholder="Número Estudantil" value="{{ cartao.numero_estudantil}}">
 					</div>
-                    <div class="col-md-12"></div>
+					<div class="col-md-12"></div>
 					<div class="form-group col-md-6">
-                         <label>
+						<label>
 							fotografia
 						</label>
 						<input name="foto" required="" class="form-control" type="file" id="formFile">

@@ -14,6 +14,13 @@
                 <h2 class="mt-2">
                     Adicionar Foto
                 </h2>
+                	{% if alert  %}
+				<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div> {{  alert.destruir() }}
+			{% endif %}
                 <hr>
         <form class="w-100" id="needs-validation" action="salvar_foto" enctype="multipart/form-data"  method="POST">
                  	{{ csrf_field() }}

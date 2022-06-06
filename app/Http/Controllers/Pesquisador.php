@@ -46,7 +46,7 @@ class Pesquisador extends Controller
 
         if ($p_logo != null){
             if(!Ficheiros::eImagemValida($p_logo)){
-                new Alert("O logo do pesquisador não é valida.", "erro", "Logo invalido.");
+                new Alert("O logo do pesquisador não é valida.", "error", "Logo invalido.");
                 Http::redirecionar("/pesquisador/criar_pesquisador");
                 return;
             }
@@ -56,7 +56,7 @@ class Pesquisador extends Controller
                 $p_logo->move("ficheiros/pesquisadores/imagens/",$p_logoNovoNome);
                 $pesquisador->logo =$p_logoNovoNome;
             } catch (\Exception $e) {
-                new Alert("Erro ao tentar mover o ficheiro para o servidor", "erro", "Tente novamente");
+                new Alert("Erro ao tentar mover o ficheiro para o servidor", "error", "Tente novamente");
                 Http::redirecionar("/pesquisador/criar_pesquisador");
                 return;
             }
@@ -114,7 +114,7 @@ class Pesquisador extends Controller
                 $pesquisador->nome=Testos::primeiroEultimo($p_nome,"");
                 if ($pesquisador->save())
                 {
-                    new Alert("Pesquisador cadastrado com sucesso.");
+                    new Alert("Pesquisador cadastrado com sucesso.","success","");
                     Http::redirecionar("/pesquisador/criar_pesquisador/");
                 }
             }
@@ -146,7 +146,7 @@ class Pesquisador extends Controller
             $p_logo->move("ficheiros/pesquisadores/imagens/",$p_logoNovoNome);
             $pesquisador->logo =$p_logoNovoNome;
         } catch (\Exception $e) {
-            new Alert("Erro ao tentar mover o ficheiro para o servidor", "erro", "Tente novamente");
+            new Alert("Erro ao tentar mover o ficheiro para o servidor", "error", "Tente novamente");
             Http::redirecionar("/pesquisador/criar_pesquisador");
             return;
         }
@@ -205,7 +205,7 @@ class Pesquisador extends Controller
             $pesquisador->nome=Testos::primeiroEultimo($p_nome,"");
             if ($pesquisador->save())
             {
-                new Alert("Bem vindo. entre com seu email e senha");
+                new Alert("Bem vindo. entre com seu email e senha","success","");
                 Http::redirecionar("/entrar");
             }
         }

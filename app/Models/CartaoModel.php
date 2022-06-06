@@ -13,7 +13,7 @@ class CartaoModel extends Model
      *
      * @var bool
      */
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function pessoa()
     {
@@ -42,6 +42,14 @@ class CartaoModel extends Model
         }
         return $query->paginate(10);
     }
-
+/**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+    ];
 
 }

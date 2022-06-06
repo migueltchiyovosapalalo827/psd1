@@ -150,7 +150,7 @@ public function salvar_grupo(Request $r): void
         Http::redirecionar("/usuario/grupo/".$grupo->id);
         return;
     }
-    new Alert("Não foi possivel criar o grupo!","erro", "Erro ao criar grupo");
+    new Alert("Não foi possivel criar o grupo!","danger", "Erro ao criar grupo");
     Http::redirecionar("/usuario/grupo");
 }
 public function eliminar_usuario(int $id): void
@@ -179,7 +179,7 @@ public function eliminar_usuario(int $id): void
     }
     $usuario->delete();
     $usuario->pessoa->delete();
-    new Alert("Usuario eliminado com sucesso.");
+    new Alert("Usuario eliminado com sucesso.","success");
     Http::redirecionar("/usuario/usuarios");
 
 }
@@ -237,7 +237,7 @@ public function salvar_usuario(Request $r)
         $usuario->grupo_de_usuarios_id=$u_grupo;
         if ($usuario->save()){
 
-            new Alert("Usuario salvo com sucesso.");
+            new Alert("Usuario salvo com sucesso.","success","");
             Http::redirecionar("/usuario/novo_usuario");
         }
     }
@@ -419,7 +419,7 @@ public function atualizar_informacoes_pessoais(Request $r): void
             ->get()
             ->first();
             if ($usuario != null){
-                new Alert("Não foi possivel atualizar os dados.", "erro","Usuario já registrado.");
+                new Alert("Não foi possivel atualizar os dados.", "error","Usuario já registrado.");
                 Http::redirecionar("/usuario/meu_perfil");
                 return;
             }

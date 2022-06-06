@@ -84,38 +84,31 @@
 
 
 <div class="container">
+
+
 	<h4 class="mt-5">Cursos Leccionados</h4>
-  {% for curso in cursos %}
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalExemplo{{ curso.id }}">
-{{ curso.nome }}
-</button>
+    <div class="row">
+  <div class="col-4">
+    <div class="list-group" id="list-tab" role="tablist">
+      {% for curso in cursos %}
+      <a class="list-group-item list-group-item-action   {% if loop.index == 1 %}  active {% endif %} " id="list-{{curso.id}}-list" data-toggle="list" href="#list-{{curso.id}}" role="tab" aria-controls="{{curso.id}}">{{ curso.nome }}</a>
+      {% endfor %}
 
-
-<!-- Modal -->
-<div class="modal fade" id="modalExemplo{{ curso.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{ curso.nome }}</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+    </div>
+  </div>
+  <div class="col-8">
+    <div class="tab-content" id="nav-tabContent">
+     {% for curso in cursos %}
+      <div class="tab-pane fade {% if loop.index == 1 %} show active {% endif %} " id="list-{{curso.id}}" role="tabpanel" aria-labelledby="list-{{curso.id}}-list">
         <h5>Principais Disciplinas</h5>
         <p>{{ curso.principais_disciplinas }}</p>
         <h5>Perfil de Saída</h5>
         <p>{{ curso.perfil_de_saida }}</p>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-      </div>
+      {% endfor %}
     </div>
   </div>
- </div>
- {% endfor %}
-<!--Fim Modal -->
-
+</div>
 </div>
 
 

@@ -1,0 +1,76 @@
+{% extends "@include/main_painel.twig" %}
+
+{% block conteudo %}
+
+	<div class="card">
+		<div class="card-body">
+			<h2 class="mt-2">
+				Instituições cadastradas
+			</h2>
+			{% if alert  %}
+				<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div> {{  alert.destruir() }}
+			{% endif %}
+			<hr>
+			<div class="card">
+				<div class="">
+					<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+						<thead class="bg-primary text-white">
+							<tr>
+								<th class="text-white">#</th>
+								<th class="text-white">NOME</th>
+								<th class="text-white">TIPO</th>
+								<th class="text-white">NIVEL</th>
+								<th class="text-white">LOCALIZAÇÃO</th>
+								<th class="text-white">TELEFONE</th>
+								<th class="text-white">ADMINISTRADOR</th>
+								<th class="text-white">Opções</th>
+							</tr>
+						</thead>
+						<tbody class="  border-left-0">
+							{% for instituicao in instituicoes  %}
+								<tr>
+									<td>{{ loop.index }}</td>
+									<td>{{ instituicao.nome }}</td>
+									<td>{{ instituicao.tipo }}</td>
+									<td>{{ instituicao.nivel }}</td>
+									<td>{{ instituicao.localizacao }}</td>
+									<td>{{ instituicao.telefone }}</td>
+									<td>{{ instituicao.usuario.usuario }}</td>
+									<td>
+										<div class="dropdown show ">
+											<a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<i class="material-icons md-18 align-middle">more_horiz</i>
+											</a>
+
+											<div class="dropdown-menu">
+												<a class="dropdown-item text-center" href="{{ route('instituicao.actualizar',instituicao.id) }}">
+                                                 Editar
+												</a>
+												<a class="dropdown-item">
+													<form method="POST" action="{{ route('instituicao.deletar',instituicao.id) }}"> {{ method_field('DELETE') }} {{ csrf_field() }}
+
+														<button type="submit" style="border-color:#f1f3f04f;background:#f1f3f04f;color:#333" class="btn btn-success" value="eliminar">
+															<i class="material-icons md-14 align-middle">remove_circle</i>
+															<span class="align-middle">Eliminar</span>
+														</button>
+													</form>
+												</a>
+											</div>
+										</div>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+{% endblock %}
