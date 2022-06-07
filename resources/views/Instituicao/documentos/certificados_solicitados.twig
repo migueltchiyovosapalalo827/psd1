@@ -34,11 +34,11 @@
 									<th class="text-white">Nome</th>
 									<th class="text-white">Curso</th>
 									<th class="text-white">Turma</th>
-									<th class="text-white">Número estudantil</th>
 									<th class="text-white">Ano do término</th>
 									<th class="text-white">Documento</th>
 									<th class="text-white">Requerimento</th>
 									<th class="text-white">comprovativo</th>
+                                    <th class"text-white">Data de emissão</th>
 									<th class="text-white">Validação</th>
 								</tr>
 							</thead>
@@ -50,7 +50,6 @@
 											<td>{{ certificado.estudante.pessoa.nome}}</td>
 											<td>{{ certificado.curso}}</td>
 											<td>{{ certificado.turma}}</td>
-											<td>{{ certificado.numero_estudantil}}</td>
 											<td>{{ certificado.ano_termino}}</td>
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
@@ -61,6 +60,7 @@
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a>
 											</td>
+                                             <td>{{ certificado.created_at.format('d-m-Y')}}</td>
 											<td>
 												<form action="validacao_pronto_cert" method="post"> {{ csrf_field() }}
 													<input type="hidden" name="id" value="{{certificado.id}}">
@@ -85,12 +85,12 @@
 									<th class="text-white">Nome</th>
 									<th class="text-white">Curso</th>
 									<th class="text-white">Turma</th>
-									<th class="text-white">Número estudantil</th>
 									<th class="text-white">Ano do término</th>
 									<th class="text-white">Documento</th>
 									<th class="text-white">Requerimento</th>
 									<th class="text-white">comprovativo</th>
 									<th class="text-white">Validação</th>
+                                    <th class="text-white">Data da Validação</th>
 								</tr>
 							</thead>
 							<tbody class="border-left-0">
@@ -101,7 +101,6 @@
 											<td>{{ certificado.estudante.pessoa.nome}}</td>
 											<td>{{ certificado.curso}}</td>
 											<td>{{ certificado.turma}}</td>
-											<td>{{ certificado.numero_estudantil}}</td>
 											<td>{{ certificado.ano_termino}}</td>
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
@@ -117,6 +116,7 @@
 													<input type="hidden" name="id" value="{{ certificado.id}}"><input class="btn btn-primary" type="submit" value="entregue">
                                                     </form>
                                                     </td>
+                                                    <td>{{ certificado.updated_at.format('d-m-Y')}}</td>
 										</tr>
 									{% endif %}
 								{% endfor %}
@@ -129,7 +129,6 @@
 				<div class="tab-pane fade" id="nav-docentregue" role="tabpanel" aria-labelledby="nav-docentregue-tab">
 					<div class="col-md-12 mt-4 mb-4">
 
-
 						<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
 							<thead class="bg-primary text-white">
 								<tr>
@@ -137,12 +136,12 @@
 									<th class="text-white">Nome</th>
 									<th class="text-white">Curso</th>
 									<th class="text-white">Turma</th>
-									<th class="text-white">Número estudantil</th>
 									<th class="text-white">Ano do término</th>
 									<th class="text-white">Documento</th>
 									<th class="text-white">Requerimento</th>
 									<th class="text-white">comprovativo</th>
 									<th class="text-white">Validação</th>
+                                    <th class="text-white">Data de entrega</th>
 								</tr>
 							</thead>
 							<tbody class="border-left-0">
@@ -153,7 +152,6 @@
 											<td>{{ certificado.estudante.pessoa.nome}}</td>
 											<td>{{ certificado.curso}}</td>
 											<td>{{ certificado.turma}}</td>
-											<td>{{ certificado.numero_estudantil}}</td>
 											<td>{{ certificado.ano_termino}}</td>
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
@@ -165,6 +163,7 @@
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{ certificado.comprovativo }}">Comprovativo</a>
 											</td>
 											<td>documento entregue</td>
+                                            <td>{{ certificado.updated_at.format('d-m-Y')}}</td>
 										</tr>
 									{% endif %}
 								{% endfor %}

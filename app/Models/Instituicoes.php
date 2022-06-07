@@ -19,7 +19,7 @@ class Instituicoes extends Model
 
     public function usuario()
     {
-        return $this->belongsTo(Usuarios::class, 'id');
+        return $this->belongsTo(Usuarios::class, 'id_usuario');
     }
     public function cursos_escola(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

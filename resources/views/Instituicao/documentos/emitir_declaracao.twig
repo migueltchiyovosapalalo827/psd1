@@ -16,9 +16,6 @@
 			{% endif %}
 			<hr>
 			<form action="salvar_declaracao" enctype="multipart/form-data" method="POST"> {{ csrf_field() }}
-
-
-			{% endif %}
 			<h5 class="mt-4">Dados</h5>
 			<div class="row">
 				<input type="hidden" name="id_estudante" class="form-control" value="{{ usuario.id }}">

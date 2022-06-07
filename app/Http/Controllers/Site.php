@@ -13,31 +13,29 @@ class Site extends Controller
 
     public  function home()
     {
-        $instituicoes=Instituicoes::all();
-        return view("Site.home",["titulo"=>"PSD Pesquisa e Desenvolvimento","instituicoes"=>$instituicoes]);
+        $instituicoes = Instituicoes::all();
+        return view("Site.home", ["titulo" => "PSD Pesquisa e Desenvolvimento", "instituicoes" => $instituicoes]);
     }
     public  function escolas_publicas()
     {
-        $escolaspu=Instituicoes::where("tipo","=","publica")->get();
-        return view("Site.escolas_publicas",["titulo"=>"PSD - Escolas Públicas","escolaspu"=>$escolaspu]);
+        $escolaspu = Instituicoes::where("tipo", "=", "publica")->get();
+        return view("Site.escolas_publicas", ["titulo" => "PSD - Escolas Públicas", "escolaspu" => $escolaspu]);
     }
     public  function escolas_privadas()
     {
-        $escolaspr=Instituicoes::where("tipo","=","privada")->get();
-        return view("Site.escolas_privadas",["titulo"=>"PSD - Escolas Privadas","escolaspr"=>$escolaspr]);
+        $escolaspr = Instituicoes::where("tipo", "=", "privada")->get();
+        return view("Site.escolas_privadas", ["titulo" => "PSD - Escolas Privadas", "escolaspr" => $escolaspr]);
     }
-    public  function escola($id=0)
+    public  function escola($id = 0)
     {
-        if ($id !=0 and $id !=null){
-        $escolar = Instituicoes::where("id","=",$id)->get();
-        $curso=Cursos_escolas::where("id_instituicao","=",$id)->get();
-        $historial=Historial_escolas::where("id_instituicao","=",$id)->get()->first();
-        $arquitecturas=Arquitectura_escola::where("id_instituicao","=",$id)->get();
-        $fotos=Fotos_escolas::where("id_instituicao","=",$id)->get();
+        if ($id != 0 and $id != null) {
+            $escolar = Instituicoes::where("id", "=", $id)->get();
+            $curso = Cursos_escolas::where("id_instituicao", "=", $id)->get();
+            $historial = Historial_escolas::where("id_instituicao", "=", $id)->get()->first();
+            $arquitecturas = Arquitectura_escola::where("id_instituicao", "=", $id)->get();
+            $fotos = Fotos_escolas::where("id_instituicao", "=", $id)->get();
 
-        return view("Site.escola",["titulo"=>"PSD - Escola","escolar"=>$escolar,"cursos"=>$curso,"historial"=>$historial,"fotos"=>$fotos,"arquitecturas"=>$arquitecturas]);
+            return view("Site.escola", ["titulo" => "PSD - Escola", "escolar" => $escolar, "cursos" => $curso, "historial" => $historial, "fotos" => $fotos, "arquitecturas" => $arquitecturas]);
+        }
     }
-}
-
-
 }

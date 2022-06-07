@@ -46,8 +46,8 @@ class Usuarios extends Authenticatable
     {
         return $this->belongsTo(Pessoas::class, 'pessoas_id');
     }
-    public function instituicoes(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function instituicoes(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->belongsTo(Instituicoes::class, 'id_administrador');
+        return $this->hasOne(Instituicoes::class,'id_usuario');
     }
 }

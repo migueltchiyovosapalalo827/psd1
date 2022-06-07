@@ -18,7 +18,7 @@ use App\Uteis\Sessoes;
  */
 class Firewall
 {
-     /**
+    /**
      * @param $usuario
      */
     public static function entrar($usuario): void
@@ -28,7 +28,8 @@ class Firewall
      * @param $usuario
      */
     public static function montar_menu($usuario): void
-    {    $ar = [];
+    {
+        $ar = [];
         $tarefasPermicao = array();
         $tarefasPermicaoObj = array();
         $caminhos = array();
@@ -58,7 +59,6 @@ class Firewall
         }
 
         Sessoes::adicionar("MenuDoUsuario", $ar);
-
     }
 
     /**
@@ -104,14 +104,14 @@ class Firewall
                 return "Instituicao";
                 break;
             case 'Gestão_de_documento':
-                    return "Documentos";
-                    break;
+                return "Documentos";
+                break;
             case 'Sistema':
                 return "Sistema";
                 break;
-                case 'Gestão_de_cartões':
-                    return "Cartoes";
-                    break;
+            case 'Gestão_de_cartões':
+                return "Cartoes";
+                break;
             default:
                 return "Sistema";
         }
