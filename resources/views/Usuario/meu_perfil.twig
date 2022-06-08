@@ -184,16 +184,16 @@
 												<input value="{{ pessoa.naturalidade }}" type="text" class="form-control" name="p_naturalidade" placeholder="Angolana">
 											</div>
 										</div>
-                                        	{% if  SESSION.usuario.grupo.nome =="estudantes" %}
-										<div class="form-group col-md-12">
-											<select name="p_instituicao" class="form-control" required="" {% if pessoa.estudante.id_instituicao %} disabled {% endif %}>
-												<option>instituição de ensino..</option>
-												{% for instituicao in instituicoes %}
-													<option value="{{ instituicao.id }}" {% if pessoa.estudante.id_instituicao == instituicao.id %} selected {% endif %}> {{ instituicao.nome}}</option>
-												{% endfor %}
-											</select>
-										</div>
-                                        {% endif %}
+										{% if  SESSION.usuario.grupo.nome =="estudantes" %}
+											<div class="form-group col-md-12">
+												<select name="p_instituicao" class="form-control" required="" {% if pessoa.estudante.id_instituicao %} disabled {% endif %}>
+													<option>instituição de ensino..</option>
+													{% for instituicao in instituicoes %}
+														<option value="{{ instituicao.id }}" {% if pessoa.estudante.id_instituicao == instituicao.id %} selected {% endif %}> {{ instituicao.nome}}</option>
+													{% endfor %}
+												</select>
+											</div>
+										{% endif %}
 									</div>
 									<button type="submit" class="btn btn-success">Salvar</button>
 								</form>

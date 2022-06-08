@@ -14,7 +14,7 @@ class Instituicoes extends Model
     /**
      * @var array
      */
-    protected $fillable = ['nome','email','telefone','localizacao','tipo','sobre','id_usuario','logotipo','nivel'];
+    protected $fillable = ['nome','email','telefone','localizacao','tipo','sobre','id_usuario','logotipo','nivel','parent_id'];
 
 
     public function usuario()
@@ -54,6 +54,34 @@ class Instituicoes extends Model
     {
         return $this->hasMany(Estudantes::class, 'id_instituicao');
     }
+    //instituição de tutela
+    public function tutelas(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Instituicoes::class, 'parent_id', 'id');
+    }
+    // istituicao pai
+    public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Instituicoes::class, 'parent_id');
+    }
+
+    //função para verificar se uma instituição é pai ou não
+    public function isParent(): bool
+    {
+        return $this->parent_id == null;
+    }
+
+    protected $appends = ['isParent'];
+
+    public function getIsParentAttribute()
+    {
+        if (isset($this->attributes['parent_id'])) {
+            # code...
+            return false;
+        }
+        return true;
+    }
+
 
 
 }

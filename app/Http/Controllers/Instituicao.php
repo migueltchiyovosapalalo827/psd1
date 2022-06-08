@@ -35,11 +35,12 @@ class Instituicao extends Controller
     public function adicionar_instituicao()
     {
         $this->verifica();
-        $instituicao = Usuarios::where("grupo_de_usuarios_id", "=", "11")->whereNotIn('id', function ($query) {
+        $usuarios = Usuarios::where("grupo_de_usuarios_id", "=", "11")->whereNotIn('id', function ($query) {
             return $query->select('id_usuario')->from('instituicoes');
         })->get();
 
-        return view("Instituicao.gerais.adicionar_instituicao", ["titulo" => "Adicionar Instituição", "instituicoes" => $instituicao]);
+         $instituicoes = Instituicoes::where('tipo', '=','publica')->get();
+        return view("Instituicao.gerais.adicionar_instituicao", ["titulo" => "Adicionar Instituição", "usuarios" => $usuarios, "instituicoes" => $instituicoes]);
     }
 
 
@@ -55,6 +56,7 @@ class Instituicao extends Controller
         $sobre = $requisicao->post("sobre_escola");
         $logotipo = $requisicao->file('logotipo', null);
         $id_usuario = $requisicao->post("id_usuario");
+        $parent_id = $requisicao->post("parent_id");
         $logotipoNovoNome = "";
         if ($logotipo != null) {
             if (!Ficheiros::eImagemValida($logotipo)) {
@@ -78,6 +80,7 @@ class Instituicao extends Controller
         $instituicao->sobre = $sobre;
         $instituicao->id_usuario = $id_usuario;
         $instituicao->logotipo = $logotipoNovoNome;
+        $instituicao->parent_id = $parent_id;
 
         if ($instituicao->save()) {
             new Alert("Os Dados foram Salvos com Sucesso.", "success", "");
@@ -566,10 +569,11 @@ class Instituicao extends Controller
     {  # code...
         $this->verificaSeEstaLogado();
         $instituicao = Instituicoes::find($id);
+        $instituicoes = Instituicoes::where('tipo', '=','publica')->get();
         $usuarios = Usuarios::where("grupo_de_usuarios_id", "=", "11")->get();
         return view("Instituicao.gerais.atualizar", [
             "titulo" => "Atualizar Instituicao",
-            "instituicao" => $instituicao, 'usuarios' => $usuarios
+            "instituicao" => $instituicao, 'usuarios' => $usuarios, "instituicoes" => $instituicoes
         ]);
     }
     //atualizar instituição

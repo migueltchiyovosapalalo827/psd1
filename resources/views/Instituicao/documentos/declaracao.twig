@@ -39,6 +39,7 @@
         font-size: 15px;
         padding: 10px;
         text-align: center;
+        line-height:2;
 
     }
   </style>
@@ -49,7 +50,13 @@
 <h4>Solicitação de {{tipo_documento}} </h4>
 </div>
 <div class="cabecalho2">
- <p>A <br> Sua Excelência, Senhor(a) Director (a) <br>do (a) {{emitir_certificado.instituicao.nome}}</p>
+ <p>A <br> Sua Excelência, Senhor(a) Director (a) <br>do (a)
+ {% if emitir_certificado.instituicao.isParent()  %}
+{{emitir_certificado.instituicao.nome}}
+ {% else %}
+  {{emitir_certificado.instituicao.parent.nome}}
+ {% endif %}
+ </p>
 </div>
 
 <div class="corpo">

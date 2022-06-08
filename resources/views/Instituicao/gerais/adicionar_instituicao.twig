@@ -7,7 +7,7 @@
 			<h2 class="mt-2">
 				Criar Instituição
 			</h2>
-            	{% if alert  %}
+			{% if alert  %}
 				<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
@@ -40,8 +40,9 @@
 					<div class="form-group col-md-4">
 						<label for="rsTipo">Tipo</label>
 						<select class="form-control" id="rsTipo" required="" name="tipo">
-							<option selected value="publica">Pública</option>
-							<option selected value="privada">Privada</option>
+							<option value="" selected>seleciona o tipo de Instituição</option>
+							<option value="publica">Pública</option>
+							<option value="privada">Privada</option>
 						</select>
 					</div>
 					<div class="form-group col-md-4">
@@ -52,23 +53,35 @@
 							<option selected value="superior">Ensino Superior</option>
 						</select>
 					</div>
-					<div class="form-group col-md-4">
-						<label for="rsAdministrador">Administrador</label>
-						<select class="form-control" id="rsAdministrador" required="" name="id_usuario">
+					<div class="form-group col-md-4" id="rstutela">
+						<label for="rsAdministrador">Instituição de tutela</label>
+						<select class="form-control" required="" name="parent_id">
+							<option selected value="">
+								seleciona uma Instituição de tutela</option>
 							{% for instituicao in instituicoes %}
-								<option selected value="{{instituicao.id}}">{{ instituicao.usuario }}</option>
+								<option value="{{instituicao.id}}">{{instituicao.nome }}</option>
 							{% endfor %}
 						</select>
 					</div>
-					<div class="form-group col-md-8">
-						<label for="idescricao">Sobre a Escola</label>
-						<textarea name="sobre" class="form-control" id="sobre_escola" placeholder="Breve descrição sobre a escola." rows="3"></textarea>
+
+					<div class="form-group col-md-4">
+						<label for="rsAdministrador">Administrador</label>
+						<select class="form-control" id="rsAdministrador" required="" name="id_usuario">
+							<option selected value="">
+								seleciona um Administrador para Instituição</option>
+							{% for usuario in usuarios %}
+								<option value="{{usuario.id}}">{{ usuario.pessoa.nome }}</option>
+							{% endfor %}
+						</select>
 					</div>
 					<div class="form-group col-md-4">
 						<label for="icapa">Logotipo</label>
 						<input type="file" name="logotipo" class="form-control form-control-file p-1">
 					</div>
-
+					<div class="form-group col-md-8">
+						<label for="idescricao">Sobre a Escola</label>
+						<textarea name="sobre" class="form-control" id="sobre_escola" placeholder="Breve descrição sobre a escola." rows="3"></textarea>
+					</div>
 				</div>
 				<div class="d-flex align-items-end justify-content-end">
 					<button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
@@ -77,5 +90,25 @@
 		</div>
 	</div>
 
+
+{% endblock %}
+{% block js %}
+	<script>
+		$(document).ready(function () { // Code that uses jQuery's $ can follow here.
+$('#rstutela').hide();
+$('#rsTipo').change(function () {
+
+let tipo = $('#rsTipo option:selected').val();
+if (tipo == "privada") {
+console.log(tipo);
+$('#rstutela').show();
+} else {
+$('#rstutela').hide();
+
+}
+});
+});
+//
+	</script>
 
 {% endblock %}

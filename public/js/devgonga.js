@@ -187,7 +187,7 @@ var InqueritoModulo = (function ($) {
 
             function ro() {
                 let opcoes = `
-                           
+
                         <div class="opcoes">
                          <hr class="mt-0 mb-0">
                            <label for="" class="pt-2">Opções</label>

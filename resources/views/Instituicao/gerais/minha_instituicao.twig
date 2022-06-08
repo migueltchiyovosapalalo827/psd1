@@ -57,6 +57,17 @@
                     </div>
                   </div>
                   <hr>
+                  {% if dado.parent %}
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Instituição de tutela</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                      <p>{{ dado.parent.nome }}</p>
+                    </div>
+                  </div>
+                  <hr>
+                  {% endif %}
                   <div class="row">
 
                     <div class="col-sm-12 text-secondary">

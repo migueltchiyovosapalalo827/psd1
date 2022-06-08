@@ -247,7 +247,7 @@ class  Usuario  extends Controller
     {
         if (Sessoes::obter("usuario") != null) {
 
-            new Alert("Você já esta logado", "aviso", "Já logado.");
+            new Alert("Você já esta logado", "info", "Já logado.");
             Http::redirecionar("painel");
             return;
         }
@@ -325,7 +325,7 @@ class  Usuario  extends Controller
 
         return view("Usuario.meu_perfil", ["titulo" => "Meu perfil", "pessoa" => $pessoa, "usuario" => $usuario, "instituicoes" => $instituicoes]);
     }
-    public function atualizar_informacoes_pessoais(Request $r): void
+    public function atualizar_informacoes_pessoais(Request $r)
     {
         $this->verificaSeEstaLogado();
         $usuarioLogado = Sessoes::obter("usuario");
@@ -379,12 +379,13 @@ class  Usuario  extends Controller
         ])) {
 
             $documento->move("ficheiros/escolas/doc_emiss_certificado/", "documento" . $pessoa->n_do_documento . ".pdf");
-            new Alert("Dados pessoais atualizados com sucesso");
-            Http::redirecionar("/usuario/meu_perfil");
-            return;
+            new Alert("Dados pessoais atualizados com sucesso","success");
+
+        } else {
+            new Alert("Não foi possivel atualizar os dados", "error", "Erro ao atualizar os dados");
         }
-        new Alert("Não foi possivel atualizar os dados", "error", "Erro ao atualizar os dados");
-        Http::redirecionar("/usuario/meu_perfil");
+
+        return redirect()->back();
     }
 
     /**
