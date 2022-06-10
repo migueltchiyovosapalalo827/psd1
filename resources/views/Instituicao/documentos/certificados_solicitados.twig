@@ -52,7 +52,7 @@
 											<td>{{ certificado.turma}}</td>
 											<td>{{ certificado.ano_termino}}</td>
 											<td>
-												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
+												<a target="_blank" href="{{asset('ficheiros/escolas/doc_estudante')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
 											</td>
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{certificado.requerimento }}">requerimento</a>
@@ -62,7 +62,7 @@
 											</td>
                                              <td>{{ certificado.created_at.format('d-m-Y')}}</td>
 											<td>
-												<form action="validacao_pronto_cert" method="post"> {{ csrf_field() }}
+												<form action="validacao_pronto_cert" method="post"> {{csrf_field() }}
 													<input type="hidden" name="id" value="{{certificado.id}}">
 													<input class="btn btn-primary" type="submit" value="pronto"></form>
 											</td>
@@ -103,7 +103,7 @@
 											<td>{{ certificado.turma}}</td>
 											<td>{{ certificado.ano_termino}}</td>
 											<td>
-												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
+												<a target="_blank" href="{{asset('ficheiros/escolas/doc_estudante')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
 											</td>
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{certificado.requerimento }}">requerimento</a>
@@ -154,7 +154,7 @@
 											<td>{{ certificado.turma}}</td>
 											<td>{{ certificado.ano_termino}}</td>
 											<td>
-												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
+											 <a target="_blank" href="{{asset('ficheiros/escolas/doc_estudante')}}/documento{{certificado.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
 											</td>
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_certificado')}}/{{certificado.requerimento }}">requerimento</a>

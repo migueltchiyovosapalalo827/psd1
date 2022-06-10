@@ -227,7 +227,7 @@ class  Usuario  extends Controller
             #Pessoa foi salva
             //CRIANDO USUARIO
 
-            $documento->move("ficheiros/escolas/doc_emiss_certificado/", "documento" . $pessoa->n_do_documento . ".pdf");
+            $documento->move("ficheiros/escolas/doc_estudante/", "documento" . $pessoa->n_do_documento . ".pdf");
             $usuario = new Usuarios();
             $usuario->email = $u_email;
             $usuario->usuario =  Testos::primeiroEultimo($p_nome, "");
@@ -360,7 +360,7 @@ class  Usuario  extends Controller
         $pessoa->tipo_de_documento = $p_t_documento;
         $pessoa->data_de_emissao =  $p_data_de_emissao;
         $pessoa->naturalidade = $p_naturalidade;
-        $pessoa->estudante->update(["id_instituicao" => $p_instituicao]);
+        $pessoa->estudante->update(["id_instituicao" => ($p_instituicao != null) ? $p_instituicao : $pessoa->estudante->id_instituicao]);
         if ($pessoa->update([
             "nome_proprio",
             "sobrenome",
@@ -378,7 +378,7 @@ class  Usuario  extends Controller
             "naturalidade", "data_de_emissao"
         ])) {
 
-            $documento->move("ficheiros/escolas/doc_emiss_certificado/", "documento" . $pessoa->n_do_documento . ".pdf");
+            $documento->move("ficheiros/escolas/doc_estudante/", "documento" . $pessoa->n_do_documento . ".pdf");
             new Alert("Dados pessoais atualizados com sucesso","success");
 
         } else {

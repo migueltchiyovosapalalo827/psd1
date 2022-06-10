@@ -38,33 +38,35 @@
 									<th class="text-white">Documento</th>
 									<th class="text-white">Requerimento</th>
 									<th class="text-white">comprovativo</th>
-                                    <th class="text-white">Data de emissão</th>
+									<th class="text-white">Data de emissão</th>
 									<th class="text-white">Validação</th>
 								</tr>
 							</thead>
 							<tbody class="border-left-0">
 								{% for declaracao in declaracoes %}
-									{% if declaracao and declaracoe.estado == 0 %}
+									{% if declaracao and declaracao.estado == 0 %}
 										<tr class="text-center">
 											<td>{{ loop.index }}</td>
-											<td>{{ declaracao.estudante.pessoa.nome}} </td>
+											<td>{{ declaracao.estudante.pessoa.nome}}
+											</td>
 											<td>{{ declaracao.curso}}</td>
 											<td>{{ declaracao.turma}}</td>
 											<td>{{ declaracao.classe}}</td>
 											<td>{{ declaracao.efeito}}</td>
 											<td>
-												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/documento{{declaracao.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
+												<a target="_blank" href="{{asset('ficheiros/escolas/doc_estudante')}}/documento{{declaracao.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
 											</td>
 											<td>
-												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/requerimento{{declaracao.id }}.pdf">requerimento</a>
+												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/{{declaracao.requerimento }}">requerimento</a>
 											</td>
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/{{ declaracao.comprovativo }}">Comprovativo</a>
 											</td>
-                                            <td>{{ declaracao.created_at.format('d-m-Y')}}</td>
+											<td>{{ declaracao.created_at.format('d-m-Y')}}</td>
 											<td>
-												<form action="validacao_pronto_decl" method="post"> {{ csrf_field() }}
-													<input type="hidden" name="id" value="{{ declaracoes.id}}"><input class="btn btn-primary" type="submit" value="pronto"></td>
+												<form action="validacao_pronto_decl" method="post"> {{csrf_field() }}
+													<input type="hidden" name="id" value="{{declaracao.id}}">
+													<input class="btn btn-primary" type="submit" value="pronto"></form>
 											</td>
 										</tr>
 									{% endif %}
@@ -90,7 +92,8 @@
 									<th class="text-white">Documento</th>
 									<th class="text-white">Requerimento</th>
 									<th class="text-white">comprovativo</th>
-                                    <th class="text-white">Data da Validação</th>
+									<th class="text-white">Data
+									</th>
 									<th class="text-white">Validação</th>
 
 								</tr>
@@ -106,18 +109,18 @@
 											<td>{{ declaracao.classe}}</td>
 											<td>{{ declaracao.efeito}}</td>
 											<td>
-												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/documento{{declaracao.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
+												<a target="_blank" href="{{asset('ficheiros/escolas/doc_estudante')}}/documento{{declaracao.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
 											</td>
 											<td>
-												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/requerimento{{declaracao.id }}.pdf">requerimento</a>
+												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/{{declaracao.requerimento }}">requerimento</a>
 											</td>
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/{{ declaracao.comprovativo }}">Comprovativo</a>
 											</td>
-                                            <td>{{ declaracao.updated_at.format('d-m-Y')}}</td>
+											<td>{{ declaracao.updated_at.format('d-m-Y')}}</td>
 											<td>
 												<form action="validacao_entregue_decl" method="post"> {{ csrf_field() }}
-													<input type="hidden" name="id" value="{{ declaracoes.id}}"><input class="btn btn-primary" type="submit" value="entregue"></td>
+													<input type="hidden" name="id" value="{{ declaracao.id}}"><input class="btn btn-primary" type="submit" value="entregue"></td>
 											</td>
 										</tr>
 									{% endif %}
@@ -144,8 +147,7 @@
 									<th class="text-white">Requerimento</th>
 									<th class="text-white">comprovativo</th>
 									<th class="text-white">Estado</th>
-                                    <th class="text-white">Data da entrega</th>
-
+									<th class="text-white">Data da entrega</th>
 								</tr>
 							</thead>
 							<tbody class="border-left-0">
@@ -154,22 +156,23 @@
 										<tr class="text-center">
 
 											<td>{{ loop.index }}</td>
-											<td>{{ declaracao.estudante.pessoa.nome}} </td>
-											<td>{{ declaracoes.curso}}</td>
-											<td>{{ declaracoes.turma}}</td>
-											<td>{{ declaracoes.classe}}</td>
-											<td>{{ declaracoes.efeito}}</td>
+											<td>{{ declaracao.estudante.pessoa.nome}}
+											</td>
+											<td>{{ declaracao.curso}}</td>
+											<td>{{ declaracao.turma}}</td>
+											<td>{{ declaracao.classe}}</td>
+											<td>{{ declaracao.efeito}}</td>
 											<td>
-												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/documento{{declaracao.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
+												<a target="_blank" href="{{asset('ficheiros/escolas/doc_estudante')}}/documento{{declaracao.estudante.pessoa.n_do_documento}}.pdf">Documento</a>
 											</td>
 											<td>
-												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/requerimento{{declaracao.id }}.pdf">requerimento</a>
+												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/{{declaracao.requerimento}}">requerimento</a>
 											</td>
 											<td>
 												<a target="_blank" href="{{asset('ficheiros/escolas/doc_emiss_declaracao')}}/{{ declaracao.comprovativo }}">Comprovativo</a>
 											</td>
 											<td>documento entregue</td>
-                                            <td>{{ declaracao.updated_at.format('d-m-Y')}}</td>
+											<td>{{ declaracao.updated_at.format('d-m-Y')}}</td>
 										</tr>
 									{% endif %}
 								{% endfor %}

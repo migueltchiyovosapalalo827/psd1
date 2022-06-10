@@ -59,8 +59,8 @@
 							</ul>
 						</div>
 						<button class="dtr-btn" >
-						{% if  SESSION.usuario.pessoa.nomeComSobrenome() %}
-						<a href="{{ route('usuario.entrar') }}">{{SESSION.usuario.pessoa.nomeComSobrenome()}}
+						{% if  SESSION.usuario.pessoa.nome %}
+						<a href="{{ route('usuario.entrar') }}">{{SESSION.usuario.pessoa.nome}}
 							<span>
 								<i class="fa fa-user" aria-hidden="true"></i>
 							</span>
@@ -69,7 +69,7 @@
 						<a href="{{ route('usuario.entrar') }}">Login
 							<span>
 								<i class="fa fa-user" aria-hidden="true"></i>
-                        
+
 							</span>
 						</a>
 						{% endif %}

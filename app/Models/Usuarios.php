@@ -9,6 +9,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 /**
  * @property int $id
  * @property int $grupo_de_usuarios_id
@@ -25,7 +26,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class Usuarios extends Authenticatable
 {
-  use HasFactory;
+  use HasFactory , Notifiable;
     /**
      * @var array
      */
@@ -49,5 +50,16 @@ class Usuarios extends Authenticatable
     public function instituicoes(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Instituicoes::class,'id_usuario');
+    }
+
+    /**
+     * Route notifications for the Vonage channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return string
+     */
+    public function routeNotificationForNexmo($notification)
+    {
+        return $this->contacto;
     }
 }

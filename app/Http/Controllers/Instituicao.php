@@ -12,6 +12,7 @@ use App\Models\Historial_escolas;
 use App\Models\Instituicoes;
 use App\Models\Pessoas;
 use App\Models\Usuarios;
+use App\Notifications\DocumentoEmetido;
 use App\Uteis\Alert;
 use App\Uteis\Ficheiros;
 use App\Uteis\Sessoes;
@@ -21,6 +22,7 @@ use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Notification;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 //use Barryvdh\DomPDF\Facade\Pdf;
 use PDF;
@@ -454,13 +456,13 @@ class Instituicao extends Controller
         $emitir_declaracao->save();
         if ($instituicao->nivel == "superior") {
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadHTML('Instituicao.documentos.certificado', ['emitir_certificado' => $emitir_declaracao, 'tipo_documento' => 'Declaração']);
-            $pdf->save("ficheiros/escolas/doc_emiss_declaracao/" . $requerimento . ".pdf");
+            $pdf->loadView('Instituicao.documentos.certificado', ['emitir_certificado' => $emitir_declaracao, 'tipo_documento' => 'Declaração']);
+            $pdf->save("ficheiros/escolas/doc_emiss_declaracao/".$requerimento.".pdf");
         } else {
 
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadHTML('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_declaracao, 'tipo_documento' => 'Declaração']);
-            $pdf->save("ficheiros/escolas/doc_emiss_declaracao/" . $requerimento . ".pdf");
+            $pdf->loadView('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_declaracao,'tipo_documento' => 'Declaração']);
+            $pdf->save("ficheiros/escolas/doc_emiss_declaracao/" .$requerimento. ".pdf");
         }
         new Alert("A Emissão da Declaração foi enviada com Sucesso", "success", "");
         return redirect()->back();
@@ -506,7 +508,9 @@ class Instituicao extends Controller
         $certificado_pronto = Emissao_certificados::find($id);
         $certificado_pronto->estado = $dados;
         if ($certificado_pronto->save()) {
+            //emitir_certificado.estudante.pessoa.
             new Alert("O certificado esta pronto para ser entregue !.", "success", "");
+            Notification::send($certificado_pronto->estudante->pessoa->usuario, new DocumentoEmetido("O certificado esta pronto para ser entregue !."));
             return redirect()->back();
         }
     }
@@ -518,6 +522,7 @@ class Instituicao extends Controller
         $certificado_pronto->estado = $dados;
         if ($certificado_pronto->save()) {
             new Alert("O certificado foi entregue com Sucesso!.", "success", "");
+            Notification::send($certificado_pronto->estudante->pessoa->usuario, new DocumentoEmetido("O certificado foi entregue com Sucesso!."));
             return redirect()->back();
         }
     }
@@ -542,6 +547,7 @@ class Instituicao extends Controller
         $declaracao_pronto->estado = $dados;
         if ($declaracao_pronto->save()) {
             new Alert("A declaração esta pronta para ser entregue!.", "success", "");
+            Notification::send($declaracao_pronto->estudante->pessoa->usuario, new DocumentoEmetido("a declaração esta pronta para ser entregue !."));
             return redirect()->back();
         }
     }
@@ -553,6 +559,7 @@ class Instituicao extends Controller
         $declaracao_pronto->estado = $dados;
         if ($declaracao_pronto->save()) {
             new Alert("a declaração foi entregue Sucesso!.", "success", "");
+            Notification::send($declaracao_pronto->estudante->pessoa->usuario, new DocumentoEmetido("a declaração esta pronta para ser entregue !."));
             return redirect()->back();
         }
     }
