@@ -411,7 +411,7 @@ class  Usuario  extends Controller
                 ->get()
                 ->first();
             if ($usuario != null) {
-                new Alert("Não foi possivel atualizar os dados.", "error", "Email já registrado.");
+                new Alert("Não foi possivel atualizar os dados.", "danger", "Email já registrado.");
                 Http::redirecionar("/usuario/meu_perfil");
                 return;
             }
@@ -447,7 +447,7 @@ class  Usuario  extends Controller
         $usuario->usuario = $r->post("u_usuario");
         $usuario->contacto = $r->post("u_contacto");
         $usuario->update($colunasAtualizar);
-        new Alert("Usuario atualizado.");
+        new Alert("Usuario atualizado com sucesso.", "success");
         Http::redirecionar("/usuario/meu_perfil");
         return;
     }
@@ -459,12 +459,12 @@ class  Usuario  extends Controller
 
         #Verifica a senha
         if (Testos::desincriptar($usuarioLogado["senha"]) !==  $r->post("s_atual")) {
-            new Alert("Senha incorrecta", "erro", "Senha atual incorrecta");
+            new Alert("Senha incorrecta", "danger", "Senha atual incorrecta");
             Http::redirecionar("/usuario/meu_perfil");
             return;
         }
         if ($r->post("s_nova_senha_c") !==  $r->post("s_nova_senha")) {
-            new Alert(" Nova senha não é igual a confirmação da nova senha", "error", "Senha não correspondem");
+            new Alert(" Nova senha não é igual a confirmação da nova senha", "danger", "Senha não correspondem");
             Http::redirecionar("/usuario/meu_perfil");
             return;
         }
@@ -473,7 +473,7 @@ class  Usuario  extends Controller
             ->first();
         $usuario->senha = Testos::encriptar($r->post("s_nova_senha"));
         $usuario->update(["senha"]);
-        new Alert("Senha atualizada",);
+        new Alert("Senha atualizada com sucesso","success");
         Http::redirecionar("/usuario/meu_perfil");
     }
 }

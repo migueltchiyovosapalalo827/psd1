@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright © 2020 por Fabricio Gonga
  * Todos os direitos reservados.
@@ -6,10 +7,12 @@
  */
 
 namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
 /**
  * @property int $id
  * @property int $grupo_de_usuarios_id
@@ -26,7 +29,7 @@ use Illuminate\Notifications\Notifiable;
  */
 class Usuarios extends Authenticatable
 {
-  use HasFactory , Notifiable;
+    use HasFactory, Notifiable;
     /**
      * @var array
      */
@@ -49,16 +52,17 @@ class Usuarios extends Authenticatable
     }
     public function instituicoes(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(Instituicoes::class,'id_usuario');
+        return $this->hasOne(Instituicoes::class, 'id_usuario');
     }
 
     /**
-     * Route notifications for the Vonage channel.
+     * Route notifications for the Twilio channel.
      *
      * @param  \Illuminate\Notifications\Notification  $notification
      * @return string
      */
-    public function routeNotificationForNexmo($notification)
+
+    public function routeNotificationForTwilio()
     {
         return $this->contacto;
     }

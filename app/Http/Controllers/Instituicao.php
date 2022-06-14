@@ -12,7 +12,7 @@ use App\Models\Historial_escolas;
 use App\Models\Instituicoes;
 use App\Models\Pessoas;
 use App\Models\Usuarios;
-use App\Notifications\DocumentoEmetido;
+use App\Notifications\SendSms;
 use App\Uteis\Alert;
 use App\Uteis\Ficheiros;
 use App\Uteis\Sessoes;
@@ -510,7 +510,9 @@ class Instituicao extends Controller
         if ($certificado_pronto->save()) {
             //emitir_certificado.estudante.pessoa.
             new Alert("O certificado esta pronto para ser entregue !.", "success", "");
-            Notification::send($certificado_pronto->estudante->pessoa->usuario, new DocumentoEmetido("O certificado esta pronto para ser entregue !."));
+            $user = Usuarios::where("pessoas_id",$certificado_pronto->estudante->pessoas_id)->get()->first();
+            $user->notify(new SendSms("O certificado esta pronto para ser entregue !.") );
+            // Notification::send($user, new SendSms("O certificado esta pronto para ser entregue !."));
             return redirect()->back();
         }
     }
@@ -522,7 +524,9 @@ class Instituicao extends Controller
         $certificado_pronto->estado = $dados;
         if ($certificado_pronto->save()) {
             new Alert("O certificado foi entregue com Sucesso!.", "success", "");
-            Notification::send($certificado_pronto->estudante->pessoa->usuario, new DocumentoEmetido("O certificado foi entregue com Sucesso!."));
+            $user = Usuarios::where("pessoas_id",$certificado_pronto->estudante->pessoas_id)->get()->first();
+            $user->notify(new SendSms("O certificado foi entregue com Sucesso!."));
+            // Notification::send($user, new SendSms("O certificado esta pronto para ser entregue !."));
             return redirect()->back();
         }
     }
@@ -547,7 +551,9 @@ class Instituicao extends Controller
         $declaracao_pronto->estado = $dados;
         if ($declaracao_pronto->save()) {
             new Alert("A declaração esta pronta para ser entregue!.", "success", "");
-            Notification::send($declaracao_pronto->estudante->pessoa->usuario, new DocumentoEmetido("a declaração esta pronta para ser entregue !."));
+            $user = Usuarios::where("pessoas_id",$declaracao_pronto->estudante->pessoas_id)->get()->first();
+            $user->notify(new SendSms("A declaração esta pronta para ser entregue!."));
+            //  Notification::send($user, new SendSms("O certificado esta pronto para ser entregue !."));
             return redirect()->back();
         }
     }
@@ -559,7 +565,9 @@ class Instituicao extends Controller
         $declaracao_pronto->estado = $dados;
         if ($declaracao_pronto->save()) {
             new Alert("a declaração foi entregue Sucesso!.", "success", "");
-            Notification::send($declaracao_pronto->estudante->pessoa->usuario, new DocumentoEmetido("a declaração esta pronta para ser entregue !."));
+            $user = Usuarios::where("pessoas_id",$declaracao_pronto->estudante->pessoas_id)->get()->first();
+            $user->notify(new SendSms("O certificado esta pronto para ser entregue !."));
+        //    Notification::send($user, new SendSms("O certificado esta pronto para ser entregue !."));
             return redirect()->back();
         }
     }
