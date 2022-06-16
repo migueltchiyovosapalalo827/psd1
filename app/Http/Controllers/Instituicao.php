@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Arquitectura_escola;
 use App\Models\Cursos_escolas;
-use App\Models\Emissao_Certificados;
+use App\Models\Emissao_certificados;
 use App\Models\Emissao_declaracoes;
 use App\Models\Estudantes;
 use App\Models\Fotos_escolas;
@@ -374,7 +374,7 @@ class Instituicao extends Controller
             }
             $docNovoNome = Ficheiros::novoNome("psddocemiss" . $id_instituicao, $comprovativo->clientExtension());
         }
-        $emitir_certificado = new Emissao_Certificados();
+        $emitir_certificado = new Emissao_certificados();
         if (!empty($docNovoNome)) {
             $comprovativo->move("ficheiros/escolas/doc_emiss_certificado/", $docNovoNome);
             $emitir_certificado->comprovativo = $docNovoNome;
@@ -474,7 +474,7 @@ class Instituicao extends Controller
         $usuario = Sessoes::obter("usuario");
         $vrfca = Usuarios::where("id", "=", $usuario)->get()->first();
         $estudante = Estudantes::where("pessoas_id", "=", $vrfca['pessoas_id'])->get()->first();
-        $certificado = Emissao_Certificados::where("id_estudante", "=", $estudante['id'])->get()->first();
+        $certificado = Emissao_certificados::where("id_estudante", "=", $estudante['id'])->get()->first();
         $declaracao = Emissao_declaracoes::where("id_estudante", "=", $estudante['id'])->get()->first();
         $escolacert = Instituicoes::where("id", "=", (is_null($certificado)) ? null : $certificado['id_instituicao'])->get()->first();
         $escoladecl = Instituicoes::where("id", "=", (is_null($declaracao)) ? null : $declaracao['id_instituicao'])->get()->first();
@@ -492,7 +492,7 @@ class Instituicao extends Controller
         $this->verifica();
         $usuario = Sessoes::obter("usuario");
         $instituicao = Instituicoes::where("id_usuario", "=", $usuario['id'])->get()->first();
-        $certificados = Emissao_Certificados::where("id_instituicao", "=", $instituicao['id'])->get();
+        $certificados = Emissao_certificados::where("id_instituicao", "=", $instituicao['id'])->get();
         //  $estudante=Estudantes::where("id","=",$certificados['id_estudante'])->get()->first();
         return view("Instituicao.documentos.certificados_solicitados", [
             "titulo" =>
