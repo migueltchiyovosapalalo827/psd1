@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Notification;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 //use Barryvdh\DomPDF\Facade\Pdf;
 use PDF;
-// teste
+
 /**
  * Class Instituicao
  * @package App\Controllers
