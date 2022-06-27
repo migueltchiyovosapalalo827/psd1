@@ -61,7 +61,7 @@ $router->group(['prefix' => 'documentos','namespace' => 'App\\Http\\Controllers'
 #cartão de estudante
 $router->group(['prefix' => 'cartao','namespace' => 'App\\Http\\Controllers'], function() use ($router) {
     $router->get('/emitir_cartao', 'Cartao@criar')->name("cartao.criar");
-    $router->get('/', 'Cartao@index')->name('cartao.index');
+    $router->get('/index', 'Cartao@index')->name('cartao.index');
     $router->post('/salvar_cartao', 'Cartao@salvar')->name('cartao.salvar');
     $router->get('/pesquisar_cartao', 'Cartao@index')->name('cartao.pesquisar');
     $router->get('/pesquisar', 'Cartao@pesquisarCartao')->name('cartao.buscar');

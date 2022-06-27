@@ -14,7 +14,7 @@
 		<meta property="og:title" content="{{ inquerito.titulo }} | PSD">
 		<meta property="og:description" content="{{ inquerito.descricao}}" id="descricao"/>
 		<meta property="og:type" content="website"/>
-		<meta property="og:url" content="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}"/>
+		<meta property="og:url" content="{{ url('/')}}/i/{{ inquerito.compartilhamento.endereco }}"/>
 		<meta
 		property="og:image" content="{{asset('ficheiros/inqueritos/logotipos/')}}{{ inquerito.logotipo }}"/>
 		<!-- App CSS -->

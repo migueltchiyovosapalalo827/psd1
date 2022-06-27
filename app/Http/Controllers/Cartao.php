@@ -19,7 +19,7 @@ class Cartao extends Controller
 {
     public function index(Request $request)
     {
-        // $this->verifica();
+        $this->verifica();
         $cartoes = CartaoModel::buscar($request);
         return view('Cartao.cartoes_emtidos', ['cartoes' => $cartoes, 'nome' => $request->nome]);
     }
@@ -62,6 +62,7 @@ class Cartao extends Controller
 
     public function verCartao($id)
     {
+        $this->verifica();
         $cartao = CartaoModel::find($id);
         return view('Cartao.ver_cartao', ["cartao" => $cartao]);
     }
@@ -123,6 +124,7 @@ class Cartao extends Controller
     // pesquisar cartao por instituicao, estudante, classe, turma, curso e numero estudantil
     public function pesquisarCartao(Request $request)
     {
+        $this->verifica();
         $usuario = Sessoes::obter("usuario");
         $instituicao = Instituicoes::where("id_usuario", "=", $usuario['id'])->get()->first();
         $request->merge(['id_instituicao' => $instituicao['id']]);

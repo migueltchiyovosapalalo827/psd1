@@ -1,27 +1,29 @@
 {% extends "@include/menu_simples.twig" %}
 {% block conteudo %}
-    {% if inscricoes|length > 0 %}
-        <h1 class="text-center mb-3">Escolha um inquérito para responder</h1>
-    {% endif %}
+	{% if inscricoes|length > 0 %}
+		<h1 class="text-center mb-3">Escolha um inquérito para responder</h1>
+	{% endif %}
 
-    <div class="d-flex justify-content-center flex-wrap  ">
-        {% for inscricao in inscricoes %}
-            <div class="card card-link col-md-4 media d-flex   flex-column justify-content-center">
-                <div class="media-body justify-content-center w-100 pt-2">
-                    <h4 class="w-100 text-center mb-1">
-                        <a href="/inquerido/inquerito/{{ inscricao.id }}" class=" text-primary-dark">
-                            {{ inscricao.inquerito.titulo }}
-                        </a>
-                    </h4>
-                    <div class="text-muted text-center mb-1">Por<i class="material-icons align-middle md-18 ">business</i><span class="align-middle"> {{ inscricao.inquerito.pesquisador.pessoa.nomeComSobrenome() }}</span></div>
-                </div>
-                <div class="d-flex flex-column align-self-center w-75 mb-2 mt-2">
-                    <a href="/inquerido/inquerito/{{ inscricao.id }}" class="btn btn-primary">Responder</a>
-                </div>
-            </div>
-        {% else %}
-            <h1 class="text-center mb-3">Todos inquéritos já foram respondidos. Obrigado </h1>
-        {% endfor %}
+	<div class="d-flex justify-content-center flex-wrap  ">
+		{% for inscricao in inscricoes %}
+			<div class="card card-link col-md-4 media d-flex   flex-column justify-content-center">
+				<div class="media-body justify-content-center w-100 pt-2">
+					<h4 class="w-100 text-center mb-1">
+						<a href="/inquerido/inquerito/{{ inscricao.id }}" class=" text-primary-dark"> {{ inscricao.inquerito.titulo }}
+						</a>
+					</h4>
+					<div class="text-muted text-center mb-1">Por<i class="material-icons align-middle md-18 ">business</i>
+						<span class="align-middle"> {{ inscricao.inquerito.pesquisador.pessoa.nomeComSobrenome() }}</span>
+					</div>
+				</div>
+				<div class="d-flex flex-column align-self-center w-75 mb-2 mt-2">
+					<a href="/inquerido/inquerito/{{ inscricao.id }}" class="btn btn-primary">Responder</a>
+				</div>
+			</div>
+		{% else %}
+			<h1 class="text-center mb-3">Todos inquéritos já foram respondidos. Obrigado
+			</h1>
+		{% endfor %}
 
-    </div>
+	</div>
 {% endblock %}

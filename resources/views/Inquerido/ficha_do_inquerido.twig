@@ -3,287 +3,290 @@
 {% block conteudo %}
 
 
-    <form action="" method="get" class="container" onchange="this.submit()" >
-        <div class=" col-md-12 pt-1 pb-3">
-            <div class="input-group input-group--inline w-100" >
-                <div class="input-group-addon pb-1">
-                    <i class="material-icons align-middle">search</i>
-                </div>
-                <input type="text" class="form-control" autocomplete="off" list="inqueridos"  name="id" value="{{ inquerido.id }}" placeholder="Pesquisar por nome, id">
-                <div class="input-group-append">
-                    <button type="submit"   class=" input-group-text material-icons">search</button>
-                </div>
-                <datalist id="inqueridos">
-                    {% for iq in inqueridos %}
-                        <option value="{{ iq.id }}">{{ iq.pessoa.nome_proprio }}</option>
-                    {% endfor %}
-                </datalist>
-            </div>
-        </div>
-    </form>
+	<form action="" method="get" class="container" onchange="this.submit()">
+		<div class=" col-md-12 pt-1 pb-3">
+			<div class="input-group input-group--inline w-100">
+				<div class="input-group-addon pb-1">
+					<i class="material-icons align-middle">search</i>
+				</div>
+				<input type="text" class="form-control" autocomplete="off" list="inqueridos" name="id" value="{{ inquerido.id }}" placeholder="Pesquisar por nome, id">
+				<div class="input-group-append">
+					<button type="submit" class=" input-group-text material-icons">search</button>
+				</div>
+				<datalist id="inqueridos">
+					{% for iq in inqueridos %}
+						<option value="{{ iq.id }}">{{ iq.pessoa.nome_proprio }}</option>
+					{% endfor %}
+				</datalist>
+			</div>
+		</div>
+	</form>
 
 
+	{% if inquerido %}
+		<!-- main content -->
+		<div class="py-4 mb-3 bg-white border-bottom">
+			<div class=" container-account">
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="media media-user-info align-items-center ml-1">
 
-    {% if inquerido %}
-        <!-- main content -->
-        <div class="py-4 mb-3 bg-white border-bottom">
-            <div class=" container-account">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="media media-user-info align-items-center ml-1">
+							<div class="media-body lh-1">
+								<p class="h4 m-0">{{ inquerido.pessoa.nome_proprio  }} {{ inquerido.pessoa.sobrenome }}</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 d-md-flex align-items-center justify-content-end">
+						<p class="mb-0 mr-3">
+							<i class="material-icons md-18 align-middle text-primary">content_paste</i>Inq. inscritos:
+							<strong>{{ inquerido.inscricoes|length}}</strong>
+						</p>
+						<p class="mb-0 mr-1">
+							<i class="material-icons md-18 align-middle text-primary">content_paste</i>Inq. respondidos:
+							<strong>
+								{% set total=0 %}
+								{% for iq in inquerido.inscricoes|filter(iq => (iq.respondido == 1)) -%}
+									{% set total = loop.index %}
+								{% endfor %} {{ total }}
+							</strong>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="">
+			<ul class="nav nav-pills mb-2" id="accountTabs" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview">Geral</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">inquéritos</a>
+				</li>
+				{#   <li class="nav-item">
+								                       <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">Billing</a>
+								                   </li>#}
+			</ul>
+			<div class="tab-content" id="accountTabsContent">
+				<div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+					<div class="row">
+						<div class="col-lg-9">
+							<div class="card card-account">
+								<div class="card-body">
+									<form action="/usuario/salvar_usuario" method="post">
+										<h3>Usuário</h3>
+										<hr>
+										<div class="form-row">
+											<div class="form-group col-md-4 ">
+												<label>Email</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">person</i>
+													</div>
+													<input disabled type="email" class="form-control" name="u_email" value="{{ inquerido.usuario.email }}" placeholder="exemplo@exemplo.com">
+												</div>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Telefone</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">local_phone</i>
+													</div>
+													<input disabled type="tel" class="form-control" name="u_contacto" value="{{ inquerido.usuario.contacto }}" placeholder="9xxxxxxxx">
+												</div>
+											</div>
 
-                            <div class="media-body lh-1">
-                                <p class="h4 m-0">{{ inquerido.pessoa.nome_proprio  }} {{ inquerido.pessoa.sobrenome }}</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 d-md-flex align-items-center justify-content-end">
-                        <p class="mb-0 mr-3">
-                            <i class="material-icons md-18 align-middle text-primary">content_paste</i>Inq. inscritos: <strong>{{ inquerido.inscricoes|length}}</strong>
-                        </p>
-                        <p class="mb-0 mr-1">
-                            <i class="material-icons md-18 align-middle text-primary">content_paste</i>Inq. respondidos: <strong>
-                                {% set total=0 %}
-                                {% for iq in inquerido.inscricoes|filter(iq => (iq.respondido == 1)) -%}
-                                    {% set total = loop.index %}
-                                {% endfor %}
-                                {{ total }}
-                            </strong>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="">
-            <ul class="nav nav-pills mb-2" id="accountTabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview">Geral</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">inquéritos</a>
-                </li>
-                {#   <li class="nav-item">
-                       <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing">Billing</a>
-                   </li>#}
-            </ul>
-            <div class="tab-content" id="accountTabsContent">
-                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
-                    <div class="row">
-                        <div class="col-lg-9">
-                            <div class="card card-account">
-                                <div class="card-body">
-                                    <form action="/usuario/salvar_usuario" method="post">
-                                        <h3>Usuário</h3>
-                                        <hr>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-4 ">
-                                                <label>Email</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">person</i>
-                                                    </div>
-                                                    <input disabled type="email" class="form-control" name="u_email" value="{{ inquerido.usuario.email }}" placeholder="exemplo@exemplo.com">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Telefone</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">local_phone</i>
-                                                    </div>
-                                                    <input disabled type="tel" class="form-control" name="u_contacto" value="{{ inquerido.usuario.contacto }}" placeholder="9xxxxxxxx">
-                                                </div>
-                                            </div>
+											<div class="form-group col-md-4">
+												<label>Grupo de usuários</label>
+												<select name="u_grupo" id="" class="form-control" disabled>
+													<option value="" selected>{{ inquerido.usuario.grupo.nome }}</option>
+												</select>
 
-                                            <div class="form-group col-md-4">
-                                                <label>Grupo de usuários</label>
-                                                <select name="u_grupo" id="" class="form-control" disabled>
-                                                    <option value="" selected>{{ inquerido.usuario.grupo.nome }}</option>
-                                                </select>
-
-                                            </div>
-                                        </div>
-                                        <h3>Informações pessoais</h3>
-                                        <hr>
-
-
-                                        <div class="form-row">
-                                            <div class="form-group col-md-8 ">
-                                                <label> nome completo</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">person</i>
-                                                    </div>
-                                                    <input disabled type="text" class="form-control" name="p_nome" value="{{ inquerido.pessoa.nome }}" placeholder=" nome completo">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group col-md-4">
-                                                <label>Pai</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">person</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.pai }}" type="text" class="form-control" name="p_pai" placeholder="Nome do pai" disabled="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Mãe</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">person</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.mae }}" type="text" class="form-control" name="p_mae" placeholder="Nome da mãe" disabled="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Nº do documento</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">credit_card</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.n_do_documento }}" type="text" class="form-control" name="p_n_documento" placeholder="xxxxxxxxxxxxxxxx" disabled="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Tipo de documento</label>
-                                                <select name="p_t_documento" id="" disabled class="form-control" >
-                                                    <option value="bi">{{ inquerido.pessoa.tipo_de_documento }}</option>
-
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Género</label>
-                                                <select name="p_genero" disabled="" class="form-control">
-                                                    <option value="M">{{ inquerido.pessoa.genero }}</option>
-
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Data de nascimento</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">date_range</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.data_de_nascimento }}" type="date" class="form-control" name="p_data_de_nascimento" placeholder="dd/mm/aaaa" disabled="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Provincia</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">location_city</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.provincia }}" type="text" class="form-control" name="p_provincia" placeholder="Benguela" disabled="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Municipio</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">location_city</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.municipio }}" type="text" class="form-control" name="p_municipio" placeholder="Lobito" disabled="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Bairro</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">home</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.bairro }}" type="text" class="form-control" name="p_bairro" placeholder="Liro" disabled="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Local de nascimento</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">local_hospital</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.local_de_nascimento }}" type="text" class="form-control" name="p_local_de_nascimento" placeholder="Benguela" disabled="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Naturalidade</label>
-                                                <div class="input-group input-group--inline">
-                                                    <div class="input-group-addon">
-                                                        <i class="material-icons">flag</i>
-                                                    </div>
-                                                    <input value="{{ inquerido.pessoa.naturalidade }}" type="text" class="form-control" name="p_naturalidade" placeholder="Angolana" disabled="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-success">Salvar </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-center justify-content-between">
-                                    <h4 class="card-title">Outras informações</h4>
-
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item list-group-item-action d-flex justify-content-between">
-                                        <span>Estado</span>
-                                        <span>{{ inquerido.usuario.estado }}</span>
-                                    </li>
-                                    <li class="list-group-item list-group-item-action d-flex justify-content-between">
-                                        <span>Tentativas</span>
-                                        <span>{{ inquerido.usuario.tentativas }}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="card">
-                                <div class="card-body">
-                                    <table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
-                                        <thead class="bg-primary text-white">
-                                        <tr>
-                                            <th class="text-white">#</th>
-                                            <th class="text-white">inquérito</th>
-                                            <th class="text-white">Pesquisador</th>
-                                            <th class="text-white">Data de inscrição</th>
-                                            <th class="text-white">ESTADO</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="  border-left-0">
-                                        {% for inscricao in inquerido.inscricoes  %}
-                                            <tr>
-                                                <td>{{ loop.index }}</td>
-                                                <td>{{ inscricao.inquerito.titulo }}</td>
-                                                <td>{{ inscricao.inquerito.pesquisador.pessoa.nome}} </td>
-                                                <td>{{ inscricao.created_at|date("d/m/y",false) }}</td>
-                                                <td>
-                                                    {% if inscricao.respondido == 1 %}
-                                                        {% set respondeu = respondeu + 1 %}
-                                                        <div class="badge badge-success">Respondido</div>
-                                                    {% else %}
-                                                        {% set nao_respondeu = nao_respondeu + 1  %}
-                                                        <div class="badge badge-warning">Não respondido</div>
-                                                    {% endif %}
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-        </div>
+											</div>
+										</div>
+										<h3>Informações pessoais</h3>
+										<hr>
 
 
-    {% endif %}
+										<div class="form-row">
+											<div class="form-group col-md-8 ">
+												<label>
+													nome completo</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">person</i>
+													</div>
+													<input disabled type="text" class="form-control" name="p_nome" value="{{ inquerido.pessoa.nome }}" placeholder=" nome completo">
+												</div>
+											</div>
+
+											<div class="form-group col-md-4">
+												<label>Pai</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">person</i>
+													</div>
+													<input value="{{ inquerido.pessoa.pai }}" type="text" class="form-control" name="p_pai" placeholder="Nome do pai" disabled="">
+												</div>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Mãe</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">person</i>
+													</div>
+													<input value="{{ inquerido.pessoa.mae }}" type="text" class="form-control" name="p_mae" placeholder="Nome da mãe" disabled="">
+												</div>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Nº do documento</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">credit_card</i>
+													</div>
+													<input value="{{ inquerido.pessoa.n_do_documento }}" type="text" class="form-control" name="p_n_documento" placeholder="xxxxxxxxxxxxxxxx" disabled="">
+												</div>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Tipo de documento</label>
+												<select name="p_t_documento" id="" disabled class="form-control">
+													<option value="bi">{{ inquerido.pessoa.tipo_de_documento }}</option>
+
+												</select>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Género</label>
+												<select name="p_genero" disabled="" class="form-control">
+													<option value="M">{{ inquerido.pessoa.genero }}</option>
+
+												</select>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Data de nascimento</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">date_range</i>
+													</div>
+													<input value="{{ inquerido.pessoa.data_de_nascimento }}" type="date" class="form-control" name="p_data_de_nascimento" placeholder="dd/mm/aaaa" disabled="">
+												</div>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Provincia</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">location_city</i>
+													</div>
+													<input value="{{ inquerido.pessoa.provincia }}" type="text" class="form-control" name="p_provincia" placeholder="Benguela" disabled="">
+												</div>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Municipio</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">location_city</i>
+													</div>
+													<input value="{{ inquerido.pessoa.municipio }}" type="text" class="form-control" name="p_municipio" placeholder="Lobito" disabled="">
+												</div>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Bairro</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">home</i>
+													</div>
+													<input value="{{ inquerido.pessoa.bairro }}" type="text" class="form-control" name="p_bairro" placeholder="Liro" disabled="">
+												</div>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Local de nascimento</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">local_hospital</i>
+													</div>
+													<input value="{{ inquerido.pessoa.local_de_nascimento }}" type="text" class="form-control" name="p_local_de_nascimento" placeholder="Benguela" disabled="">
+												</div>
+											</div>
+											<div class="form-group col-md-4">
+												<label>Naturalidade</label>
+												<div class="input-group input-group--inline">
+													<div class="input-group-addon">
+														<i class="material-icons">flag</i>
+													</div>
+													<input value="{{ inquerido.pessoa.naturalidade }}" type="text" class="form-control" name="p_naturalidade" placeholder="Angolana" disabled="">
+												</div>
+											</div>
+										</div>
+										<button class="btn btn-success">Salvar
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-3">
+							<div class="card">
+								<div class="card-header d-flex align-items-center justify-content-between">
+									<h4 class="card-title">Outras informações</h4>
+
+								</div>
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item list-group-item-action d-flex justify-content-between">
+										<span>Estado</span>
+										<span>{{ inquerido.usuario.estado }}</span>
+									</li>
+									<li class="list-group-item list-group-item-action d-flex justify-content-between">
+										<span>Tentativas</span>
+										<span>{{ inquerido.usuario.tentativas }}</span>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="card">
+								<div class="card-body">
+									<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+										<thead class="bg-primary text-white">
+											<tr>
+												<th class="text-white">#</th>
+												<th class="text-white">inquérito</th>
+												<th class="text-white">Pesquisador</th>
+												<th class="text-white">Data de inscrição</th>
+												<th class="text-white">ESTADO</th>
+											</tr>
+										</thead>
+										<tbody class="  border-left-0">
+											{% for inscricao in inquerido.inscricoes  %}
+												<tr>
+													<td>{{ loop.index }}</td>
+													<td>{{ inscricao.inquerito.titulo }}</td>
+													<td>{{ inscricao.inquerito.pesquisador.pessoa.nome}}
+													</td>
+													<td>{{ inscricao.created_at|date("d/m/y",false) }}</td>
+													<td>
+														{% if inscricao.respondido == 1 %}
+															{% set respondeu = respondeu + 1 %}
+															<div class="badge badge-success">Respondido</div>
+														{% else %}
+															{% set nao_respondeu = nao_respondeu + 1  %}
+															<div class="badge badge-warning">Não respondido</div>
+														{% endif %}
+													</td>
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+
+	{% endif %}
 {% endblock %}

@@ -19,7 +19,7 @@
                 </h3>
                 <div class="col-auto  ">
                     <form action="" method="get" class="d-flex">
-                    
+
                         <input type="number" list="inq" name="ano" class="form-control " min="0" placeholder="Ano" value="{{ ano }}">
                         <button type="submit" class="btn  ml-1 py-0 pr-1 pl-1 d-flex align-items-center btn-sm btn-primary-dark"><i class="material-icons">search</i></button>
                     </form>
@@ -49,7 +49,7 @@
                             <th class="text-white">#</th>
                             <th class="text-white">TEMA</th>
                             <th class="text-white">Pesquisador</th>
-                            <th class="text-white">Inqueridos</th>
+                            <th class="text-white">Inquiridos</th>
                             <th class="text-white">Privacidade</th>
                             <th class="text-white">Opções</th>
                         </tr>
@@ -59,7 +59,7 @@
                             <tr>
                                 <td>{{ loop.index }}</td>
                                 <td>{{ inquerito.titulo }}</td>
-                                <td>{{ inquerito.pesquisador.pessoa.nome_proprio}} {{ inquerito.pesquisador.pessoa.sobrenome}}</td>
+                                <td>{{ inquerito.pesquisador.pessoa.nome}} </td>
                                 <td>{{ inquerito.inscricoes|length }}</td>
                                 <td>
                                     {% if inquerito.privacidade %}

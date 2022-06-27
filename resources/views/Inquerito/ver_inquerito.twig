@@ -54,7 +54,7 @@
                             <p class="h4 m-0">{{ inquerito.titulo }}</p>
                             <p class="text-muted mb-0">{{ inquerito.pesquisador.nome }}</p>
                             {% if inquerito.privacidade %}
-                                <p>Link: <a target="_blank" href="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}">http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}</a></p>
+                                <p>Link: <a target="_blank" href="{{ url('/') }}/i/{{ inquerito.compartilhamento.endereco }}">{{ url('/') }}/i/{{ inquerito.compartilhamento.endereco }}</a></p>
                             {% endif %}
                         </div>
                     </div>
@@ -344,7 +344,7 @@
                 <div class="modal-body">
 
                     <div class="d-flex justify-content-end mb-3">
-                        <input id="elementodeCopiar" type="text" class="input_procurar form-control" readonly  value="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}">
+                        <input id="elementodeCopiar" type="text" class="input_procurar form-control" readonly  value="http://{{url('/') }}/i/{{ inquerito.compartilhamento.endereco }}">
                         <button type="button" class="btn btn-white ml-2 align-self-end" data-clipboard-action="copy" data-clipboard-target="#elementodeCopiar">Copiar</button>
                     </div>
                     <div class="page-separator">
@@ -352,7 +352,7 @@
                     </div>
                     <div>
                         <div class=" social-buttons">
-                            <button href="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}" class="btn  btn-block btn-social text-white btn-facebook"
+                            <button href="{{url('/') }}/i/{{ inquerito.compartilhamento.endereco }}" class="btn  btn-block btn-social text-white btn-facebook"
                                onclick="
                             window.open(
                               'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent($(this).attr('href')),
@@ -373,7 +373,7 @@
                             window.open(
                               'https://twitter.com/intent/tweet?text={{ inquerito.titulo }}&url='+encodeURIComponent($(this).attr('href'))+'&hashtags=psd',
                               'width=626,height=436');
-                            return false;" href="http://{{ SERVER_NAME }}/i/{{ inquerito.compartilhamento.endereco }}"  class="btn  btn-block btn-social text-white btn-twitter">
+                            return false;" href="{{url('/') }}/i/{{ inquerito.compartilhamento.endereco }}"  class="btn  btn-block btn-social text-white btn-twitter">
                                 <span class="fa fa-twitter"></span> Partilhar no Twitter
                             </button>
 

@@ -85,7 +85,7 @@ class Firewall
             case 'Pesquisadores':
                 return "Inquerito";
                 break;
-            case 'Inqueridos':
+            case 'Inquiridos':
                 return "Inquerito";
                 break;
             case 'Gestão_da_instituição':
