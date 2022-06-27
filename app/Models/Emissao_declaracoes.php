@@ -12,7 +12,8 @@ class Emissao_declaracoes extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id_estudante','curso','turma','id_instituicao','classe','tipo_declaracao','comprovativo','efeito','requerimento'];
+    protected $fillable = ['id_estudante','curso','turma','id_instituicao','classe','tipo_declaracao','comprovativo','efeito','requerimento','updated_at','created_at'];
+    public $timestamps = true;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -48,7 +49,7 @@ class Emissao_declaracoes extends Model
               //$query->where($nome, 'LIKE', '%' . $valor . '%');
            }
        }
-       return $query->paginate(10);
+       return $query->select('emissao_declaracoes.*')->get();
    }
 
 }

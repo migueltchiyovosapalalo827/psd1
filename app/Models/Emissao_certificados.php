@@ -11,7 +11,8 @@ class Emissao_certificados extends Model
     /**
      * @var array
      */
-    protected $fillable = ['id_estudante','curso','turma','numero_estudantil','efeito','ano_termino','id_instituicao','comprovativo','requerimento','classe'];
+    protected $fillable = ['id_estudante','curso','turma','numero_estudantil','efeito','ano_termino','id_instituicao','comprovativo','requerimento','classe','updated_at','created_at'];
+    public $timestamps = true;
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -48,7 +49,7 @@ class Emissao_certificados extends Model
                   //$query->where($nome, 'LIKE', '%' . $valor . '%');
                }
            }
-           return $query->paginate(10);
+           return $query->select('emissao_certificados.*')->get();
        }
 
 

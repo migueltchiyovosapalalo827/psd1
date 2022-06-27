@@ -46,7 +46,7 @@ class CartaoModel extends Model
                //$query->where($nome, 'LIKE', '%' . $valor . '%');
             }
         }
-        return $query->paginate(10);
+        return $query->select('cartao.*')->get();
     }
 /**
      * The attributes that should be mutated to dates.

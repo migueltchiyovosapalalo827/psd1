@@ -3,61 +3,62 @@
 {% block conteudo %}
 
 
-    <div class="w-100 mt-0 pb-3">
-        <h1 class="h2 mb-0">Autor: {{ autor.nome}}</h1>
-        <p><b>Total de livros: </b>{{ autor.livros|length}}</p>
-        <hr class="">
+	<div class="w-100 mt-0 pb-3">
+		<h1 class="h2 mb-0">Autor: {{ autor.nome}}</h1>
+		<p>
+			<b>Total de livros:
+			</b> {{ autor.livros|length}}</p>
+		<hr class="">
 
-        <div class="row align-items-center mb-2">
-            <div class="col-md-6">
-                <div class="input-group input-group--inline ">
-                    <div class="input-group-addon">
-                        <i class="material-icons align-items-center  ">search</i>
-                    </div>
-                    <input type="text" class="form-control form-control-md" name="search" placeholder="Pesquisar por Titulo, curso, data de criação">
-                </div>
+		<div class="row align-items-center mb-2">
+			<div class="col-md-6">
+				<div class="input-group input-group--inline ">
+					<div class="input-group-addon">
+						<i class="material-icons align-items-center  ">search</i>
+					</div>
+					<input type="text" class="form-control form-control-md" name="search" placeholder="Pesquisar por Titulo, curso, data de criação">
+				</div>
 
-            </div>
+			</div>
 
-        </div>
-        <div class="card">
-            <div class="">
-                <table class="table table-projects mb-0">
-                    <thead class="bg-primary text-white">
-                    <tr>
+		</div>
+		<div class="card">
+			<div class="">
+				<table class="table table-projects mb-0">
+					<thead class="bg-primary text-white">
+						<tr>
 
-                        <th class="text-white">Titulo</th>
-                        <th class="text-white">Área</th>
-                        <th class="text-white">Data de criação</th>
+							<th class="text-white">Titulo</th>
+							<th class="text-white">Área</th>
+							<th class="text-white">Data de criação</th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
+						</tr>
+					</thead>
+					<tbody>
 
-                    {% for livro in autor.livros %}
-                        <tr>
-                            <td>
-                                {{ livro.titulo }}
-                            </td>
-                            <td>
-                                <a href="/biblioteca/livros_por_curso/{{ livro.curso.id }}"> {{ livro.curso.nome }}</a>
-                            </td>
-                            <td>
-                                {{ livro.created_at|date("m/d/Y", false) }}
-                            </td>
+						{% for livro in autor.livros %}
+							<tr>
+								<td> {{ livro.titulo }}
+								</td>
+								<td>
+									<a href="/biblioteca/livros_por_curso/{{ livro.curso.id }}"> {{ livro.curso.nome }}</a>
+								</td>
+								<td> {{ livro.created_at|date("m/d/Y", false) }}
+								</td>
 
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="4" class="text-center">{{ autor.nome }} não tem livros associado.</td>
-                        </tr>
-                    {% endfor %}
+							</tr>
+						{% else %}
+							<tr>
+								<td colspan="4" class="text-center">{{ autor.nome }}
+									não tem livros associado.</td>
+							</tr>
+						{% endfor %}
 
 
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}

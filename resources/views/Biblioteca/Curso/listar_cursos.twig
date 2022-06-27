@@ -1,79 +1,77 @@
 {% extends "@include/main_painel.twig" %}
 
 {% block conteudo %}
-    <div class="">
-        <div class="row align-items-center mb-2">
-            <div class="col-md-12">
-                <h4>
-                    Todas áreas 
-                </h4>
-            </div>
-            <div class="col-md-6">
-                <div class="input-group input-group--inline ">
-                    <div class="input-group-addon">
-                        <i class="material-icons align-items-center  ">search</i>
-                    </div>
-                    <input type="text" class="form-control input_procurar form-control-md" name="search" placeholder="Pesquisar por Área">
-                </div>
-            </div>
+	<div class="">
+		<div class="row align-items-center mb-2">
+			<div class="col-md-12">
+				<h4>
+					Todas áreas
+				</h4>
+			</div>
+			<div class="col-md-6">
+				<div class="input-group input-group--inline ">
+					<div class="input-group-addon">
+						<i class="material-icons align-items-center  ">search</i>
+					</div>
+					<input type="text" class="form-control input_procurar form-control-md" name="search" placeholder="Pesquisar por Área">
+				</div>
+			</div>
 
-        </div>
-        <div class="card">
-            <div class="">
+		</div>
+		<div class="card">
+			<div class="">
 
-                <table class="table tabela table-projects mb-0">
-                    <thead class="bg-primary text-white">
-                    <tr>
+				<table class="table tabela table-projects mb-0">
+					<thead class="bg-primary text-white">
+						<tr>
 
-                        <th class="text-white">Áreas</th>
-                        <th class="text-white">Total de livros</th>
-                        <th class="text-white">Data de criação</th>
+							<th class="text-white">Áreas</th>
+							<th class="text-white">Total de livros</th>
+							<th class="text-white">Data de criação</th>
 
-                        <th class="text-white">Opções</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for curso in cursos %}
-                        <tr>
+							<th class="text-white">Opções</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for curso in cursos %}
+							<tr>
 
-                            <td>
-                                {{ curso.nome }}
-                            </td>
-                            <td>
-                                <a href="/biblioteca/livros_por_curso/{{ curso.id }}">{{ curso.livros|length }}</a>
-                            </td>
-                            <td>
-                                {{ curso.created_at|date("d/m/y",false) }}
-                            </td>
+								<td> {{ curso.nome }}
+								</td>
+								<td>
+									<a href="/biblioteca/livros_por_curso/{{ curso.id }}">{{ curso.livros|length }}</a>
+								</td>
+								<td> {{ curso.created_at|date("d/m/y",false) }}
+								</td>
 
 
-                            <td>
-                                <div class="dropdown show">
-                                    <a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="material-icons md-18 align-middle">more_horiz</i>
+								<td>
+									<div class="dropdown show">
+										<a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<i class="material-icons md-18 align-middle">more_horiz</i>
 
-                                    </a>
+										</a>
 
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="/biblioteca/adicionar_curso/{{ curso.id }}">
-                                            <i class="material-icons md-14 align-middle">edit</i>
-                                            <span class="align-middle">Editar</span>
-                                        </a>
-                                        <a class="dropdown-item" href="/biblioteca/eliminar_curso/{{ curso.id }}">
-                                            <i class="material-icons md-14 align-middle">remove_circle</i>
-                                            <span class="align-middle">Eliminar</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
+										<div class="dropdown-menu">
+											<a class="dropdown-item" href="/biblioteca/adicionar_curso/{{ curso.id }}">
+												<i class="material-icons md-14 align-middle">edit</i>
+												<span class="align-middle">Editar</span>
+											</a>
+											<a class="dropdown-item" href="/biblioteca/eliminar_curso/{{ curso.id }}">
+												<i class="material-icons md-14 align-middle">remove_circle</i>
+												<span class="align-middle">Eliminar</span>
+											</a>
+										</div>
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
 
 
-                    </tbody>
-                </table>
-            </div>
-        </div>
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-    </div>
+	</div>
 {% endblock %}

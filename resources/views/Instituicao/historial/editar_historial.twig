@@ -1,29 +1,36 @@
 {% extends "@include/main_painel.twig" %}
 
-    {% block conteudo %}
+{% block conteudo %}
 
-        <div class="card">
-            <div class="card-body">
-                <h2 class="mt-2">
-                    Editar historial
-                </h2>
-                <hr>
-     <form class="w-100" id="needs-validation" novalidate=""  action="update_historial"  method="POST">
-                 {{ csrf_field() }}
-                 	<div class="row">
-                 		<div class="form-group col-md-9">
-                            <label for="rsNome">Historial </label>
-                            <input type="text" class="form-control"    value="{{ historial.historial }}" name="historial" id="rsNome">
-                            <input type="hidden" class="form-control" value="{{ historial.id }}" name="id" id="rsNome">
-                        </div>
+	<div class="card">
+		<div class="card-body">
+			<h2 class="mt-2">
+				Editar historial
+			</h2>
+			{% if erros.mensagem  %}
+				<div class="alert alert-{{erros.tipo}} alert-dismissable fade show" role="alert"> {{ erros.mensagem }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			{% endif %}
+			<hr>
+			<form class="w-100" id="needs-validation" novalidate="" action="update_historial" method="POST"> {{ csrf_field() }}
+				<div class="row">
+					<div class="form-group col-md-9">
+						<label for="rsNome">Historial
+						</label>
+						<input type="text" class="form-control" value="{{ historial.historial }}" name="historial" id="rsNome">
+						<input type="hidden" class="form-control" value="{{ historial.id }}" name="id" id="rsNome">
+					</div>
 
-                 	</div>
-                 	 <div class="d-flex align-items-end justify-content-end">
-                        <button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
-                    </div>
-                </form>
-             </div>
-    </div>
+				</div>
+				<div class="d-flex align-items-end justify-content-end">
+					<button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
+				</div>
+			</form>
+		</div>
+	</div>
 
 
-    {% endblock %}
+{% endblock %}

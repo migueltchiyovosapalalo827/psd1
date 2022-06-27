@@ -1,105 +1,105 @@
 {% extends "@include/main_painel.twig" %}
 {% block css %}
-    <link type="text/css" rel="stylesheet" href="/public/css/vendor-bootstrap-switch.css">
+	<link type="text/css" rel="stylesheet" href="/public/css/vendor-bootstrap-switch.css">
 {% endblock %}
 {% block conteudo %}
-    <style>
-    .w-96{
-        width: 96%;
-    }
-    </style>
-    <form action="/inquerito/salvar_inquerito" method="post" id="form_s" enctype="multipart/form-data">
-    {{ csrf_field() }}
-    <div class="container">
-    <div class="card border-bottom-0">
-    <div class="card-header p-1 d-flex">
-    <button type="reset" btn_limpar_form class="bg-white btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onMouseOver="this.style.color='#25364a'" onMouseOut="this.style.color='#5999c3'">
-    <i class="material-icons">add</i>Novo
-    </button>
-    <button   type="submit" class="bg-white btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onMouseOver="this.style.color='#25364a'" onMouseOut="this.style.color='#5999c3'">
-    <i class="material-icons">save</i>Salvar
-    </button>
-    <a href="/inquerito/todos_inqueritos"  class="btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onMouseOver="this.style.color='#25364a'" onMouseOut="this.style.color='#5999c3'">
-    <i class="material-icons">content_paste</i>Todos inqueritos
-    </a>
-    <a href="/pesquisador/criar_pesquisador"  class="btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onMouseOver="this.style.color='#25364a'" onMouseOut="this.style.color='#5999c3'">
-    <i class="material-icons">search</i>Novo Pesquisador
-    </a>
-    </div>
-    </div>
-    <div class="card">
+	<style>
+		.w-96 {
+			width: 96%;
+		}
+	</style>
+	<form action="/inquerito/salvar_inquerito" method="post" id="form_s" enctype="multipart/form-data"> {{ csrf_field() }}
+		<div class="container">
+			<div class="card border-bottom-0">
+				<div class="card-header p-1 d-flex">
+					<button type="reset" btn_limpar_form class="bg-white btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onmouseover="this.style.color='#25364a'" onmouseout="this.style.color='#5999c3'">
+						<i class="material-icons">add</i>Novo
+					</button>
+					<button type="submit" class="bg-white btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onmouseover="this.style.color='#25364a'" onmouseout="this.style.color='#5999c3'">
+						<i class="material-icons">save</i>Salvar
+					</button>
+					<a href="/inquerito/todos_inqueritos" class="btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onmouseover="this.style.color='#25364a'" onmouseout="this.style.color='#5999c3'">
+						<i class="material-icons">content_paste</i>Todos inqueritos
+					</a>
+					<a href="/pesquisador/criar_pesquisador" class="btn-sm nounderline d-flex align-items-center  btn  " style="color: #5999c3;" onmouseover="this.style.color='#25364a'" onmouseout="this.style.color='#5999c3'">
+						<i class="material-icons">search</i>Novo Pesquisador
+					</a>
+				</div>
+			</div>
+			<div class="card">
 
-    <div class="card-header p-1 ">
-    <h5 class="p-0 m-0 text-center pt-2 pb-2">Criar inquérito</h5>
-    </div>
+				<div class="card-header p-1 ">
+					<h5 class="p-0 m-0 text-center pt-2 pb-2">Criar inquérito</h5>
+				</div>
 
-    <div class="card-body">
-    <h5>Informações básicas</h5>
-    <hr>
-    <div class="row pl-0">
-    <div class="form-group col-md-6">
-    <label for="titulo">Titulo</label>
-    <input type="text" name="titulo" autocomplete="off" autofocus maxlength="255" id="titulo" class="form-control" required placeholder="Título do inquérito">
-    <input type="hidden" name="administrador" value="1">
-    </div>
-    <div class="form-group col-md-6">
-    <label for="pesquisador">Pesquisador</label>
-    <select class="form-control" id="pesquisador" required name="pesquisador">
-    <option disabled="" >Selecione um pesquisador</option>
-    {% if  SESSION.usuario.pessoa.tipo_de_entidade() == 'pesquisador' %}
-        {%   set x = SESSION.usuario.pessoa.meu_pesquisador() %}
-        <option selected="" value="{{x.id}}">{{x.nome}}</option>
-        {% else %}
-           {% for pesquisador in pesquisadores %}
-            <option value="{{ pesquisador.id }}">{{ pesquisador.pessoa.nome_completo() }}</option>
-        {% endfor %}
-    {% endif %}
+				<div class="card-body">
+					<h5>Informações básicas</h5>
+					<hr>
+					<div class="row pl-0">
+						<div class="form-group col-md-6">
+							<label for="titulo">Titulo</label>
+							<input type="text" name="titulo" autocomplete="off" autofocus maxlength="255" id="titulo" class="form-control" required placeholder="Título do inquérito">
+							<input type="hidden" name="administrador" value="1">
+						</div>
+						<div class="form-group col-md-6">
+							<label for="pesquisador">Pesquisador</label>
+							<select class="form-control" id="pesquisador" required name="pesquisador">
+								<option disabled="">Selecione um pesquisador</option>
+								{% if  SESSION.usuario.pessoa.tipo_de_entidade() == 'pesquisador' %}
+									{%   set x = SESSION.usuario.pessoa.meu_pesquisador() %}
+									<option selected="" value="{{x.id}}">{{x.nome}}</option>
+								{% else %}
+									{% for pesquisador in pesquisadores %}
+										<option value="{{ pesquisador.id }}">{{ pesquisador.pessoa.nome_completo() }}</option>
+									{% endfor %}
+								{% endif %}
 
-    </select>
-    </div>
-    <div class="form-group col-md-6">
-    <label for="inquerito_logotipo">Logotipo</label>
-    <input type="file" name="logotipo" autocomplete="off"  id="inquerito_logotipo" class="form-control"  >
-    </div>
-    <div class="form-group col-md-3">
-    <label for="privacidade">Privacidade</label>
-    <br>
-    <input id="privacidade" type="checkbox" bootstrap-switch1 name="privacidade" checked data-on-text="Privado" data-off-text="Público">
-    </div>
-    <div class="form-group col-md-3">
-    <label for="modo_de_exibicao">Apresentar  por passos?</label><br>
-    <input id="modo_de_exibicao" type="checkbox" bootstrap-switch2 name="modo_de_exibicao" checked data-on-text="Não" data-off-text="Sim">
-    </div>
+							</select>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="inquerito_logotipo">Logotipo</label>
+							<input type="file" name="logotipo" autocomplete="off" id="inquerito_logotipo" class="form-control">
+						</div>
+						<div class="form-group col-md-3">
+							<label for="privacidade">Privacidade</label>
+							<br>
+							<input id="privacidade" type="checkbox" bootstrap-switch1 name="privacidade" checked data-on-text="Privado" data-off-text="Público">
+						</div>
+						<div class="form-group col-md-3">
+							<label for="modo_de_exibicao">Apresentar  por passos?</label><br>
+							<input id="modo_de_exibicao" type="checkbox" bootstrap-switch2 name="modo_de_exibicao" checked data-on-text="Não" data-off-text="Sim">
+						</div>
 
-    <div class="form-group col-md-12">
-    <label for="descricao">Descrição</label>
-    <textarea name="descricao" id="descricao" cols="30"  rows="5" class="form-control" placeholder="Descrição"></textarea>
-    </div>
-    </div>
-    <hr class="m-0 mt-2">
-    <div class="d-flex justify-content-between py-2 align-items-center">
-    <h5 class="p-0 m-0">Perguntas</h5>
-    </div>
-    <hr class="m-0 mb-3">
-    <div id="perguntas">
-    </div>
-    <div class="">
-    <button type="button"  class="btn btn-primary-dark btn-sm d-flex justify-content-center align-items-center" btnAddP><i class="material-icons ">add</i> Nova pergunta</button>
-    </div>
-    </div>
-    </div>
-    </div>
-    </form>
+						<div class="form-group col-md-12">
+							<label for="descricao">Descrição</label>
+							<textarea name="descricao" id="descricao" cols="30" rows="5" class="form-control" placeholder="Descrição"></textarea>
+						</div>
+					</div>
+					<hr class="m-0 mt-2">
+					<div class="d-flex justify-content-between py-2 align-items-center">
+						<h5 class="p-0 m-0">Perguntas</h5>
+					</div>
+					<hr class="m-0 mb-3">
+					<div id="perguntas"></div>
+					<div class="">
+						<button type="button" class="btn btn-primary-dark btn-sm d-flex justify-content-center align-items-center" btnaddp>
+							<i class="material-icons ">add</i>
+							Nova pergunta</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 
 
 {% endblock %}
 
 {% block js %}
 
-    <script src="/public/js/bootstrap-switch.min.js"></script>
+	<script src="/public/js/bootstrap-switch.min.js"></script>
 
-    <script>
-    $("[bootstrap-switch1]").bootstrapSwitch();
-    $("[bootstrap-switch2]").bootstrapSwitch();
-    </script>
+	<script>
+		$("[bootstrap-switch1]").bootstrapSwitch();
+$("[bootstrap-switch2]").bootstrapSwitch();
+	</script>
 {% endblock %}

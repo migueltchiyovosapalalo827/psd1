@@ -495,7 +495,8 @@ class Instituicao extends Controller
         $instituicao = Instituicoes::where("id_usuario", "=", $usuario['id'])->get()->first();
         $request->merge(['id_instituicao' => $instituicao['id']]);
         $certificados = Emissao_certificados::buscar($request);
-        //  $estudante=Estudantes::where("id","=",$certificados['id_estudante'])->get()->first();
+        //  $estudante=Estudantes::where("id","=",$certificados['id_estudante'])->get()->first()
+
         return view("Instituicao.documentos.certificados_solicitados", [
             "titulo" =>
             "Certificados solicitados",
@@ -538,6 +539,7 @@ class Instituicao extends Controller
         $usuario = Sessoes::obter("usuario");
         $instituicao = Instituicoes::where("id_usuario", "=", $usuario['id'])->get()->first();
         $request->merge(['id_instituicao' => $instituicao['id']]);
+
         $declaracoes = Emissao_declaracoes::buscar($request);
         // $estudante=Estudantes::where("id","=",$declaracoes['id_estudante'])->get()->first();
         return view("Instituicao.documentos.declaracoes_solicitados", [

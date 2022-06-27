@@ -1,28 +1,34 @@
 {% extends "@include/main_painel.twig" %}
 
-    {% block conteudo %}
+{% block conteudo %}
 
-        <div class="card">
-            <div class="card-body">
-                <h2 class="mt-2">
-                    Adicionar Historial
-                </h2>
-                <hr>
-        <form class="w-100" id="needs-validation" action="salvar_historial"  method="POST">
-        {{ csrf_field() }}
-                 	<div class="form-group col-md-8">
-                        <input type="hidden" value="{{ usuario.id }}" name="id_instituicao">
-
-
-                            <h5 for="idescricao">Historial</h5>
-                            <textarea name="historial"  class="form-control"  placeholder="Breve descrição do historial da escola" rows="3"></textarea>
-                        </div>
-                 	 <div class="d-flex align-items-end justify-content-end">
-                        <button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
-                    </div>
-        </form>
-        </div>
-    </div>
+	<div class="card">
+		<div class="card-body">
+			<h2 class="mt-2">
+				Adicionar Historial
+			</h2>
+			{% if erros.mensagem  %}
+				<div class="alert alert-{{erros.tipo}} alert-dismissable fade show" role="alert"> {{ erros.mensagem }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			{% endif %}
+			<hr>
+			<form class="w-100" id="needs-validation" action="salvar_historial" method="POST"> {{ csrf_field() }}
+				<div class="form-group col-md-8">
+					<input type="hidden" value="{{ usuario.id }}" name="id_instituicao">
 
 
-    {% endblock %}
+					<h5 for="idescricao">Historial</h5>
+					<textarea name="historial" class="form-control" placeholder="Breve descrição do historial da escola" rows="3"></textarea>
+				</div>
+				<div class="d-flex align-items-end justify-content-end">
+					<button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+{% endblock %}

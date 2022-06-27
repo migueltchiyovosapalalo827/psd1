@@ -1,91 +1,88 @@
 {% extends "@include/main_painel.twig" %}
 
 {% block conteudo %}
-    <style>
-        .table td{
-            border-left: 0px !important;
-            border-right: 1px solid #e2e8ee !important;
-        }
-    </style>
-    <div class="w-100">
-        <div class="">
-            <h3>Todos livros</h3>
-            <hr>
-            <div class="row align-items-center mb-2">
-                <div class="col-md-12">
-                    <div class="input-group input-group--inline ">
-                        <div class="input-group-addon">
-                            <i class="material-icons align-items-center  ">search</i>
-                        </div>
-                        <input type="text" class="form-control form-control-md input_procurar" name="search" placeholder="Pesquisar por Sigla, titulo, área, autor">
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="">
-                    <table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
-                        <thead class="bg-primary text-white">
-                        <tr>
-                            <th class="text-white">#</th>
-                            <th class="text-white">Sigla</th>
-                            <th class="text-white">Título</th>
-                            <th class="text-white">Área</th>
-                            <th class="text-white">Autor</th>
-                            <th class="text-white">ver / baixar</th>
-                            <th class="text-white">Opções</th>
-                        </tr>
-                        </thead>
-                        <tbody class="  border-left-0">
-                        {% for livro in livros  %}
-                            <tr >
-                                <td >
-                                    {{ loop.index }}
-                                </td>
-                                <td >
-                                    {{ livro.sigla }}
-                                </td>
-                                <td>
-                                    {{ livro.titulo }}
-                                </td>
+	<style>
+		.table td {
+			border-left: 0 !important;
+			border-right: 1px solid #e2e8ee !important;
+		}
+	</style>
+	<div class="w-100">
+		<div class="">
+			<h3>Todos livros</h3>
+			<hr>
+			<div class="row align-items-center mb-2">
+				<div class="col-md-12">
+					<div class="input-group input-group--inline ">
+						<div class="input-group-addon">
+							<i class="material-icons align-items-center  ">search</i>
+						</div>
+						<input type="text" class="form-control form-control-md input_procurar" name="search" placeholder="Pesquisar por Sigla, titulo, área, autor">
+					</div>
+				</div>
+			</div>
+			<div class="card">
+				<div class="">
+					<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
+						<thead class="bg-primary text-white">
+							<tr>
+								<th class="text-white">#</th>
+								<th class="text-white">Sigla</th>
+								<th class="text-white">Título</th>
+								<th class="text-white">Área</th>
+								<th class="text-white">Autor</th>
+								<th class="text-white">ver / baixar</th>
+								<th class="text-white">Opções</th>
+							</tr>
+						</thead>
+						<tbody class="  border-left-0">
+							{% for livro in livros  %}
+								<tr>
+									<td> {{ loop.index }}
+									</td>
+									<td> {{ livro.sigla }}
+									</td>
+									<td> {{ livro.titulo }}
+									</td>
 
-                                <td>
-                                    <a href="/biblioteca/livros_por_areas/{{ livro.curso.id }}" class="text-primary-dark">{{ livro.curso.nome }}</a>
-                                </td>
-                                <td>
-                                    <a href="/biblioteca/ver_autor/{{ livro.autor.id }}" class="text-primary-dark"> {{ livro.autor.nome }}</a>
-                                </td>
-                                <td>
-                                    <a target="_blank" href="{{asset('ficheiros/livros/ficheiros')}}/{{ livro.ficheiro }}">{{ livro.ficheiro }}</a>
-                                </td>
-                                <td class="p-2">
-                                    <div class="dropdown show ">
-                                        <a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="material-icons md-18 align-middle">more_horiz</i>
-                                        </a>
+									<td>
+										<a href="/biblioteca/livros_por_areas/{{ livro.curso.id }}" class="text-primary-dark">{{ livro.curso.nome }}</a>
+									</td>
+									<td>
+										<a href="/biblioteca/ver_autor/{{ livro.autor.id }}" class="text-primary-dark"> {{ livro.autor.nome }}</a>
+									</td>
+									<td>
+										<a target="_blank" href="{{asset('ficheiros/livros/ficheiros')}}/{{ livro.ficheiro }}">{{ livro.ficheiro }}</a>
+									</td>
+									<td class="p-2">
+										<div class="dropdown show ">
+											<a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												<i class="material-icons md-18 align-middle">more_horiz</i>
+											</a>
 
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="/biblioteca/ver_livro/{{ livro.id }}">
-                                                <i class="material-icons md-14 align-middle">edit</i>
-                                                <span class="align-middle">Ver</span>
-                                            </a>
-                                            <a class="dropdown-item" href="/biblioteca/adicionar_livro/{{ livro.id }}">
-                                                <i class="material-icons md-14 align-middle">edit</i>
-                                                <span class="align-middle">Editar</span>
-                                            </a>
-                                            <a class="dropdown-item" href="/biblioteca/eliminar_livro/{{ livro.id }}">
-                                                <i class="material-icons md-14 align-middle">remove_circle</i>
-                                                <span class="align-middle">Eliminar</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+											<div class="dropdown-menu">
+												<a class="dropdown-item" href="/biblioteca/ver_livro/{{ livro.id }}">
+													<i class="material-icons md-14 align-middle">edit</i>
+													<span class="align-middle">Ver</span>
+												</a>
+												<a class="dropdown-item" href="/biblioteca/adicionar_livro/{{ livro.id }}">
+													<i class="material-icons md-14 align-middle">edit</i>
+													<span class="align-middle">Editar</span>
+												</a>
+												<a class="dropdown-item" href="/biblioteca/eliminar_livro/{{ livro.id }}">
+													<i class="material-icons md-14 align-middle">remove_circle</i>
+													<span class="align-middle">Eliminar</span>
+												</a>
+											</div>
+										</div>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
 
-        </div>
-    </div>
+		</div>
+	</div>
 {% endblock %}
