@@ -24,6 +24,31 @@ class Emissao_declaracoes extends Model
     {
         return $this->belongsTo(Instituicoes::class,'id_instituicao');
     }
+   //função para buscar um cartão  por meio de uma query e um request
+   public static function buscar($request)
+   {
+       $iguais = $request->only('id_instituicao');
+       $termos = $request->only('nome', 'curso', 'turma', 'classe');
+       $query = Emissao_declaracoes::query()->join('instituicoes','instituicoes.id', '=','emissao_declaracoes.id_instituicao')->
+       join('estudantes','estudantes.id', '=','emissao_declaracoes.id_estudante')->
+       join('pessoas','pessoas.id', '=','estudantes.pessoas_id');
+       foreach ($iguais as $nome => $valor) {
+           if ($valor) {
+               $query->where('instituicoes.id', '=', $valor);
 
+           }
+       }
+       foreach ($termos as $nome => $valor) {
+           if ($valor) {
+               $query->where('emissao_declaracoes.numero_estudantil', '=', $valor)
+               ->orWhere('instituicoes.'.$nome, 'LIKE', '%' . $valor . '%')
+               ->orWhere('pessoas.'.$nome, 'LIKE', '%' . $valor . '%')
+               ->orWhere('emissao_declaracoes.curso', 'LIKE', '%' . $valor . '%')
+               ->orWhere('emissao_declaracoes.classe', 'LIKE', '%' . $valor . '%');
+              //$query->where($nome, 'LIKE', '%' . $valor . '%');
+           }
+       }
+       return $query->paginate(10);
+   }
 
 }

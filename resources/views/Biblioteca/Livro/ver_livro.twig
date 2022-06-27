@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                             {% if livro.ficheiro %}
-                                <a class=" btn btn-link bg-primary btn-primary btn-block text-white" target="_blank" href="{{asset('ficheiros/livros/ficheiros/')}}{{ livro.ficheiro }}">  <i class="material-icons font-1 align-bottom">file_download</i>Descarregar ficheiro</a>
+                                <a class=" btn btn-link bg-primary btn-primary btn-block text-white" target="_blank" href="{{asset('ficheiros/livros/ficheiros')}}/{{livro.ficheiro}}">  <i class="material-icons font-1 align-bottom">file_download</i>Descarregar ficheiro</a>
                             {% endif %}
 
                         </form>

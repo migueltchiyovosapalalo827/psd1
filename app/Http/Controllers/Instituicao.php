@@ -487,12 +487,14 @@ class Instituicao extends Controller
             "declaracao" => $declaracao
         ]);
     }
-    public function certificados_solicitados()
+    public function certificados_solicitados(Request $request)
     {
+
         $this->verifica();
         $usuario = Sessoes::obter("usuario");
         $instituicao = Instituicoes::where("id_usuario", "=", $usuario['id'])->get()->first();
-        $certificados = Emissao_certificados::where("id_instituicao", "=", $instituicao['id'])->get();
+        $request->merge(['id_instituicao' => $instituicao['id']]);
+        $certificados = Emissao_certificados::buscar($request);
         //  $estudante=Estudantes::where("id","=",$certificados['id_estudante'])->get()->first();
         return view("Instituicao.documentos.certificados_solicitados", [
             "titulo" =>
@@ -530,12 +532,13 @@ class Instituicao extends Controller
             return redirect()->back();
         }
     }
-    public function declaracoes_solicitados()
+    public function declaracoes_solicitados(Request $request)
     {
         $this->verifica();
         $usuario = Sessoes::obter("usuario");
         $instituicao = Instituicoes::where("id_usuario", "=", $usuario['id'])->get()->first();
-        $declaracoes = Emissao_declaracoes::where("id_instituicao", "=", $instituicao['id'])->get();
+        $request->merge(['id_instituicao' => $instituicao['id']]);
+        $declaracoes = Emissao_declaracoes::buscar($request);
         // $estudante=Estudantes::where("id","=",$declaracoes['id_estudante'])->get()->first();
         return view("Instituicao.documentos.declaracoes_solicitados", [
             "titulo" =>

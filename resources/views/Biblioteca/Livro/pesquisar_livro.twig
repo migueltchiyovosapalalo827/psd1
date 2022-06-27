@@ -23,9 +23,9 @@
                     <a href="/biblioteca/ver_livro/{{ livro.id }}">
 
                         {% if livro.capa %}
-                            <img style="height: 220px;" src="/public/ficheiros/livros/capas/{{ livro.capa }}" class="card-img img-fluid" alt="{{ livro.titulo }}">
+                            <img style="height: 220px;" src="{{asset('ficheiros/livros/capas')}}/{{ livro.capa }}" class="card-img img-fluid" alt="{{ livro.titulo }}">
                         {% else %}
-                            <img style="height: 220px;" src="/public/ficheiros/livros/capas/capa_geral.png" class="card-img" alt="Sem capa">
+                            <img style="height: 220px;" src="{{asset('ficheiros/livros/capas')}}/capa_geral.png" class="card-img" alt="Sem capa">
                         {% endif %}
                     </a>
                     <div class="card-body">
@@ -48,7 +48,7 @@
                                 <span>{{ livro.created_at|date("d/m/Y", false) }}</span>
                             </li>
                             {% if livro.ficheiro %}
-                                <a type="button" class=" btn   btn-success btn-block text-white" target="_blank" href="/public/ficheiros/livros/ficheiros/{{ livro.ficheiro }}">  <i class="material-icons font-1 align-bottom">file_download</i>Descarregar ficheiro</a>
+                                <a type="button" class=" btn   btn-success btn-block text-white" target="_blank" href="{{asset('ficheiros/livros/ficheiros')}}/{{livro.ficheiro}}">  <i class="material-icons font-1 align-bottom">file_download</i>Descarregar ficheiro</a>
                             {% endif %}
                         </ul>
                     </div>

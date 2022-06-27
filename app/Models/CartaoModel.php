@@ -27,17 +27,23 @@ class CartaoModel extends Model
     public static function buscar($request)
     {
         $iguais = $request->only('id_instituicao');
-        $termos = $request->only('curso','classe');
-        $query = CartaoModel::query();
+        $termos = $request->only('nome', 'curso', 'turma', 'classe');
+        $query = CartaoModel::query()->join('instituicoes','instituicoes.id', '=','cartao.id_instituicao')->
+        join('pessoas','pessoas.id', '=','cartao.pessoas_id');
         foreach ($iguais as $nome => $valor) {
             if ($valor) {
-                $query->where($nome, '=', $valor);
+                $query->where('instituicoes.id', '=', $valor);
+
             }
         }
         foreach ($termos as $nome => $valor) {
             if ($valor) {
-               // $query->orWhere($nome, 'LIKE', '%' . $valor . '%');
-               $query->where($nome, 'LIKE', '%' . $valor . '%');
+                $query->where('cartao.numero_estudantil', '=', $valor)
+                ->orWhere('instituicoes.'.$nome, 'LIKE', '%' . $valor . '%')
+                ->orWhere('pessoas.'.$nome, 'LIKE', '%' . $valor . '%')
+                ->orWhere('cartao.curso', 'LIKE', '%' . $valor . '%')
+                ->orWhere('cartao.classe', 'LIKE', '%' . $valor . '%');
+               //$query->where($nome, 'LIKE', '%' . $valor . '%');
             }
         }
         return $query->paginate(10);

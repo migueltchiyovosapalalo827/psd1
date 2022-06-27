@@ -45,7 +45,7 @@
                                         <td> {{ livro.sigla }}</td>
                                         <td> {{ livro.titulo }}</td>
                                         <td><a href="/biblioteca/ver_autor/{{ livro.autor.id }}" class="text-primary-dark">{{ livro.autor.nome }}</a></td>
-                                        <td><a href="{{asset('ficheiros/livros/ficheiros/')}}{{ livro.ficheiro }}">{{ livro.ficheiro }}</a></td>
+                                        <td><a href="{{asset('ficheiros/livros/ficheiros')}}/{{ livro.ficheiro }}">{{ livro.ficheiro }}</a></td>
                                         <td>
                                             <div class="dropdown show ">
                                                 <a class="btn btn-white btn-sm" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -28,21 +28,16 @@
                        	<form class="form-inline" method="get" action="{{route('cartao.pesquisar')}}">
 							<div class=" col-md-12 pt-1 pb-3">
 								<div class="input-group input-group--inline w-100">
-									<select  id="instituicao" name="id_instituicao">
-										<option selected disabled value="">Pesquisar por Instituição</option>
-										{% for instituicao in instituicoes %}
-											<option value="{{ instituicao.id }}" {% if id_instituicao == instituicao.id   %} selected {% endif %}
-                                            >{{instituicao.nome}}</option>
-										{% endfor %}
-									</select>
-									<input type="text" class="form-control" name="curso" value="{{ curso }}" placeholder="Pesquisar por curso">
-									<input type="text" class="form-control" name="classe" value="{{ classe }}" placeholder="Pesquisar por classe">
+									<div class="input-group-addon pb-1">
+										<i class="material-icons align-middle">search</i>
+									</div>
+									<input type="text" class="form-control" name="nome" value="{{nome}}" placeholder="Pesquisar por nome da instituição,nome do estudante, nº estudantil,curso ou por classe">
 									<div class="input-group-append">
 										<button type="submit" class=" input-group-text material-icons">search</button>
 									</div>
 								</div>
 							</div>
-							</form>
+						</form>
 						<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
 							<thead class="bg-primary text-white">
 								<tr>
@@ -116,21 +111,16 @@
                        	<form class="form-inline" method="get" action="{{route('cartao.pesquisar')}}">
 							<div class=" col-md-12 pt-1 pb-3">
 								<div class="input-group input-group--inline w-100">
-									<select  id="instituicao" name="id_instituicao">
-										<option selected disabled value="">Pesquisar por Instituição</option>
-										{% for instituicao in instituicoes %}
-											<option value="{{ instituicao.id }}" {% if id_instituicao == instituicao.id   %} selected {% endif %}
-                                            >{{instituicao.nome}}</option>
-										{% endfor %}
-									</select>
-									<input type="text" class="form-control" name="curso" value="{{ curso }}" placeholder="Pesquisar por curso">
-									<input type="text" class="form-control" name="classe" value="{{ classe }}" placeholder="Pesquisar por classe">
+									<div class="input-group-addon pb-1">
+										<i class="material-icons align-middle">search</i>
+									</div>
+									<input type="text" class="form-control" name="nome" value="{{nome}}" placeholder="Pesquisar por nome da instituição,nome do estudante, nº estudantil,curso ou por classe">
 									<div class="input-group-append">
 										<button type="submit" class=" input-group-text material-icons">search</button>
 									</div>
 								</div>
 							</div>
-							</form>
+						</form>
 						<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
 							<thead class="bg-primary text-white">
 								<tr>
@@ -205,21 +195,16 @@
                     	<form class="form-inline" method="get" action="{{route('cartao.pesquisar')}}">
 							<div class=" col-md-12 pt-1 pb-3">
 								<div class="input-group input-group--inline w-100">
-									<select  id="instituicao" name="id_instituicao">
-										<option selected disabled value="">Pesquisar por Instituição</option>
-										{% for instituicao in instituicoes %}
-											<option value="{{ instituicao.id }}" {% if id_instituicao == instituicao.id   %} selected {% endif %}
-                                            >{{instituicao.nome}}</option>
-										{% endfor %}
-									</select>
-									<input type="text" class="form-control" name="curso" value="{{ curso }}" placeholder="Pesquisar por curso">
-									<input type="text" class="form-control" name="classe" value="{{ classe }}" placeholder="Pesquisar por classe">
+									<div class="input-group-addon pb-1">
+										<i class="material-icons align-middle">search</i>
+									</div>
+									<input type="text" class="form-control" name="nome" value="{{nome}}" placeholder="Pesquisar por nome da instituição,nome do estudante, nº estudantil,curso ou por classe">
 									<div class="input-group-append">
 										<button type="submit" class=" input-group-text material-icons">search</button>
 									</div>
 								</div>
 							</div>
-							</form>
+						</form>
 						<table class="table tabela table-no-border table-responsive-xl table-hover   mb-0">
 							<thead class="bg-primary text-white">
 								<tr>

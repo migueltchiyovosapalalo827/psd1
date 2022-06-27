@@ -20,12 +20,8 @@ class Cartao extends Controller
     public function index(Request $request)
     {
         // $this->verifica();
-        $instituicoes = Instituicoes::all();
         $cartoes = CartaoModel::buscar($request);
-        return view('Cartao.cartoes_emtidos', [
-            'cartoes' => $cartoes, 'instituicoes' => $instituicoes,
-            'curso' => $request->curso, 'classe' => $request->classe, 'id_instituicao' => $request->id_instituicao
-        ]);
+        return view('Cartao.cartoes_emtidos', ['cartoes' => $cartoes, 'nome' => $request->nome]);
     }
 
     public function criar()
@@ -129,9 +125,9 @@ class Cartao extends Controller
     {
         $usuario = Sessoes::obter("usuario");
         $instituicao = Instituicoes::where("id_usuario", "=", $usuario['id'])->get()->first();
-        $request->merge(['id_instituicao"' => $instituicao['id']]);
+        $request->merge(['id_instituicao' => $instituicao['id']]);
         $cartoes = CartaoModel::buscar($request);
-        return view('Cartao.pesquisarCartao', ['cartoes' => $cartoes, 'curso' => $request->curso, 'classe' => $request->classe]);
+        return view('Cartao.pesquisarCartao', ['cartoes' => $cartoes, 'nome' => $request->nome]);
     }
 
     //baixar foto do cartao
