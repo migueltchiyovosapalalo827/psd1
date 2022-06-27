@@ -344,7 +344,7 @@
                 <div class="modal-body">
 
                     <div class="d-flex justify-content-end mb-3">
-                        <input id="elementodeCopiar" type="text" class="input_procurar form-control" readonly  value="http://{{url('/') }}/i/{{ inquerito.compartilhamento.endereco }}">
+                        <input id="elementodeCopiar" type="text" class="input_procurar form-control" readonly  value="{{url('/') }}/i/{{ inquerito.compartilhamento.endereco }}">
                         <button type="button" class="btn btn-white ml-2 align-self-end" data-clipboard-action="copy" data-clipboard-target="#elementodeCopiar">Copiar</button>
                     </div>
                     <div class="page-separator">
