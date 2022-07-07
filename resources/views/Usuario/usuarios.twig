@@ -2,14 +2,13 @@
 
 {% block conteudo %}
     <div class="x_content">
-
-
         <div class="d-flex" role="tabpanel" data-example-id="togglable-tabs">
+
             <div class="col-md-2">
                 <ul class="nav nav-pills mb-2" id="accountTabs" role="tablist">
                     {% for grupo in grupos %}
                         <li class="nav-item w-100">
-                            <a class="nav-link {% if loop.first %}nav-link active show " aria-selected="true" aria-expanded="true"  {% endif %} id="billing-tab{{ loop.index }}" data-toggle="tab" href="#grupo_{{ loop.index }}" role="tab" aria-controls="billing">{{ grupo.nome }}</a>
+                            <a class="nav-link {% if loop.first %} nav-link active show " aria-selected="true" aria-expanded="true"  {% endif %} id="billing-tab{{ loop.index }}" data-toggle="tab" href="#grupo_{{ loop.index }}" role="tab" aria-controls="billing"> {{ grupo.nome }} </a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -21,6 +20,12 @@
                     <h3 class="card-title">Grupo {{ grupo.nome }}</h3>
                 </div>
                 <div class="card-body pr-0 pl-0">
+                  {% if alert %}
+                    <div class="alert alert-{{ alert.getTipo() }} alert-dismissable fade show" role="alert">
+                    {{ alert.getMensagem() }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div> {{ alert.destruir() }}
+                {% endif %}
                     <input type="text" class="input_procurar form-control" placeholder="Procurar por usuário, email, contacto" list=""><br>
                     <div class="table-responsive w-100" style="height: 400px">
 

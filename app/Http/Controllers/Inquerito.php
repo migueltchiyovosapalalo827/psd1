@@ -40,7 +40,7 @@ class Inquerito extends Controller
             if ($inscricao != null) {
                 $id_inquerito = $inscricao->inqueritos_id;
                 if ($inscricao->delete()) {
-                    new Alert("Inscricao eliminada com sucesso.");
+                    new Alert("Inscricao eliminada com sucesso.", "success");
                     Http::redirecionar("/inquerito/ver_inquerito/" . $id_inquerito);
                     return;
                 }

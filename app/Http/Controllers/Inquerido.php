@@ -121,7 +121,6 @@ class Inquerido extends Controller
         $u_contacto = Testos::semEspaco($u_contacto);
         $u_grupo = $grupoU["id"];
         $p_nome = $r->post("p_nome");
-        $p_sobrenome = $r->post("p_sobrenome");
         $p_pai = $r->post("p_pai");
         $p_mae = $r->post("p_mae");
         $p_n_documento = $r->post("p_n_documento");
@@ -135,8 +134,7 @@ class Inquerido extends Controller
         $p_naturalidade = $r->post("p_naturalidade");
         #Criando a pessoa
         $pessoa = new Pessoas();
-        $pessoa->nome_proprio = $p_nome;
-        $pessoa->sobrenome = $p_sobrenome;
+        $pessoa->nome = $p_nome;
         $pessoa->data_de_nascimento = $p_data_de_nascimento;
         $pessoa->pai = $p_pai;
         $pessoa->mae = $p_mae;
@@ -154,7 +152,7 @@ class Inquerido extends Controller
             //CRIANDO USUARIO
             $usuario = new Usuarios();
             $usuario->email = $u_email;
-            $usuario->usuario =  Testos::primeiroEultimo($p_nome, $p_sobrenome);
+            $usuario->usuario =  Testos::primeiroEultimo($p_nome, " ");
             $usuario->senha = Testos::encriptar($u_senha);
             $usuario->contacto = $u_contacto;
             $usuario->pessoas_id = $pessoa->id;
@@ -164,7 +162,7 @@ class Inquerido extends Controller
                 $inquerido = new Inqueridos();
                 $inquerido->pessoas_id = $pessoa->id;
                 if ($inquerido->save()) {
-                    new Alert("Inquerido cadastrado com sucesso.");
+                    new Alert("Inquerido cadastrado com sucesso.", "success");
                     Http::redirecionar("/inquerido/criar_inquerido");
                     return $inquerido->id;
                 }
@@ -251,13 +249,11 @@ class Inquerido extends Controller
         $inquerido = null;
         $incricaoObjs = null;
         $nome = $r->post("nome", null);
-        $sobrenome = $r->post("sobrenome", null);
         $dataNascimento = $r->post("dataNascimento", null);
         $genero = $r->post("genero", null);
         if ($nome != null) {
             $pessoa = new Pessoas();
-            $pessoa->nome_proprio = $nome;
-            $pessoa->sobrenome = $sobrenome;
+            $pessoa->nome = $nome;
             $pessoa->data_de_nascimento = $dataNascimento;
             $pessoa->genero = $genero;
             $pessoa->save();
@@ -267,10 +263,10 @@ class Inquerido extends Controller
             $inquerido->save();
         } else {
             #Porcesso de criação ou insertção da pessoa(Inquerido Anonimo)
-            $pessoaAnonima =  Pessoas::where("nome_proprio", "=", "Anônimo")->get()->first();
+            $pessoaAnonima =  Pessoas::where("nome", "=", "Anônimo")->get()->first();
             if ($pessoaAnonima == null) {
                 $pessoa = new Pessoas();
-                $pessoa->nome_proprio = "Anônimo";
+                $pessoa->nome = "Anônimo";
                 $pessoa->save();
                 $inquerido = new Inqueridos();
                 $inquerido->pessoas_id = $pessoa->id;

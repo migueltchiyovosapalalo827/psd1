@@ -14,6 +14,7 @@ use App\Uteis\Http;
 use App\Uteis\Sessoes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Validator;
 
 class Cartao extends Controller
 {
@@ -37,6 +38,23 @@ class Cartao extends Controller
     {
         # code...
         $this->verifica();
+        $validationRules =  [
+            'classe' => 'required|min:2|max:255',
+            'turma' => 'required|min:2|max:255',
+            'numero_estudantil' => 'required|min:2|max:255',
+            ];
+
+            $validator = Validator::make($r->all(),$validationRules);
+          if ($validator->fails()) {
+              # code...
+            /*  */
+              $erros = $validator->errors()->messages();
+              ;
+              new Alert(" {$erros['turma'][0]}
+                {$erros['classe'][0]}
+                {$erros['numero_estudantil'][0]} ", "danger", "");
+              return redirect()->back();
+          }
 
         $cartao = new CartaoModel();
         $cartao->curso = $r->curso;
@@ -81,6 +99,23 @@ class Cartao extends Controller
 
     public function salvarEditarCartao(Request $r, $id)
     {
+        $validationRules =  [
+            'curso' => 'required',
+            'turma' => 'required|min:2|max:255',
+            'numero_estudantil' => 'required|min:2|max:255',
+            ];
+
+            $validator = Validator::make($r->all(),$validationRules);
+          if ($validator->fails()) {
+              # code...
+            /*  */
+              $erros = $validator->errors()->messages();
+              ;
+              new Alert(" {$erros['turma'][0]}
+                {$erros['classe'][0]}
+                {$erros['numero_estudantil'][0]} ", "danger", "");
+              return redirect()->back();
+          }
         $cartao = CartaoModel::find($id);
         $cartao->curso = $r->curso;
         $cartao->turma = $r->turma;

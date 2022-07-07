@@ -31,16 +31,16 @@ $router->group(['prefix' => 'instituicao','namespace' => 'App\\Http\\Controllers
     $router->post('/editar_historial', 'Instituicao@editar_historial')->name("instituicao.editar_historial");
     $router->post('/update_historial', 'Instituicao@update_historial')->name("instituicao.update_historial");
 
-    $router->get('/adicionar_arquitectura', 'Instituicao@adicionar_arquitectura')->name("instituicao.adicionar_arquitectura");
-    $router->post('/salvar_arquitectura', 'Instituicao@salvar_arquitectura')->name("instituicao.salvar_arquitectura");
-    $router->get('/ver_arquitectura', 'Instituicao@ver_arquitectura')->name("instituicao.ver_arquitectura");
-    $router->post('/editar_arquitectura', 'Instituicao@editar_arquitectura')->name("instituicao.editar_arquitectura");
-    $router->post('/update_arquitectura', 'Instituicao@update_arquitectura')->name("instituicao.update_arquitectura");
-    $router->get('/eliminar_arquitectura/{id}', 'Instituicao@eliminar_arquitectura')->name("instituicao.eliminar_arquitectura");
+    $router->get('/adicionar_arquitectura', 'DependeciaEscolar@adicionar_arquitectura')->name("instituicao.adicionar_arquitectura");
+    $router->post('/salvar_arquitectura', 'DependeciaEscolar@salvar_arquitectura')->name("instituicao.salvar_arquitectura");
+    $router->get('/ver_arquitectura', 'DependeciaEscolar@ver_arquitectura')->name("instituicao.ver_arquitectura");
+    $router->post('/editar_arquitectura', 'DependeciaEscolar@editar_arquitectura')->name("instituicao.editar_arquitectura");
+    $router->post('/update_arquitectura', 'DependeciaEscolar@update_arquitectura')->name("instituicao.update_arquitectura");
+    $router->get('/eliminar_arquitectura/{id}', 'DependeciaEscolar@eliminar_arquitectura')->name("instituicao.eliminar_arquitectura");
 
     $router->get('/adicionar_fotos', 'Instituicao@adicionar_fotos')->name("instituicao.adicionar_fotos");
     $router->post('/salvar_foto', 'Instituicao@salvar_foto')->name("instituicao.salvar_foto");
-    $router->get('/ver_fotos', 'Instituicao@ver_fotos')->name("instituicao.ver_fotos");
+    $router->get('/ver_fotos/{id}', 'DependeciaEscolar@ver_fotos')->name("instituicao.ver_fotos");
     $router->get('/eliminar_fotos/{id}', 'Instituicao@eliminar_fotos')->name("instituicao.eliminar_fotos");
 
 });

@@ -1,39 +1,38 @@
-{% extends "@include/main_painel.twig" %}
+{% extends '@include/main_painel.twig' %}
 
-    {% block conteudo %}
-
-        <div class="card">
-            <div class="card-body">
-                <h2 class="mt-2">
-                    Adicionar Arquitectura
-                </h2>
-                {% if alert  %}
-                     <div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert">
-                        {{ alert.getMensagem() }}
-                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>
-                   {{  alert.destruir() }}
-               {% endif %}
-                <hr>
-        <form class="w-100" id="needs-validation" action="salvar_arquitectura"  method="POST">
-        {{ csrf_field() }}
-                 	<div class="form-group col-md-8">
-                        <input type="hidden" value="{{ usuario.id }}" name="id_instituicao">
-
-                            <div class="form-group col-md-5">
-                            <label for="rsNome">Arquitectura </label>
-                            <input type="text" class="form-control"    value="" name="arquitectura">
-                            <!--<input type="hidden" class="form-control" value="{{ historial.id }}" name="id" id="rsNome">!-->
-                        </div>
-                        </div>
-                 	 <div class="d-flex align-items-end justify-content-end">
-                        <button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
-                    </div>
-        </form>
+{% block conteudo %}
+  <div class="card">
+    <div class="card-body">
+      <h2 class="mt-2">Adicionar Arquitectura</h2>
+      {% if alert %}
+        <div class="alert alert-{{ alert.getTipo() }} alert-dismissable fade show" role="alert">
+          {{ alert.getMensagem() }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div>
+        {{ alert.destruir() }}
+      {% endif %}
+      <hr />
+      <form class="w-100" id="needs-validation" action="salvar_arquitectura" enctype="multipart/form-data"  method="POST">
+        {{ csrf_field() }}
+
+        <input type="hidden" value="{{ usuario.id }}" name="id_instituicao" />
+        <div class="form-group col-md-6">
+          <label for="rsNome">Arquitectura</label>
+          <input type="text" class="form-control" value="" name="arquitectura" />
+        </div>
+            <div class="form-group col-md-6">
+            <label for="rsDescricao">descrição</label>
+            <textarea class="form-control" name="descricao" id="rsDescricao" cols="30" rows="10"></textarea>
+          </div>
+        <div class="form-group col-md-6">
+          <label>Foto</label>
+          <input type="file" name="foto" class="form-control form-control-file p-1" />
+        </div>
+
+        <div class="d-flex align-items-end justify-content-end">
+          <button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
+        </div>
+      </form>
     </div>
-
-
-    {% endblock %}
+  </div>
+{% endblock %}

@@ -1,29 +1,29 @@
-{% extends "@include/main_painel.twig" %}
+{% extends '@include/main_painel.twig' %}
 
-    {% block conteudo %}
-
-
-        <div class="card">
-            <div class="card-body">
-                <h2 class="mt-2">
-                    Fotos
-                </h2>
-                <hr>
-
-               <div class="card-deck">
-                         {% for foto in fotos %}
-                        <div class="card" >
-                        <a href="{{asset('ficheiros/escolas/fotos')}}/{{ foto.foto }}">
-                        <img style="height:250px"  class="card-img-top" src="/public/ficheiros/escolas/fotos/{{ foto.foto }}">
-                        <a href="/instituicao/eliminar_fotos/{{ foto.id }}"><button type="button" class="mt-1 btn btn-outline-danger">Eliminar</button></a>
-                        </a>
-                      </div>
-                        {% endfor %}
-
-                 </div>
-
+{% block conteudo %}
+  <div class="card">
+    <div class="card-body">
+      <h2 class="mt-2">Fotos</h2>
+      {% if alert %}
+        <div class="alert alert-{{ alert.getTipo() }} alert-dismissable fade show" role="alert">
+          {{ alert.getMensagem() }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        {{ alert.destruir() }}
+      {% endif %}
+      <hr />
+      <div class="row row-cols-1 row-cols-md-2">
+        {% for foto in fotos %}
+          <div class="col mb-4">
+            <div class="card">
+              <a href="{{ asset('ficheiros/escolas/fotos') }}/{{ foto.foto }}"><img style="height:250px" class="card-img-top" src="{{ asset('ficheiros/escolas/fotos') }}/{{ foto.foto }}" /></a>
+              <div class="card-body">
+                <a href="/instituicao/eliminar_fotos/{{ foto.id }}"><button type="button" class="mt-1 btn btn-outline-danger">Eliminar</button></a>
+              </div>
             </div>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-
-
-    {% endblock %}
+  </div>
+{% endblock %}

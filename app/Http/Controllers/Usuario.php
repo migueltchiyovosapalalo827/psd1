@@ -70,7 +70,7 @@ class  Usuario  extends Controller
                     $inquerido = new Inqueridos();
                     $inquerido->pessoas_id = $pessoa->id;
                     if ($inquerido->save()) {
-                        new Alert("Use seu email e senha para entrar", "aviso", "");
+                        new Alert("Use seu email e senha para entrar", "success", "");
                         Http::redirecionar("/entrar");
                     }
                 } else {
@@ -154,7 +154,7 @@ class  Usuario  extends Controller
         new Alert("Não foi possivel criar o grupo!", "danger", "Erro ao criar grupo");
         Http::redirecionar("/usuario/grupo");
     }
-    public function eliminar_usuario(int $id): void
+    public function eliminar_usuario(int $id)
     {
         $this->verifica();
         $usuario = Usuarios::find($id)->fresh(["pessoa"]);
@@ -178,10 +178,11 @@ class  Usuario  extends Controller
                 $pesquisador->delete();
             }
         }
-        $usuario->delete();
+
         $usuario->pessoa->delete();
-        new Alert("Usuario eliminado com sucesso.", "success");
-        Http::redirecionar("/usuario/usuarios");
+        $usuario->delete();
+        new Alert("Usuario eliminado com sucesso.", "success", "");
+        return redirect()->back();
     }
     public function salvar_usuario(Request $r)
     {
@@ -226,8 +227,11 @@ class  Usuario  extends Controller
         if ($pessoa->save()) {
             #Pessoa foi salva
             //CRIANDO USUARIO
+            if ($documento != null) {
+                $documento->move("ficheiros/escolas/doc_estudante/", "documento" . $pessoa->n_do_documento . ".pdf");
+                # code...
+            }
 
-            $documento->move("ficheiros/escolas/doc_estudante/", "documento" . $pessoa->n_do_documento . ".pdf");
             $usuario = new Usuarios();
             $usuario->email = $u_email;
             $usuario->usuario =  Testos::primeiroEultimo($p_nome, "");
@@ -377,12 +381,14 @@ class  Usuario  extends Controller
             "tipo_de_documento",
             "naturalidade", "data_de_emissao"
         ])) {
+            if ($documento != null) {
+                # code...
+                $documento->move("ficheiros/escolas/doc_estudante/", "documento" . $pessoa->n_do_documento . ".pdf");
+            }
 
-            $documento->move("ficheiros/escolas/doc_estudante/", "documento" . $pessoa->n_do_documento . ".pdf");
-            new Alert("Dados pessoais atualizados com sucesso","success");
-
+            new Alert("Dados pessoais atualizados com sucesso", "success");
         } else {
-            new Alert("Não foi possivel atualizar os dados", "error", "Erro ao atualizar os dados");
+            new Alert("Não foi possivel atualizar os dados", "danger", "Erro ao atualizar os dados");
         }
 
         return redirect()->back();
@@ -400,7 +406,7 @@ class  Usuario  extends Controller
 
         #Verifica a senha
         if (Testos::desincriptar($usuarioLogado["senha"]) !==  $r->post("senhaC")) {
-            new Alert("Senha incorreta", "error", "Senha incorrecta");
+            new Alert("Senha incorreta", "danger", "Senha incorrecta");
             Http::redirecionar("/usuario/meu_perfil");
             return;
         }
@@ -422,7 +428,7 @@ class  Usuario  extends Controller
                 ->get()
                 ->first();
             if ($usuario != null) {
-                new Alert("Não foi possivel atualizar os dados.", "error", "Usuario já registrado.");
+                new Alert("Não foi possivel atualizar os dados.", "danger", "Usuario já registrado.");
                 Http::redirecionar("/usuario/meu_perfil");
                 return;
             }
@@ -433,10 +439,11 @@ class  Usuario  extends Controller
                 ->get()
                 ->first();
             if ($usuario != null) {
-                new Alert("Não foi possivel atualizar os dados.", "error", "Contacto já registrado.");
+                new Alert("Não foi possivel atualizar os dados, Contacto já registrado.", "danger");
                 Http::redirecionar("/usuario/meu_perfil");
                 return;
             }
+            
             $colunasAtualizar[] = "contacto";
         }
         $usuario = Usuarios::where(['id' => $usuarioLogado["id"]])
@@ -473,7 +480,7 @@ class  Usuario  extends Controller
             ->first();
         $usuario->senha = Testos::encriptar($r->post("s_nova_senha"));
         $usuario->update(["senha"]);
-        new Alert("Senha atualizada com sucesso","success");
+        new Alert("Senha atualizada com sucesso", "success");
         Http::redirecionar("/usuario/meu_perfil");
     }
 }

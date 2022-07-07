@@ -12,14 +12,22 @@ class Fotos_escolas extends Model
     /**
      * @var array
      */
-    protected $fillable = ['foto','id_instituicao'];
+    protected $fillable = ['foto','id_instituicao', 'id_arquitectura_escola'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function instituicao(): \Illuminate\Database\Eloquent\Relations\HasMany
+
+    public function instituicao(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasMany(Instituicoes::class, 'id_instituicao');
+        return $this->belongsTo(Instituicoes::class, 'id_instituicao');
     }
+
+    //relação muitos para um com a tabela arquitectura_escola
+
+    public function arquitectura(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Arquitectura_escola::class, 'id_arquitectura_escola');
+    }
+
+
+
 
 }

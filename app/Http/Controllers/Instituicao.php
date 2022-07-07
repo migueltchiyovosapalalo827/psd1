@@ -236,7 +236,7 @@ class Instituicao extends Controller
         $historial->historial = $req->post("historial");
         if ($historial->update()) {
             new Alert("Os Dados foram Actualizados com Sucesso!.", "success", "");
-            return redirect()->back();
+            return redirect()->route("instituicao.ver_historial");
         }
     }
 
@@ -330,7 +330,7 @@ class Instituicao extends Controller
         $usuario = Sessoes::obter("usuario");
         $inst = Instituicoes::where("id_usuario", "=", $usuario)->get()->first();
         $fotos = Fotos_escolas::where("id_instituicao", "=", $inst["id"])->get();
-        return view("Instituicao.fotos.ver_fotos", ["titulo" => "Ver Fotos", "fotos" => $fotos]);
+        return view("Instituicao.fotos.ver_fotos", ["titulo" => "Ver Fotos", "fotos" => $fotos->fotos_escolas]);
     }
     public function eliminar_fotos(int $id)
     {

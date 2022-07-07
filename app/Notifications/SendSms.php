@@ -40,7 +40,7 @@ class SendSms extends Notification implements ShouldQueue
         // And the telephone number is correctly formatted.
         // TODO: SmsMessage, doesn't exist yet :-) We should create it.
         return (new SmsMessage)
-                      ->to($notifiable->contacto)
+                      ->to('244'.$notifiable->contacto)
                     ->line($this->mesagem);
     }
 

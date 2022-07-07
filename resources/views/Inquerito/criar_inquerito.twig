@@ -50,7 +50,7 @@
 									<option selected="" value="{{x.id}}">{{x.nome}}</option>
 								{% else %}
 									{% for pesquisador in pesquisadores %}
-										<option value="{{ pesquisador.id }}">{{ pesquisador.pessoa.nome_completo() }}</option>
+										<option value="{{ pesquisador.id }}">{{ pesquisador.pessoa.nome }}</option>
 									{% endfor %}
 								{% endif %}
 
