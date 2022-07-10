@@ -64,7 +64,6 @@ class Pesquisador extends Controller
             }
         }
 
-
         $grupoU = Grupo_de_usuarios::where("nome", "=", "pesquisadores")->first()->toArray();
         //Recuperando valores do request
         $u_email = $r->post("u_email");

@@ -53,11 +53,11 @@
 										</a>
 
 										<div class="dropdown-menu">
-											<a class="dropdown-item" href="/biblioteca/adicionar_curso/{{ curso.id }}">
+											<a class="dropdown-item" href="{{route('biblioteca.adicionar_curso',curso.id)}}">
 												<i class="material-icons md-14 align-middle">edit</i>
 												<span class="align-middle">Editar</span>
 											</a>
-											<a class="dropdown-item" href="/biblioteca/eliminar_curso/{{ curso.id }}">
+											<a class="dropdown-item" href="/biblioteca/eliminar_curso/{{curso.id }}">
 												<i class="material-icons md-14 align-middle">remove_circle</i>
 												<span class="align-middle">Eliminar</span>
 											</a>

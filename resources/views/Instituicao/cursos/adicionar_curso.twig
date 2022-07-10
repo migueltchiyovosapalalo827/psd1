@@ -20,18 +20,36 @@
 					<div class="form-group col-md-6">
 						<label for="rsNome">Nome
 						</label>
-						<input type="text" class="form-control" placeholder="Nome Curso" value="" name="nome" id="rsNome">
+						<input type="text" class="form-control {% if errors.first('nome') %} is-invalid {% endif %}" placeholder="Nome Curso" value="{{old('nome')}}" name="nome" id="rsNome">
+                        {% if errors.first('nome') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('nome') }}
+                        </div>
+                        {% endif %}
+
+
 						<input type="hidden" class="form-control" value="{{ usuario.id }}" name="id_instituicao" id="rsNome">
 					</div>
-					<div class="form-group col-md-6">
-						<label for="rsPd">Principais disciplinas
-						</label>
-						<input type="text" class="form-control" placeholder="Principais Disciplinas" value="" name="principais_disciplinas" id="rsPd">
-					</div>
+
 					<div class="form-group col-md-6">
 						<label for="rsPs">Perfil de saída
 						</label>
-						<input type="tel" class="form-control" placeholder="Perfil de saída" value="" name="perfil_de_saida" id="rsPs">
+						<input type="tel" class="form-control {% if errors.first('perfil_de_saida') %} is-invalid {% endif %}" placeholder="Perfil de saída" value="{{old('perfil_de_saida')}}" name="perfil_de_saida" id="rsPs">
+                        {% if errors.first('perfil_de_saida') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('perfil_de_saida') }}
+                        </div>
+                        {% endif %}
+					</div>
+                    <div class="form-group col-md-6">
+						<label for="rsPd">Principais disciplinas
+						</label>
+                        <textarea class="form-control {% if errors.first('principais_disciplinas') %} is-invalid {% endif %} " placeholder="Principais disciplinas"  name="principais_disciplinas" id="rsPd">{{old('principais_disciplinas')}}</textarea>
+                        {% if errors.first('principais_disciplinas') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('principais_disciplinas') }}
+                        </div>
+                        {% endif %}
 					</div>
 				</div>
 				<div class="d-flex align-items-end justify-content-end">

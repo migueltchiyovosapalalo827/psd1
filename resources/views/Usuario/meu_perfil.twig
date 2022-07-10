@@ -38,53 +38,69 @@
 	<div class="">
 		<ul class="nav nav-pills mb-2" id="accountTabs" role="tablist">
 			<li class="nav-item">
-				<a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview">Informações pessoais</a>
+				<a class="nav-link {% if  errors is empty  %}  active {% endif %}" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview">Informações pessoais</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Usuário</a>
+				<a class="nav-link {% if errors is empty %}{% else %} active{% endif %}"  id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings">Usuário</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" id="alterarSenha-tab" data-toggle="tab" href="#alterarSenha" role="tab" aria-controls="alterarSenha">Alterar senha</a>
 			</li>
 		</ul>
 		<div class="tab-content" id="accountTabsContent">
-			<div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+			<div class="tab-pane fade {% if  errors is empty %} show active {% endif %}" id="overview" role="tabpanel" aria-labelledby="overview-tab">
 				<div class="row">
 					<div class="col-lg-9">
 						<div class="card card-account">
 							<div class="card-body">
 								<form action="/usuario/atualizar_informacoes_pessoais" method="post" enctype="multipart/form-data"> {{ csrf_field() }}
 									<div class="form-row">
-										<div class="form-group col-md-8 ">
+										<div class="form-group col-md-6 ">
 											<label>nome completo</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">person</i>
+												<div class="input-group-prepend">
+												   <span class="input-group-text"><i class="material-icons">person</i> </span>
 												</div>
-												<input type="text" class="form-control" value="{{ pessoa.nome }}" name="p_nome" placeholder="Primeiro nome">
+												<input type="text" class="form-control {% if errors.first('nome') %} is-invalid {% endif %}" value="{{ pessoa.nome }}" name="nome" placeholder="Primeiro nome">
+                                                       {% if errors.first('nome') %}
+                                                            <div class="invalid-feedback">
+                                                                {{ errors.first('nome') }}
+                                                            </div>
+                                                        {% endif %}
+
 											</div>
 										</div>
-										<div class="form-group col-md-4">
+										<div class="form-group col-md-6">
 											<label>Pai</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">person</i>
+												<div class="input-group-prepend">
+												<span class="input-group-text"><i class="material-icons">person</i></span>
 												</div>
-												<input value="{{ pessoa.pai }}" type="text" class="form-control" name="p_pai" placeholder="Nome do pai">
+												<input value="{{ pessoa.pai }}" type="text" class="form-control {% if errors.first('pai') %} is-invalid {% endif %}" name="pai" placeholder="Nome do pai">
+                                                         {% if errors.first('pai') %}
+                                                                <div class="invalid-feedback">
+                                                                 {{ errors.first('pai') }}
+                                                                </div>
+                                                          {% endif %}
 											</div>
 										</div>
 										<div class="form-group col-md-4">
 											<label>Mãe</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">person</i>
-												</div>
-												<input value="{{ pessoa.mae }}" type="text" class="form-control" name="p_mae" placeholder="Nome da mãe">
+												   <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <i class="material-icons">person</i> </span>
+                                                    </div>
+                                                    <input type="text" class="form-control {% if errors.first('mae') %} is-invalid {% endif %}" name="mae" placeholder="Nome da mãe" value="{{pessoa.mae }}"/>
+                                                    {% if errors.first('mae') %}
+                                                        <div class="invalid-feedback">
+                                                            {{ errors.first('mae') }}
+                                                        </div>
+                                                    {% endif %}
 											</div>
 										</div>
-										<div class="form-group col-md-4">
+										<div class="form-group col-md-3">
 											<label>Género</label>
-											<select name="p_genero" class="form-control">
+											<select name="genero" class="form-control {% if errors.first('genero') %} is-invalid {% endif %}">
 												{% if  pessoa.genero  %}
 													<option selected value="{{ pessoa.genero }}">{{ pessoa.genero() }}
 														- Selecionado</option>
@@ -92,19 +108,30 @@
 												<option value="M">Masculino</option>
 												<option value="F">Femenino</option>
 											</select>
+                                             {% if errors.first('genero') %}
+                                                <div class="invalid-feedback">
+                                                    {{ errors.first('genero') }}
+                                                </div>
+                                            {% endif %}
 										</div>
-										<div class="form-group col-md-4">
+										<div class="form-group col-md-5">
 											<label>Nº do documento</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">credit_card</i>
-												</div>
-												<input value="{{ pessoa.n_do_documento }}" type="text" class="form-control" name="p_n_documento" placeholder="xxxxxxxxxxxxxxxx">
+												  <div class="input-group-prepend">
+                                                <span class="input-group-text"> <i class="material-icons">credit_card</i> </span>
+                                                </div>
+                                                <input type="text" class="form-control {% if errors.first('numero_do_documento') %} is-invalid {% endif %}" name="numero_do_documento" placeholder="xxxxxxxxxxxxxxxx" value="{{pessoa.n_do_documento}}" />
+                                                    {% if errors.first('numero_do_documento') %}
+                                                    <div class="invalid-feedback">
+                                                        {{ errors.first('numero_do_documento') }}
+                                                    </div>
+                                                    {% endif %}
+
 											</div>
 										</div>
 										<div class="form-group col-md-4">
 											<label>Tipo de documento</label>
-											<select name="p_t_documento" id="" class="form-control">
+											<select name="tipo_de_documento" id="" class="form-control {% if errors.first('tipo_de_documento') %} is-invalid {% endif %}">
 												{% if  pessoa.tipo_de_documento  %}
 													<option selected value="{{ pessoa.tipo_de_documento }}">{{ pessoa.tipo_de_documento() }}
 														- Selecionado</option>
@@ -114,83 +141,128 @@
 												<option value="PP">Passaport</option>
 												<option value="Outros">Outros</option>
 											</select>
+                                             {% if errors.first('tipo_de_documento') %}
+                                                <div class="invalid-feedback">
+                                                    {{ errors.first('tipo_de_documento') }}
+                                                </div>
+                                            {% endif %}
 										</div>
 										<div class="form-group col-md-4">
 											<label>Documento</label>
-											<input name="documento" {% if pessoa.tipo_de_documento == null %} required  {% endif %} class="form-control" type="file" id="formFile">
+											<input name="documento" {% if pessoa.tipo_de_documento == null %} required  {% endif %} class="form-control {% if errors.first('documento') %} is-invalid {% endif %}" type="file" id="formFile">
+                                             {% if errors.first('documento') %}
+                                                    <div class="invalid-feedback">
+                                                        {{ errors.first('documento') }}
+                                                    </div>
+                                          {% endif %}
 										</div>
 										<div class="form-group col-md-4">
 											<label>Data de emissão</label>
-											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">date_range</i>
-												</div>
-												<input value="{{ pessoa.data_de_emissao }}" type="date" class="form-control" name="p_data_de_emissao" placeholder="dd/mm/aaaa">
-											</div>
+                                              <input type="date" class="form-control {% if errors.first('data_de_emissao') %} is-invalid {% endif %}" name="data_de_emissao" placeholder="dd/mm/aaaa" value="{{pessoa.data_de_emissao}}" />
+                                                            {% if errors.first('data_de_emissao') %}
+                                                                <div class="invalid-feedback">
+                                                                    {{ errors.first('data_de_emissao') }}
+                                                                </div>
+                                                            {% endif %}
+
 										</div>
 
 										<div class="form-group col-md-4">
 											<label>Data de nascimento</label>
-											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">date_range</i>
-												</div>
-												<input value="{{ pessoa.data_de_nascimento }}" type="date" class="form-control" name="p_data_de_nascimento" placeholder="dd/mm/aaaa">
-											</div>
+                                                <input type="date" class="form-control {% if errors.first('data_de_nascimento') %} is-invalid {% endif %}" name="data_de_nascimento" placeholder="dd/mm/aaaa" value="{{pessoa.data_de_nascimento}}"/>
+                                                    {% if errors.first('data_de_nascimento') %}
+                                                        <div class="invalid-feedback">
+                                                            {{ errors.first('data_de_nascimento') }}
+                                                        </div>
+                                                    {% endif %}
+
 										</div>
 										<div class="form-group col-md-4">
 											<label>Provincia</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">location_city</i>
-												</div>
-												<input value="{{ pessoa.provincia }}" type="text" class="form-control" name="p_provincia" placeholder="Benguela">
+												 <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="material-icons">location_city</i></span>
+                                                </div>
+                                                <input type="text" class="form-control {% if errors.first('provincia') %} is-invalid {% endif %}" name="provincia" placeholder="Benguela" value="{{pessoa.provincia}}" />
+                                                    {% if errors.first('provincia') %}
+                                                        <div class="invalid-feedback">
+                                                            {{ errors.first('provincia') }}
+                                                        </div>
+                                                    {% endif %}
 											</div>
 										</div>
+
 										<div class="form-group col-md-4">
 											<label>Municipio</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">location_city</i>
-												</div>
-												<input value="{{ pessoa.municipio }}" type="text" class="form-control" name="p_municipio" placeholder="Lobito">
+												 <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="material-icons">location_city</i></span>
+                                                </div>
+                                                <input type="text" class="form-control {% if errors.first('municipio') %} is-invalid {% endif %}" name="municipio" placeholder="" value="{{pessoa.municipio}}" />
+                                                    {% if errors.first('municipio') %}
+                                                        <div class="invalid-feedback">
+                                                            {{ errors.first('municipio') }}
+                                                        </div>
+                                                    {% endif %}
 											</div>
 										</div>
 										<div class="form-group col-md-4">
 											<label>Bairro</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">home</i>
-												</div>
-												<input value="{{ pessoa.bairro }}" type="text" class="form-control" name="p_bairro" placeholder="Liro">
+												  <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="material-icons">home</i></span>
+                                                </div>
+                                                <input type="text" class="form-control {% if errors.first('bairro') %} is-invalid {% endif %}" name="bairro" placeholder=""  value="{{pessoa.bairro}}" />
+                                                    {% if errors.first('bairro') %}
+                                                        <div class="invalid-feedback">
+                                                            {{ errors.first('bairro') }}
+                                                        </div>
+                                                    {% endif %}
+
 											</div>
 										</div>
 										<div class="form-group col-md-4">
 											<label>Local de nascimento</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">local_hospital</i>
-												</div>
-												<input value="{{ pessoa.local_de_nascimento }}" type="text" class="form-control" name="p_local_de_nascimento" placeholder="Benguela">
+											<div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="material-icons">local_hospital</i></span>
+                                            </div>
+                                            <input type="text" class="form-control {% if errors.first('local_de_nascimento') %} is-invalid {% endif %}" name="local_de_nascimento" placeholder="" value="{{pessoa.local_de_nascimento}}" />
+                                                {% if errors.first('local_de_nascimento') %}
+                                                    <div class="invalid-feedback">
+                                                        {{ errors.first('local_de_nascimento') }}
+                                                    </div>
+                                                {% endif %}
 											</div>
 										</div>
 										<div class="form-group col-md-4">
 											<label>Naturalidade</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">flag</i>
-												</div>
-												<input value="{{ pessoa.naturalidade }}" type="text" class="form-control" name="p_naturalidade" placeholder="Angolana">
+												  <div class="input-group-prepend">
+                                                <span class="input-group-text">  <i class="material-icons">flag</i> </span>
+                                                </div>
+                                                <input type="text" class="form-control {% if errors.first('naturalidade') %} is-invalid {% endif %}" name="naturalidade" placeholder="" value="{{pessoa.naturalidade}}" />
+                                                    {% if errors.first('naturalidade') %}
+                                                        <div class="invalid-feedback">
+                                                            {{ errors.first('naturalidade') }}
+                                                        </div>
+                                                    {% endif %}
+
 											</div>
 										</div>
 										{% if  SESSION.usuario.grupo.nome =="estudantes" %}
 											<div class="form-group col-md-12">
-												<select name="p_instituicao" class="form-control" required="" {% if pessoa.estudante.id_instituicao  %} disabled {% endif %} >
+												<select name="instituicao" class="form-control {% if errors.first('instituicao') %} is-invalid {% endif %}" required="" {% if pessoa.estudante.id_instituicao  %} disabled {% endif %} >
 													<option>instituição de ensino..</option>
 													{% for instituicao in instituicoes %}
 														<option value="{{ instituicao.id }}" {% if pessoa.estudante.id_instituicao == instituicao.id %} selected {% endif %}> {{ instituicao.nome}}</option>
 													{% endfor %}
 												</select>
+                                                  {% if errors.first('instituicao') %}
+                                                        <div class="invalid-feedback">
+                                                            {{ errors.first('instituicao') }}
+                                                        </div>
+                                                    {% endif %}
 											</div>
 										{% endif %}
 									</div>
@@ -202,7 +274,8 @@
 					<div class="col-lg-3"></div>
 				</div>
 			</div>
-			<div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+			<div class="tab-pane fade {% if errors is empty %}{% else %} show active{% endif %}"
+             id="settings" role="tabpanel" aria-labelledby="settings-tab">
 				<form action="/usuario/atualizar_usuario" method="post" id="editarUsuario"> {{ csrf_field() }}
 					<div class="row">
 						<div class="col-lg-9">
@@ -212,19 +285,29 @@
 										<div class="form-group col-md-6 ">
 											<label>Usuário</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">person</i>
+												<div class="input-group-prepend">
+												<span class="input-group-text">	<i class="material-icons">person</i> </span>
 												</div>
-												<input type="text" class="form-control" name="u_usuario" value="{{ usuario.usuario }}" placeholder="exemplo.exemplo">
+												<input type="text" class="form-control {% if errors.first('usuario') %} is-invalid {% endif %}" name="usuario" value="{{ usuario.usuario }}" placeholder="exemplo.exemplo">
+                                                 {% if errors.first('usuario') %}
+                                                    <div class="invalid-feedback">
+                                                        {{ errors.first('usuario') }}
+                                                    </div>
+                                                {% endif %}
 											</div>
 										</div>
 										<div class="form-group col-md-6 ">
 											<label>Email</label>
 											<div class="input-group input-group--inline">
-												<div class="input-group-addon">
-													<i class="material-icons">email</i>
+                                                <div class="input-group-prepend">
+                                                <span class="input-group-text">  <i class="material-icons">email</i> </span>
 												</div>
-												<input type="email" class="form-control" name="u_email" value="{{ usuario.email }}" placeholder="exemplo@exemplo.com">
+                                                <input type="email" class="form-control {% if errors.first('email') %} is-invalid {% endif %} " name="email" placeholder="exemplo@exemplo.com" value="{{usuario.email}}" />
+                                                {% if errors.first('email') %}
+                                                <div class="invalid-feedback">
+                                                    {{ errors.first('email') }}
+                                                </div>
+                                                {% endif %}
 											</div>
 										</div>
 										<div class="form-group col-md-6">
@@ -234,7 +317,12 @@
                                                         <span class="input-group-text"><i class="material-icons">local_phone</i></span>
                                                         <span class="input-group-text">+244</span>
                                                     </div>
-												<input type="tel" class="form-control" name="u_contacto" value="{{ usuario.contacto }}" placeholder="9xxxxxxxx">
+												<input type="tel" class="form-control {% if errors.first('contacto') %} is-invalid {% endif %}" name="contacto" value="{{ usuario.contacto }}" placeholder="9xxxxxxxx">
+                                                {% if errors.first('contacto') %}
+                                                    <div class="invalid-feedback">
+                                                        {{ errors.first('contacto') }}
+                                                    </div>
+                                                {% endif %}
 											</div>
 										</div>
                                     </div>

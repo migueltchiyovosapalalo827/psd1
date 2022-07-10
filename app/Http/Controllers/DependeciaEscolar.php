@@ -9,6 +9,7 @@ use App\Uteis\Alert;
 use App\Uteis\Ficheiros;
 use App\Uteis\Sessoes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class DependeciaEscolar extends Controller
 {
@@ -23,6 +24,16 @@ class DependeciaEscolar extends Controller
     public function salvar_arquitectura(Request $req)
     {
         $this->verifica();
+        $validatedRules = [
+            'arquitectura' => 'required|min:4|max:255',
+            'descricao' => 'required|min:6|max:1000',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ];
+        $validator = Validator::make($req->all(), $validatedRules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $foto = $req->file('foto', null);
         $id_instituicao = $req->post("id_instituicao");
         $arquitectura = new Arquitectura_escola();

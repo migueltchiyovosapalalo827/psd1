@@ -5,50 +5,77 @@
 	<div class="card">
 		<div class="card-body">
 			<h2 class="mt-2">
-				Emitir Cartão de estudante
+				Editar Cartão de estudante
 			</h2>
-			<hr>
-			<form action="/cartao/update_cartao/{{cartao.id}}" enctype="multipart/form-data" method="POST"> {{ csrf_field() }}
-				{% if alert  %}
+            	{% if alert  %}
 					<div class="alert alert-{{alert.getTipo()}} alert-dismissable fade show" role="alert"> {{ alert.getMensagem() }}
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div> {{  alert.destruir() }}
 				{% endif %}
-				<h5 class="mt-4">Dados</h6>
+			<hr>
+			<form action="/cartao/update_cartao/{{cartao.id}}" enctype="multipart/form-data" method="POST"> {{ csrf_field() }}
+
+				<h5 class="mt-4">Dados</h5>
 				<div class="row">
 					<input type="hidden" name="id_estudante" value="{{ estudante.id }}">
 					<div class="form-group col-md-6">
 						<input type="text" name="instituicao" class="form-control" disabled="" value="{{ estudante.instituicao.nome}}">
 					</div>
 					<div class="form-group col-md-6">
-						<select name="curso" class="form-control" required="">
+						<select name="curso" class="form-control {% if errors.first('curso') %} is-invalid {% endif %}" required="">
 							<option>cursos..</option>
 							{% for curso in estudante.instituicao.cursos_escola %}
 								<option value="{{ curso.nome }}" {% if cartao.curso == curso.nome %} selected {% endif %}> {{curso.nome}}</option>
 							{% endfor %}
 						</select>
+                          {% if errors.first('curso') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('curso') }}
+                                </div>
+                            {% endif %}
 					</div>
-					<div class="form-group col-md-4">
-						<input type="text" name="classe" required="" class="form-control" placeholder="Informe a Classe" value="{{cartao.classe}}">
-					</div>
-					<div class="form-group col-md-4">
-						<input type="text" name="turma" required="" class="form-control" placeholder="Informe a turma" value="{{cartao.turma}}">
-					</div>
-					<div class="form-group col-md-4">
-						<input type="text" name="numero_estudantil" required="" class="form-control" placeholder="Número Estudantil" value="{{ cartao.numero_estudantil}}">
-					</div>
-					<div class="col-md-12"></div>
-					<div class="form-group col-md-6">
-						<label>
-							fotografia
-						</label>
-						<input name="foto" required="" class="form-control" type="file" id="formFile">
-					</div>
+
+						<div class="form-group col-md-4">
+							<input type="text" name="classe" class="form-control {% if errors.first('classe') %} is-invalid {% endif %}" value="{{ cartao.classe }}"  placehinput_older="Informe a Classe">
+                            {% if errors.first('classe') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('classe') }}
+                                </div>
+                            {% endif %}
+                        </div>
+						<div class="form-group col-md-4">
+                        <input type="text" name="turma" class="form-control  {% if errors.first('turma') %} is-invalid {% endif %}" value="{{ cartao.turma }}"  placehinput_older="Informe a turma">
+                            {% if errors.first('turma') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('turma') }}
+                                </div>
+                            {% endif %}
+						</div>
+						<div class="form-group col-md-4">
+                            <input type="text" name="numero_estudantil" class="form-control {% if errors.first('numero_estudantil') %} is-invalid {% endif %}" value="{{ cartao.numero_estudantil }}"  placehinput_older="Informe o numero_estudantil">
+                            {% if errors.first('numero_estudantil') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('numero_estudantil') }}
+                                </div>
+                            {% endif %}
+						</div>
+						<div class="col-md-12"></div>
+						<div class="form-group col-md-6">
+							<label>
+								fotografia
+							</label>
+							<input name="foto" class="form-control {% if errors.first('foto') %} is-invalid {% endif %}" type="file" id="formFile">
+                              {% if errors.first('foto') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('foto') }}
+                                </div>
+                            {% endif %}
+						</div>
 					<div class="row col-md-12 mb-4"></div>
 				</div>
-				<button type="submit" class="btn btn-success">Enviar</button>
+				<button type="submit" class="btn btn-success">salvar</button>
 			</form>
 		</div>
 	</div>

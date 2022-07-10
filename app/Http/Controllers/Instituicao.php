@@ -23,6 +23,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 //use Barryvdh\DomPDF\Facade\Pdf;
 use PDF;
@@ -41,7 +42,7 @@ class Instituicao extends Controller
             return $query->select('id_usuario')->from('instituicoes');
         })->get();
 
-         $instituicoes = Instituicoes::where('tipo', '=','publica')->get();
+        $instituicoes = Instituicoes::where('tipo', '=', 'publica')->get();
         return view("Instituicao.gerais.adicionar_instituicao", ["titulo" => "Adicionar Instituição", "usuarios" => $usuarios, "instituicoes" => $instituicoes]);
     }
 
@@ -49,7 +50,22 @@ class Instituicao extends Controller
     public function salvar_instituicao(Request $requisicao)
     {
         $this->verifica();
+        $validateRules = [
+            'nome' => 'required|string|min:4|max:255|unique:instituicoes',
+            'tipo' => 'required',
+            'nivel' => 'required',
+            'administrador' => 'required',
+            'email' => 'required|string|email|max:255|unique:instituicoes',
+            'telefone' => 'required|string|max:20|unique:instituicoes',
+            'localizacao' => 'required|string|max:255',
+            'sobre_escola' => 'required|string|max:1000',
+            'logotipo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ];
 
+        $validator = Validator::make($requisicao->all(), $validateRules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $nome = $requisicao->post("nome");
         $email = $requisicao->post("email");
         $telefone = $requisicao->post("telefone");
@@ -57,8 +73,9 @@ class Instituicao extends Controller
         $tipo = $requisicao->post("tipo");
         $sobre = $requisicao->post("sobre_escola");
         $logotipo = $requisicao->file('logotipo', null);
-        $id_usuario = $requisicao->post("id_usuario");
+        $id_usuario = $requisicao->post("administrador");
         $parent_id = $requisicao->post("parent_id");
+        $nivel = $requisicao->post("nivel");
         $logotipoNovoNome = "";
         if ($logotipo != null) {
             if (!Ficheiros::eImagemValida($logotipo)) {
@@ -83,6 +100,7 @@ class Instituicao extends Controller
         $instituicao->id_usuario = $id_usuario;
         $instituicao->logotipo = $logotipoNovoNome;
         $instituicao->parent_id = $parent_id;
+        $instituicao->nivel = $nivel;
 
         if ($instituicao->save()) {
             new Alert("Os Dados foram Salvos com Sucesso.", "success", "");
@@ -99,12 +117,30 @@ class Instituicao extends Controller
     }
     public function update_instituicao(Request $req)
     {
+        $validateRules = [
+            'nome' => 'required|string|min:4|max:255',
+            'tipo' => 'required',
+            'nivel' => 'required',
+            'administrador' => 'required',
+            'email' => 'required|string|email|max:255',
+            'telefone' => 'required|string|min:9|max:20',
+            'localizacao' => 'required|string|max:255',
+            'sobre_escola' => 'required|string|max:1000',
+            'logotipo' => 'image|mimes:jpeg,png,jpg,gif,svg',
+        ];
+
+        $validator = Validator::make($req->all(), $validateRules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $instituicao = Instituicoes::where("id", "=", $req->id)->get()->first();
         $instituicao->nome = $req->post("nome");
         $instituicao->email = $req->post("email");
         $instituicao->telefone = $req->post("telefone");
         $instituicao->localizacao = $req->post("localizacao");
         $instituicao->sobre = $req->post("sobre_escola");
+        $instituicao->id_usuario = $req->post("administrador");
+        $instituicao->nivel = $req->post("nivel");
         $logotipo = $req->file('logotipo', null);
         if ($logotipo != null) {
             if (!Ficheiros::eImagemValida($logotipo)) {
@@ -146,6 +182,17 @@ class Instituicao extends Controller
     public function salvar_curso(Request $req)
     {
         $this->verifica();
+        $validateRules = [
+            "nome" => "required|string|min:3|max:255",
+            "principais_disciplinas" => "required|string|min:3|max:2000",
+            "perfil_de_saida" => "required|string|min:3|max:255",
+        ];
+
+        $validator = Validator::make($req->all(), $validateRules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $cursos = new Cursos_escolas();
         $cursos->nome = $req->post("nome");
         $cursos->principais_disciplinas = $req->post("principais_disciplinas");
@@ -172,7 +219,6 @@ class Instituicao extends Controller
     }
     public function update_curso(Request $req)
     {
-
         $curso = Cursos_escolas::where("id", "=", $req->post("id"))->get()->first();
         $curso->nome = $req->post("nome");
         $curso->principais_disciplinas = $req->post("principais_disciplinas");
@@ -183,6 +229,7 @@ class Instituicao extends Controller
             return redirect()->back();
         }
     }
+
     public function eliminar_curso(int $id)
     {
         $this->verifica();
@@ -193,6 +240,7 @@ class Instituicao extends Controller
             return redirect()->back();
         }
     }
+
     public function adicionar_historial()
     {
         $this->verifica();
@@ -204,6 +252,15 @@ class Instituicao extends Controller
     public function salvar_historial(Request $req)
     {
         $this->verifica();
+        $validateRules = [
+            "historial" => "required|string|min:20|max:2000",
+
+        ];
+        $validator = Validator::make($req->all(), $validateRules);
+        if ($validator->fails()) {
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $historial = new Historial_escolas();
         $historial->historial = $req->post("historial");
         $historial->id_instituicao = $req->post("id_instituicao");
@@ -230,8 +287,6 @@ class Instituicao extends Controller
     }
     public function update_historial(Request $req)
     {
-
-
         $historial = Historial_escolas::where("id", "=", $req->post("id"))->get()->first();
         $historial->historial = $req->post("historial");
         if ($historial->update()) {
@@ -240,90 +295,19 @@ class Instituicao extends Controller
         }
     }
 
-    public function adicionar_arquitectura()
-    {
-        $this->verifica();
-        $usuario = Sessoes::obter("usuario");
-        $inst = Instituicoes::where("id_usuario", "=", $usuario)->get()->first();
-        return view("Instituicao.arquitectura.adicionar_arquitectura", ["titulo" => "Adicionar Arquitectura", "usuario" => $inst]);
-    }
-    public function salvar_arquitectura(Request $req)
-    {
-        $this->verifica();
-        $arquitectura = new Arquitectura_escola();
-        $arquitectura->arquitectura = $req->post("arquitectura");
-        $arquitectura->id_instituicao = $req->post("id_instituicao");
 
-        if ($arquitectura->save()) {
-            new Alert("Os Dados foram Salvos com Sucesso.", "success", "");
+    public function eliminar_historial(int $id)
+    {
+        $this->verifica();
+        $historial = Historial_escolas::find($id);
+        if ($historial != null) {
+            $historial->delete();
+            new Alert("Historial eliminado com sucesso", "success", "");
             return redirect()->back();
         }
     }
-    public function ver_arquitectura()
-    {
-        $this->verifica();
-        $usuario = Sessoes::obter("usuario");
-        $inst = Instituicoes::where("id_usuario", "=", $usuario)->get()->first();
-        $arquitecturas = Arquitectura_escola::where("id_instituicao", "=", $inst["id"])->get();
-        return view("Instituicao.arquitectura.ver_arquitectura", ["titulo" => "Ver Arquitectura", "arquitecturas" => $arquitecturas]);
-    }
-    public function editar_arquitectura(Request $req)
-    {
-        $this->verifica();
-        $arquitectura = Arquitectura_escola::where("id", "=", $req->post("id_arquitectura"))->get()->first();
 
-        return view("Instituicao.arquitectura.editar_arquitectura", ["titulo" => "Editar Arquitectura ", "arquitectura" => $arquitectura]);
-    }
-    public function update_arquitectura(Request $req)
-    {
 
-        $arquitectura = Arquitectura_escola::where("id", "=", $req->post("id"))->get()->first();
-        $arquitectura->arquitectura = $req->post("arquitectura");
-        if ($arquitectura->update()) {
-            new Alert("Os Dados foram Actualizados com Sucesso!.", "success", "");
-            return redirect()->back();
-        }
-    }
-    public function eliminar_arquitectura(int $id)
-    {
-        $this->verifica();
-        $arquitectura = Arquitectura_escola::find($id);
-        if ($arquitectura != null) {
-            $arquitectura->delete();
-            new Alert("Arquitectura eliminada com sucesso" . "success", "");
-            return redirect()->back();
-        }
-    }
-    public function adicionar_fotos()
-    {
-        $this->verifica();
-        $usuario = Sessoes::obter("usuario");
-        $inst = Instituicoes::where("id_usuario", "=", $usuario)->get()->first();
-        return view("Instituicao.fotos.adicionar_fotos", ["titulo" => "Adicionar Fotos", "usuario" => $inst]);
-    }
-    public function salvar_foto(Request $req)
-    {
-        $foto = $req->file('foto', null);
-        $id_instituicao = $req->post("id_instituicao");
-        $fotoNovoNome = "";
-        if ($foto != null) {
-            if (!Ficheiros::eImagemValida($foto)) {
-                new Alert("A foto não é valida.", "erro", "Foto invalida.");
-                return redirect()->back();
-            }
-            $fotoNovoNome = Ficheiros::novoNome("psdinst" . $id_instituicao, $foto->clientExtension());
-        }
-        $fotos = new Fotos_escolas();
-        if (!empty($fotoNovoNome)) {
-            $foto->move("ficheiros/escolas/fotos/", $fotoNovoNome);
-            $fotos->foto = $fotoNovoNome;
-        }
-        $fotos->foto = $fotoNovoNome;
-        $fotos->id_instituicao = $id_instituicao;
-        $fotos->save();
-        new Alert("A foto foi salva com Sucesso", "success", "");
-        return redirect()->back();
-    }
     public function ver_fotos()
     {
 
@@ -356,6 +340,22 @@ class Instituicao extends Controller
     public function salvar_certificado(Request $req)
     {
         $this->verifica();
+        $validateRules = [
+
+            "curso" => "required|string|min:4|max:100",
+            "turma" => "required|string|min:3|max:100",
+            "classe" => "required|string|min:2|max:10",
+            "numero_estudantil" => "required|int|min:1|max:10",
+            "ano_termino" => "required|int|min:4|max:8",
+            "comprovativo" => "required|file|mimes:pdf,jpg,jpeg,png",
+        ];
+
+        $validator = Validator::make($req->all(), $validateRules);
+        if ($validator->fails()) {
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $estudante = Estudantes::find($req->post("id_estudante"));
         $instituicao = $estudante->instituicao;
         $curso = $req->post("curso");
@@ -418,7 +418,22 @@ class Instituicao extends Controller
     public function salvar_declaracao(Request $req)
     {
         $this->verifica();
+        $validateRules = [
 
+            "curso" => "required|string|min:4|max:100",
+            "turma" => "required|string|min:3|max:100",
+            "classe" => "required|string|min:2|max:10",
+            "ano_termino" => "required|int|min:4|max:8",
+            "comprovativo" => "required|file|mimes:pdf,jpg,jpeg,png",
+            "tipo_declaracao" => "required|string|min:4|max:100",
+            "efeito" => "required|string|min:4|max:100",
+        ];
+
+        $validator = Validator::make($req->all(), $validateRules);
+        if ($validator->fails()) {
+
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $estudante = Estudantes::find($req->post("id_estudante"));
         $instituicao = $estudante->instituicao;
         $curso = $req->post("curso");
@@ -457,12 +472,12 @@ class Instituicao extends Controller
         if ($instituicao->nivel == "superior") {
             $pdf = App::make('dompdf.wrapper');
             $pdf->loadView('Instituicao.documentos.certificado', ['emitir_certificado' => $emitir_declaracao, 'tipo_documento' => 'Declaração']);
-            $pdf->save("ficheiros/escolas/doc_emiss_declaracao/".$requerimento.".pdf");
+            $pdf->save("ficheiros/escolas/doc_emiss_declaracao/" . $requerimento . ".pdf");
         } else {
 
             $pdf = App::make('dompdf.wrapper');
-            $pdf->loadView('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_declaracao,'tipo_documento' => 'Declaração']);
-            $pdf->save("ficheiros/escolas/doc_emiss_declaracao/" .$requerimento. ".pdf");
+            $pdf->loadView('Instituicao.documentos.declaracao', ['emitir_certificado' => $emitir_declaracao, 'tipo_documento' => 'Declaração']);
+            $pdf->save("ficheiros/escolas/doc_emiss_declaracao/" . $requerimento . ".pdf");
         }
         new Alert("A Emissão da Declaração foi enviada com Sucesso", "success", "");
         return redirect()->back();
@@ -513,8 +528,8 @@ class Instituicao extends Controller
         if ($certificado_pronto->save()) {
             //emitir_certificado.estudante.pessoa.
             new Alert("O certificado esta pronto para ser entregue !.", "success", "");
-            $user = Usuarios::where("pessoas_id",$certificado_pronto->estudante->pessoas_id)->get()->first();
-            $user->notify(new SendSms("O certificado esta pronto para ser entregue !.") );
+            $user = Usuarios::where("pessoas_id", $certificado_pronto->estudante->pessoas_id)->get()->first();
+            $user->notify(new SendSms("O certificado esta pronto para ser entregue !."));
             // Notification::send($user, new SendSms("O certificado esta pronto para ser entregue !."));
             return redirect()->back();
         }
@@ -527,7 +542,7 @@ class Instituicao extends Controller
         $certificado_pronto->estado = $dados;
         if ($certificado_pronto->save()) {
             new Alert("O certificado foi entregue com Sucesso!.", "success", "");
-            $user = Usuarios::where("pessoas_id",$certificado_pronto->estudante->pessoas_id)->get()->first();
+            $user = Usuarios::where("pessoas_id", $certificado_pronto->estudante->pessoas_id)->get()->first();
             $user->notify(new SendSms("O certificado foi entregue com Sucesso!."));
             // Notification::send($user, new SendSms("O certificado esta pronto para ser entregue !."));
             return redirect()->back();
@@ -556,7 +571,7 @@ class Instituicao extends Controller
         $declaracao_pronto->estado = $dados;
         if ($declaracao_pronto->save()) {
             new Alert("A declaração esta pronta para ser entregue!.", "success", "");
-            $user = Usuarios::where("pessoas_id",$declaracao_pronto->estudante->pessoas_id)->get()->first();
+            $user = Usuarios::where("pessoas_id", $declaracao_pronto->estudante->pessoas_id)->get()->first();
             $user->notify(new SendSms("A declaração esta pronta para ser entregue!."));
             //  Notification::send($user, new SendSms("O certificado esta pronto para ser entregue !."));
             return redirect()->back();
@@ -570,9 +585,9 @@ class Instituicao extends Controller
         $declaracao_pronto->estado = $dados;
         if ($declaracao_pronto->save()) {
             new Alert("a declaração foi entregue Sucesso!.", "success", "");
-            $user = Usuarios::where("pessoas_id",$declaracao_pronto->estudante->pessoas_id)->get()->first();
+            $user = Usuarios::where("pessoas_id", $declaracao_pronto->estudante->pessoas_id)->get()->first();
             $user->notify(new SendSms("O certificado esta pronto para ser entregue !."));
-        //    Notification::send($user, new SendSms("O certificado esta pronto para ser entregue !."));
+            //    Notification::send($user, new SendSms("O certificado esta pronto para ser entregue !."));
             return redirect()->back();
         }
     }
@@ -589,7 +604,7 @@ class Instituicao extends Controller
     {  # code...
         $this->verificaSeEstaLogado();
         $instituicao = Instituicoes::find($id);
-        $instituicoes = Instituicoes::where('tipo', '=','publica')->get();
+        $instituicoes = Instituicoes::where('tipo', '=', 'publica')->get();
         $usuarios = Usuarios::where("grupo_de_usuarios_id", "=", "11")->get();
         return view("Instituicao.gerais.atualizar", [
             "titulo" => "Atualizar Instituicao",
@@ -601,7 +616,35 @@ class Instituicao extends Controller
     public function actualizar_Instituicao(Request $request, Instituicoes $instituicao)
     {
         # code...
+        $validateRules = [
+            'nome' => 'required|string|min:4|max:255',
+            'tipo' => 'required',
+            'nivel' => 'required',
+            'administrador' => 'required',
+            'email' => 'required|string|email|max:255',
+            'telefone' => 'required|string|min:9|max:20',
+            'localizacao' => 'required|string|max:255',
+            'sobre' => 'required|string|max:1000',
+            'logotipo' => 'image|mimes:jpeg,png,jpg,gif,svg',
+        ];
 
+        $validator = Validator::make($request->all(), $validateRules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        $logotipo = $request->file('logotipo', null);
+        $logotipoNovoNome = "";
+        if ($logotipo != null) {
+            if (!Ficheiros::eImagemValida($logotipo)) {
+                new Alert("A imagem não é valida.", "danger", "Foto invalida.");
+                return redirect()->back();
+            }
+            $logotipoNovoNome = Ficheiros::novoNome("psdlogoinst" . $instituicao->id, $logotipo->clientExtension());
+        }
+        if (!empty($logotipoNovoNome)) {
+            $logotipo->move("ficheiros/escolas/logotipo/", $logotipoNovoNome);
+            $instituicao->logotipo = $logotipoNovoNome;
+        }
         $instituicao->update($request->all());
         new Alert("Instituicao Atualizada com Sucesso!.", "success", "");
         return redirect()->back();

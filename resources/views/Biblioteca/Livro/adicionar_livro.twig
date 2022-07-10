@@ -36,15 +36,22 @@
                     <div class="row">
                         <div class="form-group col-md-4 ">
                             <label for="isigla">Sigla  </label>
-                            <input type="text" class="form-control" placeholder="Exemplo: IG..."   value="{{ livro.sigla }}" name="sigla" id="isigla" autocomplete="off" >
+                            <input type="text" class="form-control"  placeholder="Exemplo: IG..."   value="{{ livro.sigla }}" name="sigla" id="isigla" autocomplete="off" >
                         </div>
                         <div class="form-group col-md-4 ">
                             <label for="itutulo">Título * </label>
-                            <input type="text" class="form-control"   name="titulo" id="itutulo" autocomplete="off" value="{{ livro.titulo }}" required>
+                             <input type="text" class="form-control {% if errors.first('titulo') %} is-invalid {% endif %}"  name="titulo" id="itutulo" autocomplete="off" value="{{ livro.titulo }}" required>
+                           {% if errors.first('titulo') %}
+                           <div class="invalid-feedback">
+                                {{ errors.first('titulo') }}
+                            </div>
+
+                           {% endif %}
+
                         </div>
                         <div class="form-group col-md-4">
                             <label for="icurso">Área *</label>
-                            <select class="form-control" id="icurso" required="" name="curso">
+                            <select class="form-control {% if errors.first('curso') %} is-invalid {% endif %} " id="icurso" required="" name="curso">
                                 <option disabled="" selected>Selecione uma área</option>
                                 {% if livro %}
                                     {% if livro.curso %}
@@ -56,10 +63,15 @@
                                 {% endfor %}
 
                             </select>
+                             {% if errors.first('curso') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('curso') }}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group col-md-4 ">
                             <label for="iautor">Autor</label>
-                            <select name="autor" required="" class="form-control" id="iautor">
+                            <select name="autor" required="" class="form-control {% if errors.first('autor') %} is-invalid {% endif %}" id="iautor">
                                 <option  disabled="" selected>Selecione um autor</option>
                                 {% if livro %}
                                     {% if livro.autor %}
@@ -70,20 +82,40 @@
                                     <option value="{{ autor.id }}">{{ autor.nome }}</option>
                                 {% endfor %}
                             </select>
+                             {% if errors.first('autor') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('autor') }}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group col-md-4">
                             <label for="icapa">Capa</label>
-                            <input type="file" id="icapa" name="capa" class="form-control form-control-file p-1">
+                            <input type="file" id="icapa" name="capa" class="form-control {% if errors.first('capa') %} is-invalid {% endif %} form-control-file p-1">
+                              {% if errors.first('capa') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('capa') }}
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="form-group col-md-4">
                             <label for="ifd">Livro</label>
-                            <input type="file" name="ficheiro" id="ifd" class="form-control form-control-file p-1">
+                            <input type="file" name="ficheiro" id="ifd" class="form-control {% if errors.first('ficheiro') %} is-invalid {% endif %} form-control-file p-1">
+                                {% if errors.first('ficheiro') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('ficheiro') }}
+                                </div>
+                            {% endif %}
                         </div>
                         <input type="hidden" name="id" value="{{ livro.id }}">
                         <div class="form-group col-md-12">
                             <label for="idescricao">Descrição</label>
-                            <textarea name="descricao" class="form-control"  id="idescricao" placeholder="Breve descrição sobre o livro." rows="3">{{ livro.descricao }}</textarea>
-                        </div>
+                            <textarea name="descricao" class="form-control {% if errors.first('descricao') %} is-invalid {% endif %}"  id="idescricao" placeholder="Breve descrição sobre o livro." rows="3">{{ livro.descricao }}</textarea>
+                          {% if errors.first('descricao') %}
+                                <div class="invalid-feedback">
+                                    {{ errors.first('descricao') }}
+                                </div>
+                            {% endif %}
+                       </div>
                     </div>
                     <p class="small ">* Campos obrigatórios <br><br>
                         Capa: formatos válidos png, jpg, jpeg não superior a >{{ sistema.max_imagem }} KB <br><br>

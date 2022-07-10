@@ -48,7 +48,13 @@
 									<div class="form-group col-md-4 ">
 										<label for="itutulo">Nome *
 										</label>
-										<input type="text" class="form-control" name="nome" id="itutulo" autocomplete="off" required>
+										<input type="text" class="form-control {% if errors.first('nome') %} is-invalid {% endif %} " name="nome" id="itutulo" autocomplete="off" required value="{{old('nome')}}">
+
+                                            {% if errors.first('nome') %}
+                                            <div class="invalid-feedback">
+                                                    {{ errors.first('nome') }}
+                                                </div>
+                                                {% endif %}
 									</div>
 
 									<div class="form-group col-md-4 ">

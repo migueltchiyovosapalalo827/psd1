@@ -17,6 +17,7 @@ use App\Uteis\Http;
 use App\Uteis\Testos;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
@@ -92,7 +93,6 @@ class Biblioteca extends Controller
                 ->first()
                 ->toArray();
             return view("Biblioteca.Livro.ver_livro", ["titulo" => "Pesquisar livro", 'livro' => $livro]);
-            return;
         }
         //return view("Biblioteca.Livro/ver_livro",["titulo"=>"Ver livro"]);
     }
@@ -100,6 +100,21 @@ class Biblioteca extends Controller
     {
         $this->verifica();
         //Busca os valores das requisições
+        $validationRules =  [
+            'titulo' => 'required|min:4|max:255',
+            'curso' => 'required',
+            'autor' => 'required',
+            'descricao' => 'max:1000',
+            "capa" => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            "ficheiro" => 'required|file|mimes:pdf',
+              ];
+
+        $validator = Validator::make($req->all(), $validationRules);
+        if ($validator->fails()) {
+            # code...
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $titulo = $req->titulo;
         $curso = $req->curso;
         $autor = $req->autor;
@@ -154,6 +169,20 @@ class Biblioteca extends Controller
     public function editar_livro(Request $req)
     {
         $this->verifica();
+        $validationRules =  [
+            'titulo' => 'required|min:4|max:255',
+            'curso' => 'required',
+            'autor' => 'required',
+            'descricao' => 'max:1000',
+            "capa" => 'image|mimes:jpeg,png,jpg,gif,svg',
+            "ficheiro" => 'file|mimes:pdf',
+              ];
+
+        $validator = Validator::make($req->all(), $validationRules);
+        if ($validator->fails()) {
+            # code...
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         //Busca os valores das requisições
         $titulo = $req->titulo;
         $curso = $req->curso;
@@ -259,6 +288,15 @@ class Biblioteca extends Controller
     public function salvar_curso(Request $req)
     {
         $this->verifica();
+        $validationRules = [
+            "nome" => "required|min:4|string|max:255|unique:cursos,nome",
+        ];
+        $validator = Validator::make($req->all(), $validationRules);
+        if ($validator->fails()) {
+            # code...
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $nome = $req->get("nome");
         $sigla = Testos::sigla($req->sigla, $nome);
 
@@ -266,10 +304,10 @@ class Biblioteca extends Controller
         $curso->nome = $nome;
         $curso->sigla = $sigla;
         if ($curso->save()) {
-            new Alert("O curso   " . $nome . " foi salvo com sucesso", "success", "Curso salvo.");
+            new Alert("A área foi salvo com sucesso", "success", "Curso salvo.");
             Http::redirecionar("/biblioteca/adicionar_area");
         } else {
-            new Alert("Não foi possivel salvar o curso.", "danger", "Erro ao salvar o curso.");
+            new Alert("Não foi possivel salvar a área.", "danger", "Erro ao salvar o curso.");
             Http::redirecionar("/biblioteca/adicionar_area");
         }
     }
@@ -277,6 +315,16 @@ class Biblioteca extends Controller
     public function editar_curso(Request $req)
     {
         $this->verifica();
+        $validationRules = [
+            "nome" => "required|min:4|string|max:255",
+        ];
+
+        $validator = Validator::make($req->all(), $validationRules);
+        if ($validator->fails()) {
+            # code...
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $id = $req->get("id");
         $curso = Cursos::where("id", "=", $id)->get()->first();
         $nome = $req->get("nome", null);
@@ -284,10 +332,10 @@ class Biblioteca extends Controller
         $curso->nome = $nome;
         $curso->sigla = $sigla;
         if ($curso->update(["nome,sigla"])) {
-            new Alert("O curso " . $nome . " foi atualizado com sucesso", "success", "Sucesso");
+            new Alert("A área foi atualizado com sucesso", "success", "Sucesso");
             Http::redirecionar("/biblioteca/adicionar_curso/" . $id);
         } else {
-            new Alert("Não foi possivel atualizar o curso.", "erro", "Erro critico");
+            new Alert("Não foi possivel atualizar a área.", "erro", "Erro critico");
             Http::redirecionar("/biblioteca/adicionar_curso/" . $id);
         }
     }
@@ -339,7 +387,7 @@ class Biblioteca extends Controller
 
         if ($autor != null) {
             return view("Biblioteca.Autor.ver_autor", ["titulo" => "Ver autor", "autor" => $autor->toArray()]);
-            return;
+
         }
         Http::redirecionar("/404");
     }
@@ -367,6 +415,15 @@ class Biblioteca extends Controller
     public function salvar_autor(Request $req)
     {
         $this->verifica();
+        $validationRules = [
+            "nome" => "required|min:4|string|max:255|unique:autores",
+        ];
+
+        $validator = Validator::make($req->all(), $validationRules);
+        if ($validator->fails()) {
+            # code...
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $autor = new Autores();
         $autor->nome = $req->nome;
         if ($autor->save()) {

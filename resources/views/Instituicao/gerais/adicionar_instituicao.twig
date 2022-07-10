@@ -20,39 +20,72 @@
 					<div class="form-group col-md-4 ">
 						<label for="rsNome">Nome
 						</label>
-						<input type="text" class="form-control" placeholder="Nome Instituição" value="" name="nome" id="rsNome">
+                        <input type="text" class="form-control {% if errors.first('nome') %} is-invalid {% endif %} " placeholder="Nome Instituição" value="{{old('nome')}}" name="nome" id="rsNome">
+                        {% if errors.first('nome') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('nome') }}
+                        </div>
+                        {% endif %}
 					</div>
 					<div class="form-group col-md-4 ">
 						<label for="rsEmail">Email
 						</label>
-						<input type="email" class="form-control" placeholder="Email" value="" name="email" id="rsEmail">
+						<input type="email" class="form-control {% if errors.first('email') %} is-invalid {% endif %}" placeholder="Email" value="{{old('email')}}" name="email" id="rsEmail">
+                       {% if errors.first('email') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('email') }}
+                        </div>
+                        {% endif %}
 					</div>
 					<div class="form-group col-md-4 ">
 						<label for="rsTelefone">Telefone
 						</label>
-						<input type="tel" class="form-control" placeholder="Telefone" value="" name="telefone" id="rsTelefone">
-					</div>
+						<input type="tel" class="form-control {% if errors.first('telefone') %} is-invalid {% endif %}" placeholder="Telefone" value="{{old('telefone')}}" name="telefone" id="rsTelefone">
+					 {% if errors.first('telefone') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('telefone') }}
+                        </div>
+                        {% endif %}
+                    </div>
 					<div class="form-group col-md-4 ">
 						<label for="rsEndereco">Localização
 						</label>
-						<input type="text" class="form-control" placeholder="Localização" value="" name="localizacao" id="rsEndereco">
-					</div>
+						<input type="text" class="form-control {% if errors.first('localizacao') %} is-invalid {% endif %}" placeholder="Localização" value="{{old('localizacao')}}" name="localizacao" id="rsEndereco">
+					 {% if errors.first('localizacao') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('localizacao') }}
+                        </div>
+                        {% endif %}
+                    </div>
 					<div class="form-group col-md-4">
 						<label for="rsTipo">Tipo</label>
-						<select class="form-control" id="rsTipo" required="" name="tipo">
+						<select class="form-control {% if errors.first('tipo') %} is-invalid {% endif %}" id="rsTipo" required="" name="tipo">
 							<option value="" selected>seleciona o tipo de Instituição</option>
-							<option value="publica">Pública</option>
-							<option value="privada">Privada</option>
+							<option value="publica" {% if old('tipo') =="publica"  %} selected {% endif %}>Pública</option>
+							<option value="privada" {% if old('tipo') =="privada" %} selected{% endif %}>Privada</option>
 						</select>
+                        {% if errors.first('tipo') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('tipo') }}
+                        </div>
+                        {% endif %}
 					</div>
+
 					<div class="form-group col-md-4">
 						<label for="rsNivel">Nivel de Ensino</label>
-						<select class="form-control" id="rsNivel" required="" name="nivel">
-							<option selected value="basico">Ensino de base</option>
-							<option selected value="medio">Ensino Médio</option>
-							<option selected value="superior">Ensino Superior</option>
+						<select class="form-control {% if errors.first('nivel') %} is-invalid {% endif %}" id="rsNivel" required="" name="nivel">
+                            <option value="" selected>selecione o nivel de Ensino</option>
+							<option  value="basico" {% if old('nivel') == "basico" %}selected{% endif %}>Ensino de base</option>
+							<option  value="medio" {% if old('nivel') == "medio" %}selected{% endif %}>Ensino Médio</option>
+							<option  value="superior" {% if old('nivel') == "superior" %}selected{% endif %}>Ensino Superior</option>
 						</select>
+                        {% if errors.first('nivel') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('nivel') }}
+                        </div>
+                        {% endif %}
 					</div>
+
 					<div class="form-group col-md-4" id="rstutela">
 						<label for="rsAdministrador">Instituição de tutela</label>
 						<select class="form-control" required="" name="parent_id">
@@ -66,21 +99,38 @@
 
 					<div class="form-group col-md-4">
 						<label for="rsAdministrador">Administrador</label>
-						<select class="form-control" id="rsAdministrador" required="" name="id_usuario">
+						<select class="form-control {% if errors.first('administrador') %} is-invalid {% endif %}" id="rsAdministrador" required="" name="administrador">
 							<option selected value="">
 								seleciona um Administrador para Instituição</option>
 							{% for usuario in usuarios %}
-								<option value="{{usuario.id}}">{{ usuario.pessoa.nome }}</option>
+								<option value="{{usuario.id}}" {% if old('administrador') == usuario.id  %} selected{% endif %}
+                                >{{ usuario.pessoa.nome }}</option>
 							{% endfor %}
 						</select>
+                     {% if errors.first('administrador') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('administrador') }}
+                        </div>
+                        {% endif %}
+
 					</div>
 					<div class="form-group col-md-4">
 						<label for="icapa">Logotipo</label>
-						<input type="file" name="logotipo" class="form-control form-control-file p-1">
+						<input type="file" name="logotipo" class="form-control {% if errors.first('logotipo') %} is-invalid {% endif %} form-control-file p-1">
+                        {% if errors.first('logotipo') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('logotipo') }}
+                        </div>
+                        {% endif %}
 					</div>
 					<div class="form-group col-md-8">
 						<label for="idescricao">Sobre a Escola</label>
-						<textarea name="sobre" class="form-control" id="sobre_escola" placeholder="Breve descrição sobre a escola." rows="3"></textarea>
+						<textarea name="sobre" class="form-control {% if errors.first('sobre_escola') %} is-invalid {% endif %}" id="sobre_escola" placeholder="Breve descrição sobre a escola." rows="3">{{old('sobre_escola')}}</textarea>
+                        {% if errors.first('sobre_escola') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('sobre_escola') }}
+                        </div>
+                        {% endif %}
 					</div>
 				</div>
 				<div class="d-flex align-items-end justify-content-end">

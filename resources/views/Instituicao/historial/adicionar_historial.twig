@@ -18,10 +18,13 @@
 			<form class="w-100" id="needs-validation" action="salvar_historial" method="POST"> {{ csrf_field() }}
 				<div class="form-group col-md-8">
 					<input type="hidden" value="{{ usuario.id }}" name="id_instituicao">
-
-
 					<h5 for="idescricao">Historial</h5>
-					<textarea name="historial" class="form-control" placeholder="Breve descrição do historial da escola" rows="3"></textarea>
+					<textarea name="historial" class="form-control  {% if errors.first('historial') %} is-invalid {% endif %}" placeholder="Breve descrição do historial da escola" rows="3">{{old('historial')}}</textarea>
+                    {% if errors.first('historial') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('historial') }}
+                        </div>
+                    {% endif %}
 				</div>
 				<div class="d-flex align-items-end justify-content-end">
 					<button type="submit" class="btn btn-success" value="Salvar">Salvar</button>

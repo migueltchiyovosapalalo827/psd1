@@ -20,8 +20,13 @@
 					<div class="form-group col-md-9">
 						<label for="rsNome">Historial
 						</label>
-                        <textarea  class="form-control" name="historial" id="rsNome" id="" cols="30" rows="10">{{ historial.historial }}</textarea>
 						<input type="hidden" class="form-control" value="{{ historial.id }}" name="id" id="rsNome">
+                        <textarea name="historial" class="form-control  {% if errors.first('historial') %} is-invalid {% endif %}" placeholder="Breve descrição do historial da escola" cols="30" rows="10">{{ historial.historial }}</textarea>
+                    {% if errors.first('historial') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('historial') }}
+                        </div>
+                    {% endif %}
 					</div>
 
 				</div>

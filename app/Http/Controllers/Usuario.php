@@ -22,6 +22,8 @@ use App\Uteis\Http;
 use App\Uteis\Sessoes;
 use App\Uteis\Testos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class  Usuario  extends Controller
 {
@@ -29,6 +31,7 @@ class  Usuario  extends Controller
     {
         return view("Usuario.criar_conta", ["titulo" => "Criar conta", "tipo" => $tipo]);
     }
+
     public function salvar_nova_conta(Request $r)
     {
 
@@ -89,6 +92,7 @@ class  Usuario  extends Controller
             }
         }
     }
+
     public function redefinir_senha(int $id = 0)
     {
         $this->verifica();
@@ -96,11 +100,12 @@ class  Usuario  extends Controller
         if ($usuario != null) {
             $usuario->senha = Testos::encriptar("123456");
             if ($usuario->save()) {
-                new Alert("123456", "sucesso", "Nova senha");
+                new Alert("A senha foi restuarada com sucesso a nova senha é 123456", "success", "Nova senha");
                 Http::redirecionar("/usuario/usuarios");
             }
         }
     }
+
     public function grupo(int $id = 0)
     {
         $this->verificaSeEstaLogado();
@@ -114,15 +119,18 @@ class  Usuario  extends Controller
         $tarefas = Tarefas::all()->fresh(["menus"])->toArray();
         return view("Usuario.grupo", ["titulo" => "Grupos", "erros" => null, "grupos" => Grupo_de_usuarios::all()->toArray(), "grupo" => $grupo, "tarefasDoGrupo" => $tarefasDoGrupo, "tarefas" => $tarefas]);
     }
+
     public function usuarios()
     {
         $this->verifica();
-        return view("Usuario.usuarios", ["titulo" => "Usuaarios por grupo", "grupos" => Grupo_de_usuarios::all()->fresh(["usuarios"])->toArray()]);
+        return view("Usuario.usuarios", ["titulo" => "Usuarios por grupo", "grupos" => Grupo_de_usuarios::all()->fresh(["usuarios"])->toArray()]);
     }
+
     public function criar_usuario()
     {
         return view("Usuario.criar_usuario", ["titulo" => "Criar usuario", "grupos" => Grupo_de_usuarios::all()->toArray()]);
     }
+
     public function salvar_permicoes(Request $r): void
     {
         $this->verifica();
@@ -142,11 +150,24 @@ class  Usuario  extends Controller
         new Alert("As permições foram salvas.");
         Http::redirecionar("/usuario/grupo/" . $r->get("grupo_id"));
     }
-    public function salvar_grupo(Request $r): void
+
+    public function salvar_grupo(Request $r)
     {
         $this->verifica();
+        $validationRules = [
+            "nome" => "required|string|min:4|max:255",
+        ];
+
+        $validator = Validator::make($r->all(), $validationRules);
+        if ($validator->fails()) {
+            $message = $validator->errors()->messages();
+
+            new Alert($message['nome'][0], "danger", "Erro");
+            return redirect()->back();
+        }
+
         $grupo = new Grupo_de_usuarios();
-        $grupo->nome = $r->get("g_nome");
+        $grupo->nome = $r->nome;
         if ($grupo->save()) {
             Http::redirecionar("/usuario/grupo/" . $grupo->id);
             return;
@@ -154,6 +175,7 @@ class  Usuario  extends Controller
         new Alert("Não foi possivel criar o grupo!", "danger", "Erro ao criar grupo");
         Http::redirecionar("/usuario/grupo");
     }
+
     public function eliminar_usuario(int $id)
     {
         $this->verifica();
@@ -184,28 +206,53 @@ class  Usuario  extends Controller
         new Alert("Usuario eliminado com sucesso.", "success", "");
         return redirect()->back();
     }
+
     public function salvar_usuario(Request $r)
     {
         $this->verifica();
+        $validationRules = [
+            'nome' => 'required|string|min:4|max:255',
+            'email' => 'required|string|email|max:255|unique:usuarios',
+            'senha' => 'required|string|min:6',
+            'grupo' => 'required|integer',
+            'contacto' => 'required|string|min:9|max:20|unique:usuarios',
+            'pai' => 'required|string|min:4|max:255',
+            'mae' => 'required|string|min:4|max:255',
+            'numero_do_documento' => 'required|string|max:255',
+            'tipo_de_documento' => 'required',
+            'data_de_emissao' => 'required|date',
+            'genero' => 'required',
+            'data_de_nascimento' => 'required|date',
+            'naturalidade' => 'required|string|min:4|max:255',
+            'provincia' => 'required|string|min:4|max:255',
+            'municipio' => 'required|string|min:4|max:255',
+            'bairro' => 'required|string|min:4|max:255',
+            'local_de_nascimento' => 'required|string|min:4|max:255',
+            'documento' => 'required|file|mimes:jpeg,png,jpg,gif,pdf'];
+
+            $validator = Validator::make($r->all(), $validationRules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         //Recuperando valores do request
-        $u_email = $r->post("u_email");
-        $u_senha = $r->post("u_senha");
-        $u_contacto = $r->post("u_contacto");
+        $u_email = $r->post("email");
+        $u_senha = $r->post("senha");
+        $u_contacto = $r->post("contacto");
         $u_contacto = Testos::semEspaco($u_contacto);
-        $u_grupo = $r->post("u_grupo");
-        $p_nome = $r->post("p_nome");
-        $p_pai = $r->post("p_pai");
-        $p_mae = $r->post("p_mae");
-        $p_n_documento = $r->post("p_n_documento");
-        $p_t_documento = $r->post("p_t_documento");
-        $p_data_de_emissao = $r->post("p_data_de_emissao");
-        $p_genero = $r->post("p_genero");
-        $p_data_de_nascimento = $r->post("p_data_de_nascimento");
-        $p_provincia = $r->post("p_provincia");
-        $p_municipio = $r->post("p_municipio");
-        $p_bairro = $r->post("p_bairro");
-        $p_local_de_nascimento = $r->post("p_local_de_nascimento");
-        $p_naturalidade = $r->post("p_naturalidade");
+        $u_grupo = $r->post("grupo");
+        $p_nome = $r->post("nome");
+        $p_pai = $r->post("pai");
+        $p_mae = $r->post("mae");
+        $p_n_documento = $r->post("numero_do_documento");
+        $p_t_documento = $r->post("tipo_de_documento");
+        $p_data_de_emissao = $r->post("data_de_emissao");
+        $p_genero = $r->post("genero");
+        $p_data_de_nascimento = $r->post("data_de_nascimento");
+        $p_provincia = $r->post("provincia");
+        $p_municipio = $r->post("municipio");
+        $p_bairro = $r->post("bairro");
+        $p_local_de_nascimento = $r->post("local_de_nascimento");
+        $p_naturalidade = $r->post("naturalidade");
         $documento = $r->file('documento', null);
         #Criando a pessoa
         $pessoa = new Pessoas();
@@ -222,8 +269,8 @@ class  Usuario  extends Controller
         $pessoa->n_do_documento = $p_n_documento;
         $pessoa->tipo_de_documento = $p_t_documento;
         $pessoa->data_de_emissao  = $p_data_de_emissao;
-
         $pessoa->naturalidade = $p_naturalidade;
+
         if ($pessoa->save()) {
             #Pessoa foi salva
             //CRIANDO USUARIO
@@ -257,6 +304,7 @@ class  Usuario  extends Controller
         }
         return view("Usuario.entrar", ["titulo" => "Entrar"]);
     }
+
     public function entrar_finalizar(Request $req)
     {
         $usuario_r = Testos::semEspaco($req->usuario);
@@ -280,7 +328,6 @@ class  Usuario  extends Controller
 
                     return;
                 }
-
                 Http::redirecionar("painel");
                 return;
             } else {
@@ -332,25 +379,47 @@ class  Usuario  extends Controller
     public function atualizar_informacoes_pessoais(Request $r)
     {
         $this->verificaSeEstaLogado();
+        $validationRules = [
+            'nome' => 'required|string|min:4|max:255',
+            'instituicao' => 'integer',
+            'pai' => 'required|string|min:4|max:255',
+            'mae' => 'required|string|min:4|max:255',
+            'numero_do_documento' => 'required|string|max:255',
+            'tipo_de_documento' => 'required',
+            'data_de_emissao' => 'required|date',
+            'genero' => 'required',
+            'data_de_nascimento' => 'required|date',
+            'naturalidade' => 'required|string|min:4|max:255',
+            'provincia' => 'required|string|min:4|max:255',
+            'municipio' => 'required|string|min:4|max:255',
+            'bairro' => 'required|string|min:4|max:255',
+            'local_de_nascimento' => 'required|string|min:4|max:255',
+            'documento' => 'file|mimes:jpeg,png,jpg,gif,pdf'];
+
+            $validator = Validator::make($r->all(), $validationRules);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+           }
+
         $usuarioLogado = Sessoes::obter("usuario");
         $id_pessoa = $usuarioLogado["pessoa"]["id"];
         $pessoa = Pessoas::where("id", "=", $id_pessoa);
         $pessoa = $pessoa->get()->first();
-        $p_nome = $r->post("p_nome");
-        $p_pai = $r->post("p_pai");
-        $p_mae = $r->post("p_mae");
-        $p_n_documento = $r->post("p_n_documento");
-        $p_t_documento = $r->post("p_t_documento");
+        $p_nome = $r->post("nome");
+        $p_pai = $r->post("pai");
+        $p_mae = $r->post("mae");
+        $p_n_documento = $r->post("numero_do_documento");
+        $p_t_documento = $r->post("tipo_de_documento");
         $documento = $r->file('documento', null);
-        $p_data_de_emissao = $r->post("p_data_de_emissao");
-        $p_genero = $r->post("p_genero");
-        $p_data_de_nascimento = $r->post("p_data_de_nascimento");
-        $p_provincia = $r->post("p_provincia");
-        $p_municipio = $r->post("p_municipio");
-        $p_bairro = $r->post("p_bairro");
-        $p_local_de_nascimento = $r->post("p_local_de_nascimento");
-        $p_naturalidade = $r->post("p_naturalidade");
-        $p_instituicao = $r->post("p_instituicao");
+        $p_data_de_emissao = $r->post("data_de_emissao");
+        $p_genero = $r->post("genero");
+        $p_data_de_nascimento = $r->post("data_de_nascimento");
+        $p_provincia = $r->post("provincia");
+        $p_municipio = $r->post("municipio");
+        $p_bairro = $r->post("bairro");
+        $p_local_de_nascimento = $r->post("local_de_nascimento");
+        $p_naturalidade = $r->post("naturalidade");
+        $p_instituicao = $r->post("instituicao");
         $pessoa->nome = $p_nome;
         $pessoa->data_de_nascimento = $p_data_de_nascimento;
         $pessoa->pai = $p_pai;
@@ -366,8 +435,7 @@ class  Usuario  extends Controller
         $pessoa->naturalidade = $p_naturalidade;
         $pessoa->estudante->update(["id_instituicao" => ($p_instituicao != null) ? $p_instituicao : $pessoa->estudante->id_instituicao]);
         if ($pessoa->update([
-            "nome_proprio",
-            "sobrenome",
+            "nome",
             "data_de_nascimento",
             "pai",
             "mae",
@@ -397,62 +465,51 @@ class  Usuario  extends Controller
     /**
      * @param Request $r
      */
-    public function atualizar_usuario(Request $r): void
+    public function atualizar_usuario(Request $r)
     {
         $this->verificaSeEstaLogado();
-        $r->post("senhaC");
         $colunasAtualizar = array();
         $usuarioLogado = Sessoes::obter("usuario");
-
-        #Verifica a senha
-        if (Testos::desincriptar($usuarioLogado["senha"]) !==  $r->post("senhaC")) {
+          #Verifica a senha
+          if (Testos::desincriptar($usuarioLogado["senha"]) !==  $r->post("senhaC")) {
             new Alert("Senha incorreta", "danger", "Senha incorrecta");
             Http::redirecionar("/usuario/meu_perfil");
             return;
         }
 
-        /*Verifica quais campos vão ser atualizados e se já estão cadastrados*/
-        if ($usuarioLogado["email"] != $r->post("u_email")) {
-            $usuario = Usuarios::where(['email' => $r->post("u_email")])
-                ->get()
-                ->first();
-            if ($usuario != null) {
-                new Alert("Não foi possivel atualizar os dados.", "danger", "Email já registrado.");
-                Http::redirecionar("/usuario/meu_perfil");
-                return;
+      $regraPersonalizada =  function ($attribute, $value, $fail) use ($usuarioLogado, $colunasAtualizar) {
+           $dados_usuario = ['email'=>$usuarioLogado["email"],'contacto'=>$usuarioLogado["contacto"], 'usuario'=>$usuarioLogado["nome"]];
+        if ($value !== $dados_usuario[$attribute]) {
+            $usuario = Usuarios::where([$attribute => $value])
+            ->get()
+            ->first();
+        if ($usuario != null) {
+                $fail(' O valor indicado para o campo '.$attribute.' já se encontra registado.');
+
+            } else {
+                $colunasAtualizar[] = $attribute;
             }
-            $colunasAtualizar = "email";
+        }};
+        $validationRules = [
+            'email' => ['required','email',$regraPersonalizada],
+            'contacto' => ['required','numeric',$regraPersonalizada],
+            'usuario' => ['required','string','min:4','max:255',$regraPersonalizada],
+
+            ];
+
+        $validator = Validator::make($r->all(), $validationRules);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
-        if ($usuarioLogado["nome"] != $r->post("u_usuario")) {
-            $usuario = Usuarios::where(['usuario' => $r->post("u_usuario")])
-                ->get()
-                ->first();
-            if ($usuario != null) {
-                new Alert("Não foi possivel atualizar os dados.", "danger", "Usuario já registrado.");
-                Http::redirecionar("/usuario/meu_perfil");
-                return;
-            }
-            $colunasAtualizar[] = "usuario";
-        }
-        if ($usuarioLogado["contacto"] != $r->post("u_contacto")) {
-            $usuario = Usuarios::where(['contacto' => $r->post("u_contacto")])
-                ->get()
-                ->first();
-            if ($usuario != null) {
-                new Alert("Não foi possivel atualizar os dados, Contacto já registrado.", "danger");
-                Http::redirecionar("/usuario/meu_perfil");
-                return;
-            }
-            
-            $colunasAtualizar[] = "contacto";
-        }
+
         $usuario = Usuarios::where(['id' => $usuarioLogado["id"]])
             ->get()
             ->first();
 
-        $usuario->email = $r->post("u_email");
-        $usuario->usuario = $r->post("u_usuario");
-        $usuario->contacto = $r->post("u_contacto");
+        $usuario->email = $r->post("email");
+        $usuario->usuario = $r->post("usuario");
+        $usuario->contacto = $r->post("contacto");
         $usuario->update($colunasAtualizar);
         new Alert("Usuario atualizado com sucesso.", "success");
         Http::redirecionar("/usuario/meu_perfil");

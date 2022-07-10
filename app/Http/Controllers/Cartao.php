@@ -39,22 +39,19 @@ class Cartao extends Controller
         # code...
         $this->verifica();
         $validationRules =  [
+            'curso' => 'required',
             'classe' => 'required|min:2|max:255',
             'turma' => 'required|min:2|max:255',
-            'numero_estudantil' => 'required|min:2|max:255',
-            ];
+            'numero_estudantil' => 'required|min:1|max:255',
+            "foto" => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+        ];
 
-            $validator = Validator::make($r->all(),$validationRules);
-          if ($validator->fails()) {
-              # code...
+        $validator = Validator::make($r->all(), $validationRules);
+        if ($validator->fails()) {
+            # code...
             /*  */
-              $erros = $validator->errors()->messages();
-              ;
-              new Alert(" {$erros['turma'][0]}
-                {$erros['classe'][0]}
-                {$erros['numero_estudantil'][0]} ", "danger", "");
-              return redirect()->back();
-          }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $cartao = new CartaoModel();
         $cartao->curso = $r->curso;
@@ -101,21 +98,18 @@ class Cartao extends Controller
     {
         $validationRules =  [
             'curso' => 'required',
+            'classe' => 'required|min:2|max:255',
             'turma' => 'required|min:2|max:255',
-            'numero_estudantil' => 'required|min:2|max:255',
-            ];
+            'numero_estudantil' => 'required|min:1|max:255',
+            "foto" => 'image|mimes:jpeg,png,jpg,gif,svg',
+        ];
 
-            $validator = Validator::make($r->all(),$validationRules);
-          if ($validator->fails()) {
-              # code...
+        $validator = Validator::make($r->all(), $validationRules);
+        if ($validator->fails()) {
+            # code...
             /*  */
-              $erros = $validator->errors()->messages();
-              ;
-              new Alert(" {$erros['turma'][0]}
-                {$erros['classe'][0]}
-                {$erros['numero_estudantil'][0]} ", "danger", "");
-              return redirect()->back();
-          }
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
         $cartao = CartaoModel::find($id);
         $cartao->curso = $r->curso;
         $cartao->turma = $r->turma;
@@ -123,11 +117,15 @@ class Cartao extends Controller
         $cartao->pessoas_id = $estudante->pessoa->id;
         $cartao->classe = $r->classe;
         $foto = $r->file('foto', null);
-        $docNovoNome = Ficheiros::novoNome("psddocemiss" . $estudante->pessoa->id, $foto->clientExtension());
-        if (!empty($docNovoNome)) {
-            $foto->move("ficheiros/escolas/foto/", $docNovoNome);
+        if (isset($foto)) {
+            # code...
+            $docNovoNome = Ficheiros::novoNome("psddocemiss" . $estudante->pessoa->id, $foto->clientExtension());
+            if (!empty($docNovoNome)) {
+                $foto->move("ficheiros/escolas/foto/", $docNovoNome);
+            }
+            $cartao->foto = $docNovoNome;
         }
-        $cartao->foto = $docNovoNome;
+
         $cartao->save();
         new Alert("A Emissão do catão do estudante foi actualizado com sucesso", "success", "");
         Http::redirecionar("/cartao/meu_cartao");

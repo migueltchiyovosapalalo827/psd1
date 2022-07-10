@@ -20,37 +20,63 @@
           <div class="form-group col-md-4">
             <label>Email</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">person</i>
+              <div class="input-group-prepend">
+               <span class="input-group-text"> <i class="material-icons">person</i> </span>
               </div>
-              <input type="email" class="form-control" name="u_email" placeholder="exemplo@exemplo.com" />
+              <input type="email" class="form-control {% if errors.first('email') %} is-invalid {% endif %} " name="email" placeholder="exemplo@exemplo.com" value="{{old('email')}}" />
+              {% if errors.first('email') %}
+              <div class="invalid-feedback">
+                {{ errors.first('email') }}
+              </div>
+            {% endif %}
             </div>
           </div>
+
           <div class="form-group col-md-4">
-            <label>Telefone</label>
+            <label> Contacto telefonico</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">local_phone</i>
+              <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="material-icons">local_phone</i></span>
+                  <span class="input-group-text">+244</span>
               </div>
-              <input type="tel" class="form-control" name="u_contacto" placeholder="9xxxxxxxx" />
+              <input type="tel" class="form-control {% if errors.first('contacto') %} is-invalid {% endif %}" name="contacto" placeholder="9xxxxxxxx" value="{{old('contacto')}}"/>
+                {% if errors.first('contacto') %}
+                 <div class="invalid-feedback">
+                    {{ errors.first('contacto') }}
+                 </div>
+             {% endif %}
             </div>
           </div>
+
           <div class="form-group col-md-4">
             <label>Senha</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">vpn_key</i>
+              <div class="input-group-prepend">
+             <span class="input-group-text "><i class="material-icons">vpn_key</i></span>
               </div>
-              <input type="password" class="form-control" name="u_senha" placeholder="Minimo 6 caracteres" />
+              <input type="password" class="form-control {% if errors.first('senha') %} is-invalid {% endif %} " name="senha" placeholder="Minimo 6 caracteres" value="{{old('senha')}}" />
+              {% if errors.first('senha') %}
+                 <div class="invalid-feedback">
+                    {{ errors.first('senha') }}
+                 </div>
+             {% endif %}
+
             </div>
           </div>
           <div class="form-group col-md-4">
             <label>Grupo de usuários</label>
-            <select name="u_grupo" id="" class="form-control">
+            <select name="grupo" id="" class="form-control {% if errors.first('grupo') %} is-invalid {% endif %}">
+             <option value="">selecione um grupo de usuários </option>
               {% for grupo in grupos %}
-                <option value="{{ grupo.id }}">{{ grupo.nome }}</option>
+                <option value="{{ grupo.id }}" {% if old('grupo') == grupo.id %} selected{% endif %}>{{ grupo.nome }}</option>
               {% endfor %}
             </select>
+            {% if errors.first('grupo') %}
+                 <div class="invalid-feedback">
+                    {{ errors.first('grupo') }}
+                 </div>
+             {% endif %}
+
           </div>
         </div>
         <h3>Informações pessoais</h3>
@@ -59,121 +85,192 @@
           <div class="form-group col-md-8">
             <label>nome completo</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">person</i>
+              <div class="input-group-prepend">
+               <span class="input-group-text"> <i class="material-icons">person</i></span>
               </div>
-              <input type="text" class="form-control" name="p_nome" placeholder="Primeiro nome" />
+              <input type="text" class="form-control {% if errors.first('nome') %} is-invalid {% endif %}" name="nome" placeholder="Primeiro nome"  value="{{old('nome')}}"/>
+               {% if errors.first('nome') %}
+                 <div class="invalid-feedback">
+                    {{ errors.first('nome') }}
+                 </div>
+             {% endif %}
             </div>
           </div>
 
           <div class="form-group col-md-4">
             <label>Pai</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">person</i>
+              <div class="input-group-prepend">
+              <span class="input-group-text"> <i class="material-icons">person</i></span>
               </div>
-              <input type="text" class="form-control" name="p_pai" placeholder="Nome do pai" />
+              <input type="text" class="form-control {% if errors.first('pai') %} is-invalid {% endif %}" name="pai" placeholder="Nome do pai" value="{{old('pai')}}" />
+               {% if errors.first('pai') %}
+                 <div class="invalid-feedback">
+                    {{ errors.first('pai') }}
+                 </div>
+             {% endif %}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label>Mãe</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">person</i>
+              <div class="input-group-prepend">
+              <span class="input-group-text"> <i class="material-icons">person</i> </span>
               </div>
-              <input type="text" class="form-control" name="p_mae" placeholder="Nome da mãe" />
+              <input type="text" class="form-control {% if errors.first('mae') %} is-invalid {% endif %}" name="mae" placeholder="Nome da mãe" value="{{old('mae')}}"/>
+               {% if errors.first('mae') %}
+                 <div class="invalid-feedback">
+                    {{ errors.first('mae') }}
+                 </div>
+             {% endif %}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label>Género</label>
-            <select name="p_genero" class="form-control">
+            <select name="genero" class="form-control {% if errors.first('genero') %} is-invalid {% endif %}">
               <option value="M">Masculino</option>
               <option value="F">Feminino</option>
             </select>
+             {% if errors.first('genero') %}
+                 <div class="invalid-feedback">
+                    {{ errors.first('genero') }}
+                 </div>
+             {% endif %}
           </div>
           <div class="form-group col-md-4">
             <label>Nº do documento</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">credit_card</i>
+              <div class="input-group-prepend">
+             <span class="input-group-text"> <i class="material-icons">credit_card</i> </span>
               </div>
-              <input type="text" class="form-control" name="p_n_documento" placeholder="xxxxxxxxxxxxxxxx" />
+              <input type="text" class="form-control {% if errors.first('numero_do_documento') %} is-invalid {% endif %}" name="numero_do_documento" placeholder="xxxxxxxxxxxxxxxx" value="{{old('numero_do_documento')}}" />
+                {% if errors.first('numero_do_documento') %}
+                  <div class="invalid-feedback">
+                      {{ errors.first('numero_do_documento') }}
+                  </div>
+                {% endif %}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label>Tipo de documento</label>
-            <select name="p_t_documento" id="" class="form-control">
-              <option value="bi">Bilhete de identidade</option>
-              <option value="pt">Passaporte</option>
-              <option value="outros">Outros</option>
+            <select name="tipo_de_documento" id="" class="form-control {% if errors.first('tipo_de_documento') %} is-invalid {% endif %}">
+             <option value="">selecione um tipo de documento</option>
+              <option value="bi" {% if old('tipo_de_documento') == "bi" %} selected{% endif %}>Bilhete de identidade</option>
+              <option value="pt" {% if old('tipo_de_documento') == "pt" %} selected{% endif %}>Passaporte</option>
+              <option value="outros" {% if old('tipo_de_documento') == "outros" %} selected{% endif %}>Outros</option>
             </select>
+                {% if errors.first('tipo_de_documento') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('tipo_de_documento') }}
+                    </div>
+                {% endif %}
           </div>
           <div class="form-group col-md-4">
             <label>Documento</label>
-            <input name="documento" required="" class="form-control" type="file" id="formFile" />
+            <input name="documento"  class="form-control {% if errors.first('documento') %} is-invalid {% endif %}" type="file" id="formFile" />
+            {% if errors.first('documento') %}
+                <div class="invalid-feedback">
+                    {{ errors.first('documento') }}
+                </div>
+            {% endif %}
           </div>
           <div class="form-group col-md-4">
             <label>Data de emissão</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">date_range</i>
+              <div class="input-group-prepend">
+              <span class="input-group-text">  <i class="material-icons">date_range</i> </span>
               </div>
-              <input type="date" class="form-control" name="p_data_de_emissao" placeholder="dd/mm/aaaa" />
+              <input type="date" class="form-control {% if errors.first('data_de_emissao') %} is-invalid {% endif %}" name="data_de_emissao" placeholder="dd/mm/aaaa" value="{{old('data_de_emissao')}}" />
+                {% if errors.first('data_de_emissao') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('data_de_emissao') }}
+                    </div>
+                {% endif %}
             </div>
           </div>
 
           <div class="form-group col-md-4">
             <label>Data de nascimento</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">date_range</i>
+              <div class="input-group-prepend">
+                <span class="input-group-text"><i class="material-icons">date_range</i> </span>
               </div>
-              <input type="date" class="form-control" name="p_data_de_nascimento" placeholder="dd/mm/aaaa" />
+              <input type="date" class="form-control {% if errors.first('data_de_nascimento') %} is-invalid {% endif %}" name="data_de_nascimento" placeholder="dd/mm/aaaa" value="{{old('data_de_nascimento')}}"/>
+                {% if errors.first('data_de_nascimento') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('data_de_nascimento') }}
+                    </div>
+                {% endif %}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label>Provincia</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">location_city</i>
+              <div class="input-group-prepend">
+             <span class="input-group-text">   <i class="material-icons">location_city</i> </span>
               </div>
-              <input type="text" class="form-control" name="p_provincia" placeholder="Benguela" />
+              <input type="text" class="form-control {% if errors.first('provincia') %} is-invalid {% endif %}" name="provincia" placeholder="Benguela" value="{{old('provincia')}}" />
+                {% if errors.first('provincia') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('provincia') }}
+                    </div>
+                {% endif %}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label>Municipio</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">location_city</i>
+              <div class="input-group-prepend">
+               <span class="input-group-text"> <i class="material-icons">location_city</i> </span>
               </div>
-              <input type="text" class="form-control" name="p_municipio" placeholder="Lobito" />
+              <input type="text" class="form-control {% if errors.first('municipio') %} is-invalid {% endif %}" name="municipio" placeholder="" value="{{old('municipio')}}" />
+                {% if errors.first('municipio') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('municipio') }}
+                    </div>
+                {% endif %}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label>Bairro</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">home</i>
+              <div class="input-group-prepend">
+              <span class="input-group-text"> <i class="material-icons">home</i> </span>
               </div>
-              <input type="text" class="form-control" name="p_bairro" placeholder="Liro" />
+              <input type="text" class="form-control {% if errors.first('bairro') %} is-invalid {% endif %}" name="bairro" placeholder=""  value="{{old('bairro')}}" />
+                {% if errors.first('bairro') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('bairro') }}
+                    </div>
+                {% endif %}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label>Local de nascimento</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">local_hospital</i>
+              <div class="input-group-prepend">
+              <span class="input-group-text">  <i class="material-icons">local_hospital</i> </span>
               </div>
-              <input type="text" class="form-control" name="p_local_de_nascimento" placeholder="Benguela" />
+              <input type="text" class="form-control {% if errors.first('local_de_nascimento') %} is-invalid {% endif %}" name="local_de_nascimento" placeholder="" value="{{old('local_de_nascimento')}}" />
+                {% if errors.first('local_de_nascimento') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('local_de_nascimento') }}
+                    </div>
+                {% endif %}
             </div>
           </div>
           <div class="form-group col-md-4">
             <label>Naturalidade</label>
             <div class="input-group input-group--inline">
-              <div class="input-group-addon">
-                <i class="material-icons">flag</i>
+              <div class="input-group-prepend">
+              <span class="input-group-text">  <i class="material-icons">flag</i> </span>
               </div>
-              <input type="text" class="form-control" name="p_naturalidade" placeholder="Angolana" />
+              <input type="text" class="form-control {% if errors.first('naturalidade') %} is-invalid {% endif %}" name="naturalidade" placeholder="" value="{{old('naturalidade')}}" />
+                {% if errors.first('naturalidade') %}
+                    <div class="invalid-feedback">
+                        {{ errors.first('naturalidade') }}
+                    </div>
+                {% endif %}
             </div>
           </div>
         </div>

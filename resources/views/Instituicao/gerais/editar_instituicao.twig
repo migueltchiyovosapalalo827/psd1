@@ -17,35 +17,99 @@
                 <hr>
                  <form class="w-100" id="needs-validation" novalidate=""  action="/instituicao/update_instituicao"  method="POST" enctype="multipart/form-data">
                      {{ csrf_field() }}
-                 	<div class="row">
-                 		<div class="form-group col-md-4 ">
-                            <label for="rsNome">Nome  </label>
-                            <input type="text" class="form-control" placeholder="Nome Instituição"   value="{{ instituto.nome }}" name="nome" id="rsNome">
-                            <input type="hidden" class="form-control"   value="{{ instituto.id }}" name="id" id="rsNome">
+                    <div class="row">
+					<div class="form-group col-md-4 ">
+						<label for="rsNome">Nome
+						</label>
+                         <input type="hidden" class="form-control"   value="{{ instituto.id }}" name="id" id="rsNome">
+                        <input type="text" class="form-control {% if errors.first('nome') %} is-invalid {% endif %}" placeholder="Nome Instituição" value="{{ instituto.nome }}" name="nome" id="rsNome">
+                        {% if errors.first('nome') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('nome') }}
                         </div>
-                        <div class="form-group col-md-4 ">
-                            <label for="rsEmail">Email  </label>
-                            <input type="email" class="form-control" placeholder="Email"   value="{{ instituto.email }}" name="email" id="rsEmail">
+                        {% endif %}
+					</div>
+					<div class="form-group col-md-4 ">
+						<label for="rsEmail">Email
+						</label>
+						<input type="email" class="form-control {% if errors.first('email') %} is-invalid {% endif %}" placeholder="Email" value="{{ instituto.email}}" name="email" id="rsEmail">
+                       {% if errors.first('email') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('email') }}
                         </div>
-                        <div class="form-group col-md-4 ">
-                            <label for="rsTelefone">Telefone  </label>
-                            <input type="tel" class="form-control" placeholder="Telefone"   value="{{ instituto.telefone }}" name="telefone" id="rsTelefone">
+                        {% endif %}
+					</div>
+					<div class="form-group col-md-4 ">
+						<label for="rsTelefone">Telefone
+						</label>
+						<input type="tel" class="form-control {% if errors.first('telefone') %} is-invalid {% endif %}" placeholder="Telefone" value="{{ instituto.telefone}}" name="telefone" id="rsTelefone">
+					 {% if errors.first('telefone') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('telefone') }}
                         </div>
-                        <div class="form-group col-md-4 ">
-                            <label for="rsEndereco">Localização  </label>
-                            <input type="text" class="form-control" placeholder="Localização"   value="{{ instituto.localizacao }}" name="localizacao" id="rsEndereco">
+                        {% endif %}
+                    </div>
+					<div class="form-group col-md-4 ">
+						<label for="rsEndereco">Localização
+						</label>
+						<input type="text" class="form-control {% if errors.first('localizacao') %} is-invalid {% endif %}" placeholder="Localização" value="{{ instituto.localizacao }}" name="localizacao" id="rsEndereco">
+					 {% if errors.first('localizacao') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('localizacao') }}
                         </div>
+                        {% endif %}
+                    </div>
+					<div class="form-group col-md-4">
+						<label for="rsTipo">Tipo</label>
+						<select class="form-control {% if errors.first('tipo') %} is-invalid {% endif %}" id="rsTipo" required="" name="tipo">
+							<option value="" selected>seleciona o tipo de Instituição</option>
+							<option value="publica" {% if instituto.tipo  =="publica"  %} selected {% endif %}>Pública</option>
+							<option value="privada" {% if instituto.tipo  =="privada" %} selected{% endif %}>Privada</option>
+						</select>
+                        {% if errors.first('tipo') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('tipo') }}
+                        </div>
+                        {% endif %}
+					</div>
 
-                        <div class="form-group col-md-8">
-                            <label for="idescricao">Sobre a Escola</label>
-                            <textarea class="form-control" rows="3" placeholder="Sobre a Escola" name="sobre_escola" id="idescricao">{{ instituto.sobre }}</textarea>
+					<div class="form-group col-md-4">
+						<label for="rsNivel">Nivel de Ensino</label>
+						<select class="form-control {% if errors.first('nivel') %} is-invalid {% endif %}" id="rsNivel" required="" name="nivel">
+                            <option value="" selected>selecione o nivel de Ensino</option>
+							<option  value="basico" {% if instituto.nivel == "basico" %}selected{% endif %}>Ensino de base</option>
+							<option  value="medio" {% if instituto.nivel == "medio" %}selected{% endif %}>Ensino Médio</option>
+							<option  value="superior" {% if instituto.nivel == "superior" %}selected{% endif %}>Ensino Superior</option>
+						</select>
+                        {% if errors.first('nivel') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('nivel') }}
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="icapa">Logotipo</label>
-                            <input type="file"  name="logotipo" class="form-control form-control-file p-1">
-                        </div>
+                        {% endif %}
+					</div>
 
-                 	</div>
+
+
+
+					<div class="form-group col-md-4">
+						<label for="icapa">Logotipo</label>
+						<input type="file" name="logotipo" class="form-control {% if errors.first('logotipo') %} is-invalid {% endif %} form-control-file p-1">
+                        {% if errors.first('logotipo') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('logotipo') }}
+                        </div>
+                        {% endif %}
+					</div>
+					<div class="form-group col-md-8">
+						<label for="idescricao">Sobre a Escola</label>
+						<textarea name="sobre_escola" class="form-control {% if errors.first('sobre_escola') %} is-invalid {% endif %}" id="sobre_escola" placeholder="Breve descrição sobre a escola." rows="3">{{ instituto.sobre }}</textarea>
+                        {% if errors.first('sobre_escola') %}
+                        <div class="invalid-feedback">
+                            {{ errors.first('sobre_escola') }}
+                        </div>
+                        {% endif %}
+					</div>
+				</div>
                  	 <div class="d-flex align-items-end justify-content-end">
                         <button type="submit" class="btn btn-success" value="Salvar">Salvar</button>
                     </div>

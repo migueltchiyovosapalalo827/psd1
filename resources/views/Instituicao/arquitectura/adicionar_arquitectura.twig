@@ -18,15 +18,33 @@
         <input type="hidden" value="{{ usuario.id }}" name="id_instituicao" />
         <div class="form-group col-md-6">
           <label for="rsNome">Arquitectura</label>
-          <input type="text" class="form-control" value="" name="arquitectura" />
+
+          <input type="text" class="form-control {% if errors.first('arquitectura') %} is-invalid {% endif %}" value="{{old('arquitectura')}}" name="arquitectura"  />
+            {% if errors.first('arquitectura') %}
+                <div class="invalid-feedback">
+                {{ errors.first('arquitectura') }}
+                </div>
+            {% endif %}
+
         </div>
             <div class="form-group col-md-6">
             <label for="rsDescricao">descrição</label>
-            <textarea class="form-control" name="descricao" id="rsDescricao" cols="30" rows="10"></textarea>
+            <textarea class="form-control {% if errors.first('descricao') %} is-invalid {% endif %}" name="descricao" id="rsDescricao" cols="30" rows="10">{{old('descricao')}}</textarea>
+            {% if errors.first('descricao') %}
+                <div class="invalid-feedback">
+                {{ errors.first('descricao') }}
+                </div>
+            {% endif %}
+
           </div>
         <div class="form-group col-md-6">
           <label>Foto</label>
-          <input type="file" name="foto" class="form-control form-control-file p-1" />
+          <input type="file" name="foto" class="form-control {% if errors.first('foto') %} is-invalid {% endif %} form-control-file p-1" />
+            {% if errors.first('foto') %}
+                <div class="invalid-feedback">
+                {{ errors.first('foto') }}
+                </div>
+            {% endif %}
         </div>
 
         <div class="d-flex align-items-end justify-content-end">
