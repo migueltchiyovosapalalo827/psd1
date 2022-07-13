@@ -185,7 +185,7 @@ class Instituicao extends Controller
         $validateRules = [
             "nome" => "required|string|min:3|max:255",
             "principais_disciplinas" => "required|string|min:3|max:2000",
-            "perfil_de_saida" => "required|string|min:3|max:255",
+            "perfil_de_saida" => "required|string|min:3|max:2000",
         ];
 
         $validator = Validator::make($req->all(), $validateRules);
@@ -343,10 +343,10 @@ class Instituicao extends Controller
         $validateRules = [
 
             "curso" => "required|string|min:4|max:100",
-            "turma" => "required|string|min:3|max:100",
-            "classe" => "required|string|min:2|max:10",
-            "numero_estudantil" => "required|int|min:1|max:10",
-            "ano_termino" => "required|int|min:4|max:8",
+            "turma" => "required|string|min:1|max:100",
+            "classe" => "required|string|min:1|max:10",
+            "numero_estudantil" => "required|min:1|max:10",
+            "ano_de_termino" => "required|min:4|max:8",
             "comprovativo" => "required|file|mimes:pdf,jpg,jpeg,png",
         ];
 
@@ -363,7 +363,7 @@ class Instituicao extends Controller
         $classe = $req->post("classe");
         $id_estudante = $estudante->id;
         $numero_estudantil = $req->post("numero_estudantil");
-        $ano_termino = $req->post("ano_termino");
+        $ano_termino = $req->post("ano_de_termino");
         $comprovativo = $req->file('comprovativo', null);
         $id_instituicao = $instituicao->id;
         $docNovoNome = "";
@@ -421,11 +421,10 @@ class Instituicao extends Controller
         $validateRules = [
 
             "curso" => "required|string|min:4|max:100",
-            "turma" => "required|string|min:3|max:100",
-            "classe" => "required|string|min:2|max:10",
-            "ano_termino" => "required|int|min:4|max:8",
+            "turma" => "required|string|min:1|max:100",
+            "classe" => "required|string|min:1|max:10",
             "comprovativo" => "required|file|mimes:pdf,jpg,jpeg,png",
-            "tipo_declaracao" => "required|string|min:4|max:100",
+            "tipo_de_declaracao" => "required|string|min:4|max:100",
             "efeito" => "required|string|min:4|max:100",
         ];
 
@@ -440,7 +439,7 @@ class Instituicao extends Controller
         $turma = $req->post("turma");
         $id_estudante = $req->post("id_estudante");
         $classe = $req->post("classe");
-        $tipo_declaracao = $req->post("tipo_declaracao");
+        $tipo_declaracao = $req->post("tipo_de_declaracao");
         $comprovativo = $req->file('comprovativo', null);
         $id_instituicao = $instituicao->id;
         $efeito = $req->post("efeito");

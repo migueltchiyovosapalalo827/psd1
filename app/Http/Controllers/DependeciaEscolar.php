@@ -92,16 +92,19 @@ class DependeciaEscolar extends Controller
                 new Alert("A foto não é valida.", "danger", "Foto invalida.");
                 return redirect()->back();
             }
-            $fotoNovoNome = Ficheiros::novoNome("psdinst" . $arquitectura->id_instituicao, $foto->clientExtension());
+            $fotoNovoNome = Ficheiros::novoNome("psdinst".$arquitectura->id_instituicao,$foto->clientExtension());
         }
+
         $fotos = new Fotos_escolas();
         if (!empty($fotoNovoNome)) {
             $foto->move("ficheiros/escolas/fotos/", $fotoNovoNome);
             $fotos->foto = $fotoNovoNome;
         }
+
         $fotos->foto = $fotoNovoNome;
         $fotos->id_instituicao = $arquitectura->id_instituicao;
-      if($arquitectura->fotos_escolas()->save($fotos)){
+
+        if($arquitectura->fotos_escolas()->save($fotos)){
         new Alert("Os Dados foram Actualizados com Sucesso!.", "success", "");
         return redirect()->route('instituicao.ver_arquitectura');
        }else{

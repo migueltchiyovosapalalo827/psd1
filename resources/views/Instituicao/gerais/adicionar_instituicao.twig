@@ -125,7 +125,7 @@
 					</div>
 					<div class="form-group col-md-8">
 						<label for="idescricao">Sobre a Escola</label>
-						<textarea name="sobre" class="form-control {% if errors.first('sobre_escola') %} is-invalid {% endif %}" id="sobre_escola" placeholder="Breve descrição sobre a escola." rows="3">{{old('sobre_escola')}}</textarea>
+						<textarea name="sobre_escola" class="form-control {% if errors.first('sobre_escola') %} is-invalid {% endif %}" id="sobre_escola" placeholder="Breve descrição sobre a escola." rows="3">{{old('sobre_escola')}}</textarea>
                         {% if errors.first('sobre_escola') %}
                         <div class="invalid-feedback">
                             {{ errors.first('sobre_escola') }}

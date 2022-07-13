@@ -332,7 +332,8 @@ class  Usuario  extends Controller
                 return;
             } else {
                 new Alert("Senha invalida", "danger");
-                return view("Usuario.entrar", ["titulo" => "Entrar", "usuario" => $req->usuario]);
+                Http::redirecionar("entrar");
+              //  return view("Usuario.entrar", ["titulo" => "Entrar", "usuario" => $req->usuario]);
             }
         } else {
             new Alert("Usuario, Email ou telefone não coresponde a uma conta.", "danger");
